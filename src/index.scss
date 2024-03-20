@@ -1,0 +1,323 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+// body {
+//   margin: 0;
+//   font-family: "Open Sans", sans-serif;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+// }
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// React data table component
+.react-datetime-picker__inputGroup__input {
+  background-color: #ffff !important;
+}
+.react-calendar__tile--now {
+  background-color: #436131 !important;
+  color: #ffff;
+}
+.react-calendar__tile--active {
+  background-color: #436131 !important;
+}
+
+.rdt_Table {
+  padding: 1rem;
+}
+
+.rdt_Pagination {
+  color: #000000ee !important;
+  font-weight: 600;
+}
+
+.rdt_TableHeadRow {
+  // box-shadow: 1px 1px 2px #0004;
+  border: 1px solid #0005 !important;
+  font-weight: bolder;
+  font-size: 14px;
+  color: #000000ee !important;
+  font-weight: 600;
+}
+
+div[class$="TableCol_Sortable"] {
+  font-weight: 700;
+}
+
+.rdt_TableRow {
+  cursor: pointer;
+  border: 1px solid #0005;
+}
+
+.rdt_Table .rdt_Table .rdt_TableHeadRow {
+  background-color: #d3d3d3;
+}
+
+.data-table-extensions {
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  top: 62.5px;
+  right: 25px;
+  width: 40vw;
+}
+
+.data-table-extensions .filter-text {
+  border: 0.5px solid #c2c2c2;
+  padding-block: 0.125rem;
+  padding-inline: 1rem;
+  width: 30vw;
+  max-width: 30vw;
+  border-radius: 8px;
+  padding: 5px;
+
+  &::placeholder {
+    font-size: 1rem;
+  }
+
+  &:focus {
+    outline: none;
+    border: 2px solid #5a8765;
+  }
+}
+
+// Calendar
+
+// .rbc-current {
+//   background-color: green;
+//   color: white;
+//   height: 10rem;
+
+//   & .rbc-button-link {
+//     font-size: 1.35rem;
+//     font-weight: bolder;
+//   }
+// }
+
+// Line with text in middle
+
+.separator {
+  display: flex;
+  align-items: center;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #000;
+}
+
+.separator:not(:empty)::before {
+  margin-right: 2rem;
+}
+
+.separator:not(:empty)::after {
+  margin-left: 2rem;
+}
+
+.tree,
+.tree-node,
+.tree-node-group {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree-branch-wrapper,
+.tree-node__leaf {
+  outline: none;
+  outline: none;
+}
+
+.tree-node {
+  cursor: pointer;
+}
+
+.tree-node:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.icon {
+  vertical-align: middle;
+  padding-right: 5px;
+}
+
+#counter {
+  height: calc(100vh - 60px);
+}
+
+.new-link:hover .new {
+  animation: shake 0.35s;
+  animation-iteration-count: 1;
+}
+
+.sc-dmctIk {
+  max-height: none !important;
+}
+
+.chakra-input {
+  border-color: #2c4c0346 !important;
+  border-radius: 5px !important;
+}
+
+.react-select-4-placeholder {
+  color: #5d5f6cf2 !important;
+}
+
+.chakra-form-control div div {
+  border-color: #c5ceba !important;
+  border-radius: 5px !important;
+}
+
+.chakra-input__left-addon {
+  height: 2rem !important;
+}
+
+.chakra-table thead tr th {
+  font-family: "Inter", sans-serif !important;
+}
+
+.chakra-table tbody tr th {
+  font-family: "Inter", sans-serif !important;
+}
+
+.chakra-table tbody tr td div div {
+  border-color: #c5ceba !important;
+  border-radius: 5px !important;
+}
+
+.chakra-table tbody tr td div div input {
+  border-color: #c5ceba !important;
+  border-radius: 5px !important;
+}
+
+.chakra-form-control textarea {
+  border-color: #c5ceba !important;
+  border-radius: 5px !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+.chakra-form-control input {
+  border-color: #c5ceba !important;
+  border-radius: 5px !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+.react-input-emoji--container {
+  border-radius: 22px !important;
+  border-color: rgb(56 161 105) !important;
+  font-size: 14px !important;
+  font-family: "Inter";
+}
+
+.chat-input {
+  border-radius: 22px !important;
+  border-color: rgb(56 161 105) !important;
+}
+
+.react-emoji {
+  max-width: 86% !important;
+}
+
+.css-1lw6f2z {
+  padding: 10px !important;
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(10deg);
+  }
+
+  50% {
+    transform: rotate(-10deg);
+  }
+
+  75% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.react-datetime-picker__calendar {
+  z-index: 999 !important;
+}
+
+.react-datetime-picker__wrapper {
+  border-radius: 5px;
+  border: 1px solid gray !important;
+  height: 36px !important;
+  padding: 4px;
+}
+
+.react-datetime-picker__button svg {
+  width: 14px;
+}
+
+@media print {
+  table {
+    width: 100%;
+  }
+}
+
+.react-calendar {
+  font-family: "Inter" !important;
+  border: none !important;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px !important;
+  border-radius: 8px !important;
+}
+
+.arrowIcon {
+  margin-right: 8px;
+  font-size: medium;
+}
+.scrolling-text-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+.slick-dots {
+  margin-bottom: 40px !important;
+}
+.slick-dots li button:before {
+  color: rgb(0, 0, 0) !important;
+  font-size: 12px !important;
+}
+
+.scrolling-text {
+  animation: slideIn 80s linear infinite;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.js-image-zoom__zoomed-image {
+  margin-left: 25px;
+  border: 1.5px solid #51515168;
+  background-color: #fff;
+  z-index: 999 !important;
+  border-radius: 5px;
+}
+.slick-arrow{
+  background-color: #436131 !important;
+  border-radius: 20px;
+}
