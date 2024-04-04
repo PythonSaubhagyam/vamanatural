@@ -78,7 +78,7 @@ export default function Footer() {
         </Box>
         <Container as={Stack} maxW={"6xl"} pt={10} pb={2}>
           <SimpleGrid
-            columns={{ base: 1, md: 2, lg: 3 }}
+            columns={{ base: 1, md: 2, lg: 4 }}
             // spacing={8}
             spacingY="8px"
           >
@@ -86,7 +86,14 @@ export default function Footer() {
 
             {/* <SimpleGrid columns={{ base: 1, md: 3 }}> */}
             <Stack align={"flex-start"} color="text.300">
-              <ListHeader style={{ color: "#436131" }}>Quick Links</ListHeader>
+              <Stack
+                ml={{ md: "50%" }}
+                align={{ md: "flex-start", base: "center" }}
+              >
+                <ListHeader style={{ color: "text.500" }}>
+                  Quick Links
+                </ListHeader>
+              </Stack>
               <Link
                 textDecoration="none"
                 _hover={{ color: "text.500" }}
@@ -128,6 +135,9 @@ export default function Footer() {
               >
                 About Us
               </Link>
+            </Stack>
+            <Stack align={"flex-start"} color="text.300">
+              {!isMobile && <ListHeader>&nbsp;</ListHeader>}
               <Link
                 textDecoration="none"
                 _hover={{ color: "text.500" }}
@@ -142,7 +152,7 @@ export default function Footer() {
                 as={RouterLink}
                 to={"/faq"}
               >
-                 FAQ
+                FAQ
               </Link>
               <Link
                 textDecoration="none"
@@ -174,8 +184,10 @@ export default function Footer() {
             {/* </SimpleGrid> */}
             {/* </Stack> */}
 
-            <Stack  color="text.300" mt={{ md: 3 }}>
-              <ListHeader align={"flex-start"}>Customer Support</ListHeader>
+            <Stack color="text.300" mt={{ md: 3 }}>
+             
+                <ListHeader align={"flex-start"}>Customer Support</ListHeader>
+             
               <Link
                 textDecoration="none"
                 _hover={{ color: "text.500" }}
@@ -208,9 +220,10 @@ export default function Footer() {
                 care@suryanorganic.com
               </Link>
             </Stack>
-            <Stack alignItems={"center"}  mt={{ md: 3 }}>
-             
-            <ListHeader>Talk To Our Vaidya</ListHeader>
+            <Stack mt={{ md: 3 }}>
+         
+              <ListHeader>Talk To Our Vaidya</ListHeader>
+              
               <Link
                 textDecoration="none"
                 _hover={{ color: "text.500" }}
@@ -235,11 +248,9 @@ export default function Footer() {
                 <FaPhoneAlt size={16} style={{ marginRight: 8 }} />
                 +91 6351 9797 12
               </Link>
-            
-          
-              <ListHeader  marginBottom={5}>
-                We Accepts Payments via
-              </ListHeader>
+              <Stack  align={{md: "center" , base:"flex-start" }}>
+              <ListHeader marginBottom={5}>We Accepts Payments via</ListHeader>
+              </Stack>
               <Image
                 src={
                   "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/footer/payment method.png hnghngh.png"
@@ -256,8 +267,7 @@ export default function Footer() {
                   style={{ height: "78px", width: "150px" }}
                 />
               </Link> */}
-              </Stack>
-           
+            </Stack>
           </SimpleGrid>
         </Container>
         <Box py={4}>

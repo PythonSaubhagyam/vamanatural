@@ -615,7 +615,7 @@ export default function Navbar() {
 
             <DrawerBody p={0}>
               <Flex direction="column" gap={2}>
-                <LinkBox w="100%">
+                {/* <LinkBox w="100%">
                   <LinkOverlay href={"/shop"}>
                     <Text
                       color="brand.900"
@@ -625,31 +625,8 @@ export default function Navbar() {
                       Shop
                     </Text>
                   </LinkOverlay>
-                </LinkBox>
-                {Links.map((link) => (
-                  // <LinkBox w="100%" key={link.name}>
-                  //     <LinkOverlay
-                  //         as={ReactRouterLink}
-                  //         to={link.location}
-                  //     >
-                  <Fragment key={link.name}>
-                    <Link
-                      as={ReactRouterLink}
-                      color="brand.900"
-                      _hover={{
-                        textDecoration: "none",
-                      }}
-                      ms={4}
-                    >
-                      {link.name}
-                    </Link>
-                    {/* </LinkOverlay> */}
-                    <Divider h={"1px"} bg="gray.200" />
-                  </Fragment>
-                  // </LinkBox>
-                ))}
-              </Flex>
-
+                </LinkBox> */}
+                
               <Accordion width={"100%"} onClose={handleClose}>
                 <AccordionItem isOpen={Open}>
                   <AccordionButton
@@ -855,6 +832,30 @@ export default function Navbar() {
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>
+                {Links.map((link) => (
+                  // <LinkBox w="100%" key={link.name}>
+                  //     <LinkOverlay
+                  //         as={ReactRouterLink}
+                  //         to={link.location}
+                  //     >
+                  <Fragment key={link.name}>
+                    <Link
+                      as={ReactRouterLink}
+                      color="brand.900"
+                      _hover={{
+                        textDecoration: "none",
+                      }}
+                      ms={4}
+                    >
+                      {link.name}
+                    </Link>
+                    {/* </LinkOverlay> */}
+                    <Divider h={"1px"} bg="gray.200" />
+                  </Fragment>
+                  // </LinkBox>
+                ))}
+              </Flex>
+
               {/* </Link> */}
             </DrawerBody>
             <DrawerFooter></DrawerFooter>
