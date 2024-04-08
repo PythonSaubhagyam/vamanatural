@@ -244,8 +244,7 @@ export default function Home() {
       </VStack>
       <Container mb={5} px={0} maxW={"container.xl"} centerContent>
         <LazyLoadImage
-          src={
-            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/03.jpg"
+          src={require("../assets/home/Vamacertificate.jpg")
           }
           alt=""
           style={{
@@ -348,7 +347,7 @@ export default function Home() {
             mx="auto"
             align={"center"}
             mt={3}
-            pb={"10px"}
+            pb={3}
           >
             BLOGS
           </Heading>
@@ -359,18 +358,18 @@ export default function Home() {
             md: "repeat(4,1fr)",
           }}
           px={2}
-          py={3}
+          
           my={6}
           spacing="40px"
         >
           {blogs?.slice(0, 8).map((blog) => (
             <GridItem key={blog.id} m={4}>
               <Card>
-                <LinkBox h={250}>
+                <LinkBox h={300}>
                   <Image
                     src={blog.banner}
                     w="100%"
-                    h="175px"
+                    h="210px"
                     loading="lazy"
                     objectFit={"cover"}
                     borderRadius={5}

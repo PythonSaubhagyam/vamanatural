@@ -11,14 +11,16 @@ import {
   useToast,
   Heading,
   Grid,
-  GridItem,
-  
+  GridItem
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import checkLogin from "../utils/checkLogin";
-
+import CarouselItem from "../components/CarouselItem";
 import { HiInformationCircle } from "react-icons/hi";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import { useState } from "react";
+import CarouselOurVaidhya from "../components/CarouselOurVaidhya";
+
 
 export default function ConsultOurVaidya() {
   const toast = useToast();
@@ -40,6 +42,70 @@ export default function ConsultOurVaidya() {
     }
   }
 
+  const SecondCarousel = [
+    {
+      id: 11,
+      alt_text: "Image1",
+      image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/c1.jpg",
+      display_status: true,
+      image_url: null,
+    },
+    {
+      id: 12,
+      alt_text: "Image2",
+      image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/c2.jpg",
+      display_status: true,
+      image_url: null,
+    },
+
+    {
+      id: 13,
+      alt_text: "Image2",
+      image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/c3.jpg",
+      display_status: true,
+      image_url: null,
+    },
+    {
+      id: 14,
+      alt_text: "Image2",
+      image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/c4.jpg",
+      display_status: true,
+      image_url: null,
+    },
+    {
+      id: 15,
+      alt_text: "Image2",
+      image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/c5.jpg",
+      display_status: true,
+      image_url: null,
+    },
+
+    {
+      id: 16,
+      alt_text: "Image2",
+      image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/c6.jpg",
+      display_status: true,
+      image_url: null,
+    },
+
+    {
+      id: 17,
+      alt_text: "Image2",
+      image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/c7.jpg",
+      display_status: true,
+      image_url: null,
+    },
+
+    {
+      id: 18,
+      alt_text: "Image2",
+      image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/c8.jpg",
+      display_status: true,
+      image_url: null,
+    },
+  ];
+  const [loading, setLoading] = useState(false);
+  const [banners, setBanners] = useState(SecondCarousel);
   return (
     <>
       <Navbar />
@@ -49,37 +115,41 @@ export default function ConsultOurVaidya() {
           secondUrl={"/consult-our-vaidya"}
         />
       </Container>
-      <Box
-        w={"100%"}
-        bgImage={
-          "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/vaidh-cover.webp"
-        }
-        bgSize="cover"
-        bgPosition="center"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        mt={"-10px"}
-        py={20}
-        boxShadow={"0px 0px 0px 0px"}
-        height={"550px"}
-        mb={10}
-      >
-        <Text
-          pb={2}
-          color={"brand.100"}
-          textAlign={"center"}
-          textShadow={"0px 1px 50px lightgreen"}
-          fontSize="7xl"
-          fontWeight="600"
+      <Container maxW="container.xl"   px={0}>
+        <Box
+          bgImage={
+            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/vaidh-cover.webp"
+          }
+          bgSize="cover"
+          bgPosition="center"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          mt={"-10px"}
+          py={20}
+          boxShadow={"0px 0px 0px 0px"}
+        
+          h={"550px"}
+          mb={10}
+          // filter="brightness(50%)"
+          // style={{ backdropFilter: "blur(10px)" }}
         >
-          Consult Our Vaidya
-        </Text>
-      </Box>
-      <Container maxW={"container.xl"} py={10}>
+          <Text
+            pb={2}
+            color={"#fff"}
+            textAlign={"center"}
+            // textShadow={"0px 1px 50px lightgreen"}
+            fontSize="7xl"
+            fontWeight="600"
+          >
+            Get Free Consultation with our Vaidya for Gau Adharit Diagnosis
+          </Text>
+        </Box>
+      </Container>
+      <Container maxW={"6xl"} py={15} >
         <Flex>
           <Flex direction={"column"} justify={"center"}>
-            <Box my="8">
+            <Box my="1">
               <Text fontSize={"2xl"}>
                 Get Free Consultation with our Vaidya for Gau Adharit Diagnosis
                 over{" "}
@@ -133,9 +203,17 @@ export default function ConsultOurVaidya() {
         </Flex>
         <Box>
           <Text fontSize={"2xl"}>Consult With our Specialist Vaidya</Text>
+
+          <Container maxW={"container.xl"}  centerContent>
+            {loading === true ? (
+              <Skeleton h={489}></Skeleton>
+            ) : (
+              <CarouselItem banners={SecondCarousel} h="90%" w="90%" />
+            )}
+          </Container>
         </Box>
         {/* <Carousel /> */}
-        <Flex justify={"center"} m={"8"}>
+        <Flex justify={"center"} my={"8"}>
           <Box>
             <Text fontSize={"3xl"}>
               How does online appointment system work?
@@ -182,7 +260,7 @@ export default function ConsultOurVaidya() {
               }
             />
           </Box>
-          <Box p="3">
+          <Box py="3">
             <Image
               src={
                 "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/Step3_info.jpg"
@@ -206,23 +284,6 @@ export default function ConsultOurVaidya() {
             />
           </Box>
         </Flex>
-        {/* <Flex justify={"center"} my={"5"}>
-                    <Box my="6">
-                        <Button
-                            onClick={navigateToBooking}
-                            to={"/consult-our-vaidya/schedule-appointment"}
-                            borderRadius="25px"
-                            px="16"
-                            py="6"
-                            bg={"brand.200"}
-                            color={"white"}
-                            fontSize={"xl"}
-                            _hover={{ bg: "brand.200" }}
-                        >
-                            Consult With Vaidya
-                        </Button>
-                    </Box>
-                </Flex> */}
         <Heading fontSize={"27px"} textAlign={"center"} color={"text.500"}>
           OUR VAIDYA VIDEO
         </Heading>
@@ -234,7 +295,7 @@ export default function ConsultOurVaidya() {
           }}
           gap={7}
           my={6}
-          mx={{ md: 20, base: 3 }}
+         
         >
           <GridItem>
             <iframe
@@ -288,6 +349,11 @@ export default function ConsultOurVaidya() {
             }
           />
         </Flex>
+        </Container>
+        <Container maxW={"container.xl"} backgroundColor={"gray.100"} px={0}>
+        <CarouselOurVaidhya />
+        </Container>
+        <Container maxW={"6xl"} py={15} >
         <Flex my={"10"} align="center" justify="center">
           <Box>
             <Image
@@ -318,6 +384,37 @@ export default function ConsultOurVaidya() {
             />
           </Box>
         </Flex>
+      </Container>
+      <Box
+        w="100%"
+        /*  backgroundImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/HomePage/line.png"}
+          backgroundSize="100%"
+          backgroundPosition="50% 100%"
+          backgroundRepeat={"no-repeat"} */
+      >
+        <Heading
+          color="brand.500"
+          size="lg"
+          mx="auto"
+          align={"center"}
+          my={"5"}
+          pb={"10px"}
+        >
+          AVAILABLE AT
+        </Heading>
+      </Box>
+      <Container maxW={"container.xl"} mb={5} px={0} centerContent>
+        <Image
+          src={
+            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/01.jpg"
+          }
+          w={"container.xl"}
+          alt=""
+          style={{
+            opacity: 1,
+            transition: "opacity 0.7s", // Note the corrected syntax here
+          }}
+        />
       </Container>
       <Footer />
     </>

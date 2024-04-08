@@ -56,8 +56,7 @@ export default function Footer() {
             fontSize={{ base: "sm", lg: "md" }}
             className="scrolling-text"
           >
-            For Deliveries in America, Canada, Europe, UAE, Singapore, etc Email
-            us on
+            For deliveries in the USA, UAE, UK, Singapore, Canada and Australia, email us at 
             <Link
               target="_blank"
               href="mailto:export@suryanorganic.com"
@@ -66,7 +65,7 @@ export default function Footer() {
             >
               export@suryanorganic.com
             </Link>{" "}
-            or Whatsapp on{" "}
+            or WhatsApp us at{" "}
             <Link
               target="_blank"
               href="https://wa.me/+916354800089?text=Hello%2C%20this%20is%20a%20test%20message"
@@ -124,7 +123,7 @@ export default function Footer() {
                 as={RouterLink}
                 to={"/store-locator"}
               >
-                Store Locate
+                Store Locator
               </Link>
 
               <Link
@@ -221,9 +220,9 @@ export default function Footer() {
               </Link>
             </Stack>
             <Stack mt={{ md: 3 }}>
-         
+              <Stack ml={{md:3}}>
               <ListHeader>Talk To Our Vaidya</ListHeader>
-              
+              </Stack>
               <Link
                 textDecoration="none"
                 _hover={{ color: "text.500" }}
@@ -232,6 +231,7 @@ export default function Footer() {
                 display={"flex"}
                 flexDirection={"row"}
                 alignItems={"center"}
+                ml={{md:3}}
               >
                 <FaPhoneAlt size={16} style={{ marginRight: 8 }} /> +91 6351
                 9797 06
@@ -244,12 +244,13 @@ export default function Footer() {
                 display={"flex"}
                 flexDirection={"row"}
                 alignItems={"center"}
+                ml={{md:3}}
               >
                 <FaPhoneAlt size={16} style={{ marginRight: 8 }} />
                 +91 6351 9797 12
               </Link>
-              <Stack  align={{md: "center" , base:"flex-start" }}>
-              <ListHeader marginBottom={5}>We Accepts Payments via</ListHeader>
+              <Stack  ml={{md:3}}>
+              <ListHeader marginBottom={5}>We accept payments via</ListHeader>
               </Stack>
               <Image
                 src={

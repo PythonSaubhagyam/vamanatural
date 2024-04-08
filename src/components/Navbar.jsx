@@ -92,7 +92,7 @@ const Links = [
   },
 
   {
-    name: "Store Locate",
+    name: "Store Locator",
     location: "/store-locator",
   },
   { name: "Blogs", location: "/blogs?page=1" },
