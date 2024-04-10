@@ -266,8 +266,9 @@ export default function Home() {
         </Box>
         <Grid
           templateColumns={{
-            base: "repeat(3, 1fr)",
-            md: "repeat(6, 1fr)",
+            base: "repeat(1, 1fr)",
+            md: "repeat(3, 1fr)",
+            lg: "repeat(6, 1fr)",
           }}
           gap={4}
           my={6}
