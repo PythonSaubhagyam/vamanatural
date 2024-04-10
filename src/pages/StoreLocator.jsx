@@ -64,30 +64,26 @@ export default function StoreLocator() {
         <BreadCrumbCom second={"Store Locator"} secondUrl={"/store-locator"} />
       </Container>
 
-      <Box
-        w={"100%"}
-        bgImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/store-locator.webp"}
-        bgSize="cover"
-        bgPosition="center"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        mt={"-10px"}
-        py={20}
-        height={"550px"}
-        mb={10}
-      >
+      <Container maxW={"container.xl"} py={8} px={0} position="relative">
+        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/store-locator.webp" />
+
         <Text
           pb={2}
-          color={"brand.900"}
+          color={"brand.500"}
           textAlign={"center"}
-          textShadow={"0px 0px 100px lightgreen"}
-          fontSize="7xl"
+          fontSize={{ lg: "7xl", md: "5xl", base: "2xl" }}
           fontWeight="600"
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          zIndex="1"
+          textShadow={"0px 0px 100px lightgreen"}
+          // Optional: Add background to improve text readability
         >
-          Store Locator
+            Store Locator
         </Text>
-      </Box>
+      </Container>
       <Container maxW={"6xl"} px={0} mb={10}>
         <Flex direction={"column"}>
           {/* <Center maxW={"6xl"}>
@@ -226,8 +222,8 @@ export default function StoreLocator() {
                                 >
                                   <Image
                                     minW={{
-                                      base: "550px",
-                                      sm: "360px",
+                                     
+                                      sm: "300px",
                                       lg: "360px",
                                     }}
                                     height={"auto"}

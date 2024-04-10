@@ -8,6 +8,7 @@ import {
   Link,
   Box,
   Text,
+  Image
 } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import BreadCrumbCom from "../components/BreadCrumbCom";
@@ -26,33 +27,24 @@ export default function ReturnRefundPolicy() {
           secondUrl={"/return-and-refund-policy"}
         />
       </Container>
-      <Container maxW={"container.xl"} mb={4} px={0} >
-        <Box
-          w={"100%"}
-          bgImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/refund.jpg"}
-          bgSize="cover"
-          bgPosition="center"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          mt={"-10px"}
-          py={20}
-          boxShadow={"0px 0px 0px 0px"}
-          backdropFilter="blur(10px)"
-          height={"550px"}
-        // mb={10}
+      <Container maxW={"container.xl"} py={8} px={0} position="relative">
+        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/refund.jpg" />
+
+        <Text
+          pb={2}
+          color={"brand.100"}
+          textAlign={"center"}
+          fontSize={{ lg: "6xl", md: "4xl", base: "xl" }}
+          fontWeight="600"
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          zIndex="1"
+          // Optional: Add background to improve text readability
         >
-          <Text
-            pb={2}
-            color={"brand.100"}
-            textAlign={"center"}
-            textShadow={"lightgreen"}
-            fontSize="6xl"
-            fontWeight="700"
-          >
-          Refund & Return Policy
-          </Text>
-        </Box>
+           Refund & Return Policy
+        </Text>
       </Container>
       <Container maxW={"6xl"} py={10}>
         <Heading textAlign={"center"} color="#436131" pb={8}>

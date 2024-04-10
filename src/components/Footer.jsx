@@ -220,7 +220,7 @@ export default function Footer() {
               </Link>
             </Stack>
             <Stack mt={{ md: 3 }}>
-              <Stack ml={{md:3}}>
+              <Stack ml={{lg:3}}>
               <ListHeader>Talk To Our Vaidya</ListHeader>
               </Stack>
               <Link
@@ -231,7 +231,7 @@ export default function Footer() {
                 display={"flex"}
                 flexDirection={"row"}
                 alignItems={"center"}
-                ml={{md:3}}
+                ml={{lg:3}}
               >
                 <FaPhoneAlt size={16} style={{ marginRight: 8 }} /> +91 6351
                 9797 06
@@ -244,15 +244,16 @@ export default function Footer() {
                 display={"flex"}
                 flexDirection={"row"}
                 alignItems={"center"}
-                ml={{md:3}}
+                ml={{lg:3}}
               >
                 <FaPhoneAlt size={16} style={{ marginRight: 8 }} />
                 +91 6351 9797 12
               </Link>
-              <Stack  ml={{md:3}}>
+              <Stack  ml={{lg:3}}>
               <ListHeader marginBottom={5}>We accept payments via</ListHeader>
               </Stack>
               <Image
+              ml={{ base: "-15px",md:"-15px",lg:0 }}
                 src={
                   "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/footer/payment method.png hnghngh.png"
                 }

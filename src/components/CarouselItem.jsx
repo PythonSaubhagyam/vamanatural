@@ -30,6 +30,23 @@ export default function CarouselItem({
     autoplaySpeed:  2000,
     slidesToShow: 4,
     slidesToScroll: 4,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+     
+    ],
   };
 
   // As we have used custom buttons, we need a reference variable to

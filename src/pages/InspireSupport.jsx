@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ReadMorePost from "../components/ReadMorePost";
-import { Box, Container, Text } from "@chakra-ui/react";
+import { Box, Container, Text,Image } from "@chakra-ui/react";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 
 const Posts = [
@@ -46,33 +46,24 @@ export default function InspireSupport() {
           secondUrl={"/inspire-and-support"}
         />{" "}
       </Container>
-      <Container maxW={"container.xl"} mb={4} px={0} >
-      <Box
-        w={"100%"}
-        bgImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/inspire and support.jpg"}
-        bgSize="cover"
-        bgPosition="center"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        mt={"-10px"}
-        py={20}
-        boxShadow={"0px 0px 0px 0px"}
-        backdropFilter="blur(10px)"
-        height={"550px"}
-        // mb={10}
-      >
+      <Container maxW={"container.xl"} py={8} px={0} position="relative">
+        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/inspire and support.jpg" />
+
         <Text
           pb={2}
           color={"brand.100"}
           textAlign={"center"}
-          textShadow={"lightgreen"}
-          fontSize="6xl"
-          fontWeight="700"
+          fontSize={{ lg: "7xl", md: "4xl", base: "xl" }}
+          fontWeight="600"
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          zIndex="1"
+          // Optional: Add background to improve text readability
         >
-   Inspire & Support
+          Inspire & Support
         </Text>
-      </Box>
       </Container>
       <Container maxW={"6xl"} py={4}>
         {Posts.map((postDetails) => (

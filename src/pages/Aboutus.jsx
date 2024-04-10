@@ -13,45 +13,27 @@ const Aboutus = () => {
       <Container maxW={"container.xl"} alignContent={"flex-start"}>
         <BreadCrumbCom second={"About Us"} secondUrl={"/about-us"} />{" "}
       </Container>
-      <Container maxW={"container.xl"} mb={4} px={0} centerContent>
-        <Box
-          w={"100%"}
-          bgImage={
-            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/aboutUs.jpg"
-          }
-          bgSize="cover"
-          bgPosition="center"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          mt={"-10px"}
-          py={20}
-          boxShadow={"0px 0px 0px 0px"}
-          height={"550px"}
-          mb={10}
-          // filter="brightness(200%)"
-          // style={{ backdropFilter: "blur(10px)" }}
+      <Container maxW={"container.xl"} py={8} px={0} position="relative">
+        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/aboutUs.jpg" />
+
+        <Text
+          pb={2}
+          color={"brand.100"}
+          textAlign={"center"}
+          fontSize={{ lg: "7xl", md: "5xl", base: "xl" }}
+          fontWeight="600"
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          zIndex="1"
+          // Optional: Add background to improve text readability
         >
-          <Text
-            pb={2}
-            color={"brand.100"}
-            textAlign={"center"}
-            fontSize="7xl"
-            fontWeight="600"
-          >
-            About Us
-          </Text>
-          {/* <Text
-            pb={2}
-            color={"brand.100"}
-            textAlign={"center"}
-            textShadow={"1px 1px 2px lightgreen"}
-            fontSize="7xl"
-            fontWeight="black"
-          >
-            About us
-          </Text> */}
-        </Box>
+          About Us
+        </Text>
+      </Container>
+      <Container maxW={"container.xl"} mb={4} px={0} centerContent>
+        
         <VStack>
           <Image
             src={

@@ -159,7 +159,7 @@ export default function ConsultOurVaidya() {
           justifyContent="center"
           alignItems="center"
           py={20}
-          h={"600px"}
+          h={{lg:"600px",md:"350px"}}
           w={"100%"}
           mb={10}
         >
@@ -188,13 +188,13 @@ export default function ConsultOurVaidya() {
             bg="rgba(0, 0, 0, 0.5)"
           />
 
-          <Text color={"#fff"} textAlign={"center"} zIndex={3} fontSize="5xl">
+          <Text color={"#fff"} textAlign={"center"} zIndex={3} fontSize={{lg:"5xl",md:"2xl"}}>
             Get Free Consultation with our Vaidya for Gau Adharit Diagnosis
           </Text>
         </Box>
       </Container>
       <Container maxW={"6xl"} py={15}  >
-        <Flex flexDirection={{base:"column",md:"row"}}>
+        <Flex flexDirection={{base:"column",lg:"row"}}>
           <Flex direction={"column"} justify={"center"}>
             <Box my="1">
               <Text fontSize={"2xl"}>
@@ -255,7 +255,7 @@ export default function ConsultOurVaidya() {
             {loading === true ? (
               <Skeleton h={489}></Skeleton>
             ) : (
-              <CarouselItem banners={SecondCarousel} h="90%" w="90%" />
+              <CarouselItem banners={SecondCarousel}  />
             )}
           </Container>
         </Box>
@@ -267,7 +267,7 @@ export default function ConsultOurVaidya() {
             </Text>
           </Box>
         </Flex>
-        <Flex py="8" flexDirection={{base:"column",md:"row"}}>
+        <Flex py="8" flexDirection={{base:"column",lg:"row"}}>
           <Box py="3">
             <Image
               src={
@@ -283,7 +283,7 @@ export default function ConsultOurVaidya() {
             />
           </Box>
         </Flex>
-        <Flex py="8" flexDirection={{base:"column",md:"row"}}>
+        <Flex py="8" flexDirection={{base:"column",lg:"row"}}>
           <Box py="3">
             <Image
               src={
@@ -299,7 +299,7 @@ export default function ConsultOurVaidya() {
             />
           </Box>
         </Flex>
-        <Flex py="8" flexDirection={{base:"column",md:"row"}}>
+        <Flex py="8" flexDirection={{base:"column",lg:"row"}}>
           <Box py="3">
             <Image
               src={
@@ -315,7 +315,7 @@ export default function ConsultOurVaidya() {
             />
           </Box>
         </Flex>
-        <Flex py="8" flexDirection={{base:"column",md:"row"}}>
+        <Flex py="8" flexDirection={{base:"column",lg:"row"}}>
           <Box py="3">
             <Image
               src={
@@ -339,7 +339,7 @@ export default function ConsultOurVaidya() {
         <Grid
           templateColumns={{
             base: "repeat(1, 1fr)",
-            md: "repeat(2, 1fr)",
+            md: "repeat(1, 1fr)",
             lg: "repeat(2,1fr)",
           }}
           gap={7}

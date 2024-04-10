@@ -185,7 +185,7 @@ const CarouselOurVaidhya = () => {
                   textAlign="center"
                   mt={4}
                   mb={9}
-                  w="40vw"
+                  w={{md:"40vw",base:"80vw"}}
                   pb={1}
                   mx={"auto"}
                   pt={5}
