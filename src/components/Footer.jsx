@@ -56,7 +56,7 @@ export default function Footer() {
             fontSize={{ base: "sm", lg: "md" }}
             className="scrolling-text"
           >
-            For deliveries in the USA, UAE, UK, Singapore, Canada and Australia, email us at 
+            For deliveries in the USA, UAE, UK, Singapore, Canada and Australia, email us at{" "} 
             <Link
               target="_blank"
               href="mailto:export@suryanorganic.com"

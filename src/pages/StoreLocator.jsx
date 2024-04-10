@@ -61,7 +61,7 @@ export default function StoreLocator() {
       <Navbar />
 
       <Container maxW="container.xl" alignContent={"flex-start"}>
-        <BreadCrumbCom second={"Store Locate"} secondUrl={"/store-locator"} />
+        <BreadCrumbCom second={"Store Locator"} secondUrl={"/store-locator"} />
       </Container>
 
       <Box
@@ -85,7 +85,7 @@ export default function StoreLocator() {
           fontSize="7xl"
           fontWeight="600"
         >
-          Store Locate
+          Store Locator
         </Text>
       </Box>
       <Container maxW={"6xl"} px={0} mb={10}>

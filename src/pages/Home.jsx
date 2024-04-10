@@ -75,34 +75,30 @@ const banner = [
     alt_text: "Image2",
     image: require("../assets/Home Page Banners/01.jpg"),
     display_status: true,
-    image_url:"/products/2488",
+    image_url: "/products/2488",
   },
   {
     id: 12,
     alt_text: "Image3",
     image: require("../assets/Home Page Banners/02.jpg"),
     display_status: true,
-    image_url:"/products/2462"
+    image_url: "/products/2462",
   },
   {
     id: 13,
     alt_text: "Image3",
     image: require("../assets/Home Page Banners/03.jpg"),
     display_status: true,
-    image_url:"/products/2453"
+    image_url: "/products/2453",
   },
   {
     id: 14,
     alt_text: "Image4",
     image: require("../assets/Home Page Banners/04.jpg"),
     display_status: true,
-    image_url:"/products/2445"
+    image_url: "/products/2445",
   },
 ];
-
-
-
-
 
 export default function Home() {
   const [isFullScreen] = useMediaQuery("(min-width: 768px)");
@@ -111,9 +107,9 @@ export default function Home() {
   const [banners, setBanners] = useState(banner);
   const [loading, setLoading] = useState(true);
   const [isMobile] = useMediaQuery("(max-width: 480px)");
-  const [newArrival ,setNewArrival] = useState([])
-  const [mustTry ,setMustTry] = useState([])
-  const [bestSeller , setBestSeller] = useState([])
+  const [newArrival, setNewArrival] = useState([]);
+  const [mustTry, setMustTry] = useState([]);
+  const [bestSeller, setBestSeller] = useState([]);
   // let [isFull] = useMediaQuery("(max-width:1920px)");
   const [blogs, setBlogs] = useState([]);
   const isMobiles = width <= 768;
@@ -122,8 +118,8 @@ export default function Home() {
     CheckOrSetUDID();
     getMustTry();
     //getHomePageData();
-    getBestSeller()
-    getNewArrival()
+    getBestSeller();
+    getNewArrival();
     getBlogs();
   }, []);
 
@@ -138,21 +134,21 @@ export default function Home() {
   async function getNewArrival() {
     const response = await client.get("newarrival/list");
     if (response) {
-      setNewArrival(response.data.data)
+      setNewArrival(response.data.data);
     }
     setLoading(false);
   }
   async function getMustTry() {
     const response = await client.get("musttry/list");
     if (response) {
-      setMustTry(response.data.data)
+      setMustTry(response.data.data);
     }
     setLoading(false);
   }
   async function getBestSeller() {
     const response = await client.get("bestofalltime/list");
     if (response) {
-      setBestSeller(response.data.data)
+      setBestSeller(response.data.data);
     }
     setLoading(false);
   }
@@ -244,8 +240,7 @@ export default function Home() {
       </VStack>
       <Container mb={5} px={0} maxW={"container.xl"} centerContent>
         <LazyLoadImage
-          src={require("../assets/home/Vamacertificate.jpg")
-          }
+          src={require("../assets/home/Vamacertificate.jpg")}
           alt=""
           style={{
             opacity: 1,
@@ -310,19 +305,18 @@ export default function Home() {
       </Container>
 
       <ProductListSectionHome
-        title="New Arrival"
+        title="New Arrivals"
         loading={loading}
         products={newArrival}
       />
-     
 
       <ProductListSectionHome
-        title="Must Try Vama Products"
+        title="Must Try: Vama Products"
         loading={loading}
         products={mustTry}
       />
       <ProductListSectionHome
-        title="Best Seller Of All Time"
+        title="All Time Best Sellers"
         loading={loading}
         products={bestSeller}
       />
@@ -355,21 +349,21 @@ export default function Home() {
         <Grid
           templateColumns={{
             base: "repeat(1,1fr)",
-            md: "repeat(4,1fr)",
+            md: "repeat(2,1fr)",
+            lg: "repeat(4,1fr)",
           }}
           px={2}
-          
           my={6}
           spacing="40px"
         >
           {blogs?.slice(0, 8).map((blog) => (
             <GridItem key={blog.id} m={4}>
               <Card>
-                <LinkBox h={300}>
+                <LinkBox h={400}>
                   <Image
                     src={blog.banner}
                     w="100%"
-                    h="210px"
+                    h="300px"
                     loading="lazy"
                     objectFit={"cover"}
                     borderRadius={5}
@@ -423,8 +417,8 @@ export default function Home() {
         </Heading>
 
         <Text mt={3} mb={5} textAlign={"center"} color="text.300">
-          We are committed to quality and each of our facility is independently
-          certified by an industry-accredited agency.
+          We are committed to quality and each of our facilities is
+          independently certified by an industry-accredited agency.
         </Text>
         <Flex
           justifyContent="space-evenly"
@@ -455,76 +449,61 @@ export default function Home() {
             }}
           />
         </Flex>
-        </Container>
-        <Container backgroundColor={"bg.500"} maxW={"container.xl"}  px={0} py={2}>
-          <SimpleGrid
-            columns={[2, 3, null, 5]}
-            px={6}
-            maxW={"container.xl"}
-            my={6}
-            backgroundColor={"bg.500"}
-            align="center"
-            spacingX={{ base: "10vw", md: "30px" }}
-            spacingY="40px"
-          >
-            <Stat>
-              <StatNumber
-                color="text.300"
-                fontSize={{ base: "3xl", md: "3xl" }}
-              >
-                22+
-              </StatNumber>
-              <StatHelpText color="gray.600">Natural Products</StatHelpText>
-            </Stat>
+      </Container>
+      <Container backgroundColor={"bg.500"} maxW={"container.xl"} px={0} py={2}>
+        <SimpleGrid
+          columns={[2, 3, null, 5]}
+          px={6}
+          maxW={"container.xl"}
+          my={6}
+          backgroundColor={"bg.500"}
+          align="center"
+          spacingX={{ base: "10vw", md: "30px" }}
+          spacingY="40px"
+        >
+          <Stat>
+            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
+              22+
+            </StatNumber>
+            <StatHelpText color="gray.600">Natural Products</StatHelpText>
+          </Stat>
 
-            <Stat>
-              <StatNumber
-                color="text.300"
-                fontSize={{ base: "3xl", md: "3xl" }}
-              >
-                20930+
-              </StatNumber>
-              <StatHelpText color="gray.600">Satisfied Clients</StatHelpText>
-            </Stat>
+          <Stat>
+            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
+              20930+
+            </StatNumber>
+            <StatHelpText color="gray.600">Satisfied Clients</StatHelpText>
+          </Stat>
 
-            <Stat>
-              <StatNumber
-                color="text.300"
-                fontSize={{ base: "3xl", md: "3xl" }}
-              >
-                1485+
-              </StatNumber>
-              <StatHelpText color="gray.600">Cities & Towns</StatHelpText>
-            </Stat>
-            <Stat>
-              <StatNumber
-                color="text.300"
-                fontSize={{ base: "3xl", md: "3xl" }}
-              >
-                7+
-              </StatNumber>
-              <StatHelpText color="gray.600">Countries</StatHelpText>
-            </Stat>
+          <Stat>
+            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
+              1485+
+            </StatNumber>
+            <StatHelpText color="gray.600">Cities & Towns</StatHelpText>
+          </Stat>
+          <Stat>
+            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
+              7+
+            </StatNumber>
+            <StatHelpText color="gray.600">Countries</StatHelpText>
+          </Stat>
 
-            <Stat>
-              <StatNumber
-                color="text.300"
-                fontSize={{ base: "3xl", md: "3xl" }}
-              >
-                15+
-              </StatNumber>
-              <StatHelpText color="gray.600">Stores</StatHelpText>
-            </Stat>
+          <Stat>
+            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
+              15+
+            </StatNumber>
+            <StatHelpText color="gray.600">Stores</StatHelpText>
+          </Stat>
 
-            {/* <Stat>
+          {/* <Stat>
             <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
               11<sup>th</sup>
             </StatNumber>
             <StatHelpText color="gray.600">Generation of Farmers</StatHelpText>
           </Stat> */}
-          </SimpleGrid>
-        </Container>
-        <Container maxW={{ base: "100vw", md: "container.xl" }}>
+        </SimpleGrid>
+      </Container>
+      <Container maxW={{ base: "100vw", md: "container.xl" }}>
         <Image
           w="65%"
           my={10}
@@ -544,7 +523,7 @@ export default function Home() {
           my={"5"}
           pb={"10px"}
         >
-          SERVING TO THE COUNTRIES
+          OUR SERVICES ARE AVAILABLE IN 
         </Heading>
 
         <Box display={"flex"} px={0} justifyContent={"center"}>

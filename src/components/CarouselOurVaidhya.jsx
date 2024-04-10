@@ -120,7 +120,7 @@ const CarouselOurVaidhya = () => {
         <Box
           position={"relative"}
           height={{ base: "100%", md: "50%" }}
-          width={"100vw"}
+          //width={"100vw"}
 
           // overflow={"hidden"}
         >

@@ -11,7 +11,8 @@ import {
   useToast,
   Heading,
   Grid,
-  GridItem
+  GridItem,
+  useBreakpointValue
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import checkLogin from "../utils/checkLogin";
@@ -25,6 +26,8 @@ import CarouselOurVaidhya from "../components/CarouselOurVaidhya";
 export default function ConsultOurVaidya() {
   const toast = useToast();
   const navigate = useNavigate();
+
+  const height = useBreakpointValue({md:450})
 
   function navigateToBooking() {
     const loginInfo = checkLogin();
@@ -115,7 +118,7 @@ export default function ConsultOurVaidya() {
           secondUrl={"/consult-our-vaidya"}
         />
       </Container>
-      <Container maxW="container.xl"   px={0}>
+      {/* <Container maxW="container.xl" px={0}>
         <Box
           bgImage={
             "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/vaidh-cover.webp"
@@ -125,29 +128,73 @@ export default function ConsultOurVaidya() {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          mt={"-10px"}
+          
           py={20}
-          boxShadow={"0px 0px 0px 0px"}
-        
-          h={"550px"}
+          //boxShadow={"0px 0px 0px 0px"}
+          filter=" brightness(70%)"
+          h={"600px"}
           mb={10}
-          // filter="brightness(50%)"
-          // style={{ backdropFilter: "blur(10px)" }}
+          
+         
+          //style={{ backdropFilter: "blur(10px)" }}
+      
         >
           <Text
             pb={2}
-            color={"#fff"}
+            color={"white"}
             textAlign={"center"}
-            // textShadow={"0px 1px 50px lightgreen"}
+            
             fontSize="7xl"
-            fontWeight="600"
+            //fontWeight="600"
+           
           >
             Get Free Consultation with our Vaidya for Gau Adharit Diagnosis
           </Text>
         </Box>
+      </Container> */}
+      <Container maxW="container.xl" px={0}>
+        <Box
+          position="relative" // Set position relative for parent box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          py={20}
+          h={"600px"}
+          w={"100%"}
+          mb={10}
+        >
+          {/* Background Image */}
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            zIndex={1} // Set a lower zIndex for the background image
+            bgImage={
+              "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/vaidh-cover.webp"
+            }
+            bgSize="cover"
+            bgPosition="center"
+          />
+          {/* Overlay */}
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            zIndex={2}
+            bg="rgba(0, 0, 0, 0.5)"
+          />
+
+          <Text color={"#fff"} textAlign={"center"} zIndex={3} fontSize="5xl">
+            Get Free Consultation with our Vaidya for Gau Adharit Diagnosis
+          </Text>
+        </Box>
       </Container>
-      <Container maxW={"6xl"} py={15} >
-        <Flex>
+      <Container maxW={"6xl"} py={15}  >
+        <Flex flexDirection={{base:"column",md:"row"}}>
           <Flex direction={"column"} justify={"center"}>
             <Box my="1">
               <Text fontSize={"2xl"}>
@@ -182,7 +229,7 @@ export default function ConsultOurVaidya() {
               bg={"brand.300"}
               p="2"
               borderRadius={"5"}
-              w={{ base: "100vw", md: "auto" }}
+              w={{ base: "90vw", md: "auto" }}
             >
               <HStack>
                 <HiInformationCircle />
@@ -220,15 +267,15 @@ export default function ConsultOurVaidya() {
             </Text>
           </Box>
         </Flex>
-        <Flex p="8">
-          <Box p="3">
+        <Flex py="8" flexDirection={{base:"column",md:"row"}}>
+          <Box py="3">
             <Image
               src={
                 "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/Illustration2.jpg"
               }
             />
           </Box>
-          <Box p="3">
+          <Box py="3">
             <Image
               src={
                 "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/Step1_info.jpg"
@@ -236,15 +283,15 @@ export default function ConsultOurVaidya() {
             />
           </Box>
         </Flex>
-        <Flex p="8">
-          <Box p="3">
+        <Flex py="8" flexDirection={{base:"column",md:"row"}}>
+          <Box py="3">
             <Image
               src={
                 "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/Step2_info.jpg"
               }
             />
           </Box>
-          <Box p="3">
+          <Box py="3">
             <Image
               src={
                 "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/Illustration3.jpg"
@@ -252,8 +299,8 @@ export default function ConsultOurVaidya() {
             />
           </Box>
         </Flex>
-        <Flex p="8">
-          <Box p="3">
+        <Flex py="8" flexDirection={{base:"column",md:"row"}}>
+          <Box py="3">
             <Image
               src={
                 "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/Illustration4.jpg"
@@ -268,15 +315,15 @@ export default function ConsultOurVaidya() {
             />
           </Box>
         </Flex>
-        <Flex p="8">
-          <Box p="3">
+        <Flex py="8" flexDirection={{base:"column",md:"row"}}>
+          <Box py="3">
             <Image
               src={
                 "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/Step4_info.jpg"
               }
             />
           </Box>
-          <Box p="3">
+          <Box py="3">
             <Image
               src={
                 "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/ConsultOurvaidya/Illustration5.jpg"
@@ -284,6 +331,8 @@ export default function ConsultOurVaidya() {
             />
           </Box>
         </Flex>
+        </Container>
+        <Container maxW={"container.xl"} py={15} px={{base:6,md:"4%"}} >
         <Heading fontSize={"27px"} textAlign={"center"} color={"text.500"}>
           OUR VAIDYA VIDEO
         </Heading>
@@ -300,7 +349,7 @@ export default function ConsultOurVaidya() {
           <GridItem>
             <iframe
               width="100%"
-              height="450"
+              height={height}
               src="https://www.youtube.com/embed/qLs7KIs1iS4"
               title="Experience the power of ancient wisdom with Gau Based Aushadhi"
               frameborder="0"
@@ -342,6 +391,8 @@ export default function ConsultOurVaidya() {
             </Button>
           </GridItem>
         </Grid>
+        </Container>
+        <Container maxW={"6xl"} py={15} >
         <Flex m={"10"}>
           <Image
             src={
