@@ -14,7 +14,8 @@ import {
   Button,
   useToast,
   Box,
-  Image
+  Image,
+  useBreakpointValue
 } from "@chakra-ui/react";
 import client from "../setup/axiosClient";
 import { AsyncSelect } from "chakra-react-select";
@@ -38,6 +39,7 @@ export default function ContactUs() {
   const [callingCode, setCallingCode] = useState("");
   const toast = useToast();
   const loginInfo = checkLogin();
+  const width = useBreakpointValue({md:"340px",base:"300px"})
   useEffect(() => {
     getCountries(); // eslint-disable-next-line
   }, []);
@@ -252,8 +254,8 @@ export default function ContactUs() {
               chakraStyles={{
                 inputContainer: (provided) => ({
                   ...provided,
-                  maxWidth: "340px",
-                  minWidth: "340px",
+                  maxWidth: width,
+                  minWidth: width,
                 }),
               }}
               variant={"outline"}

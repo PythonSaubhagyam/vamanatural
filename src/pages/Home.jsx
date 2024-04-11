@@ -182,7 +182,7 @@ export default function Home() {
         <Box
           fontWeight={"600"}
           color="brand.500"
-          fontSize={"30px"}
+          fontSize={{md:30,base:24}}
           alignContent={"flex-start"}
         >
           Our Mission
@@ -214,7 +214,7 @@ export default function Home() {
 
         <br />
 
-        <Box fontWeight={"600"} color="brand.500" fontSize={"30px"}>
+        <Box fontWeight={"600"} color="brand.500"  fontSize={{md:30,base:24}}>
           Our Vision
         </Box>
 
@@ -294,7 +294,7 @@ export default function Home() {
               <Text
                 textAlign={"center"}
                 color="text.500"
-                fontSize={"larger"}
+                fontSize={{md:18,base:16}}
                 pt={2}
                 fontWeight={600}
               >
@@ -338,7 +338,7 @@ export default function Home() {
         >
           <Heading
             color="brand.500"
-            size="lg"
+            fontSize={{md:33,base:24}}
             mx="auto"
             align={"center"}
             mt={3}
@@ -408,7 +408,7 @@ export default function Home() {
       <Container maxW={{ base: "100vw", md: "container.xl" }}>
         <Heading
           color="brand.500"
-          size="lg"
+          fontSize={{md:33,base:20}}
           mx="auto"
           align={"center"}
           mt={3}
@@ -506,7 +506,7 @@ export default function Home() {
       </Container>
       <Container maxW={{ base: "100vw", md: "container.xl" }}>
         <Image
-          w="65%"
+          w={{md:"65%"}}
           my={10}
           src={require("../assets/home/vama_icon(1).jpg")}
           mx="auto"
@@ -518,7 +518,7 @@ export default function Home() {
 
         <Heading
           color="brand.500"
-          size="lg"
+         fontSize={{md:33,base:20}}
           mx="auto"
           align={"center"}
           my={"5"}
@@ -544,7 +544,7 @@ export default function Home() {
 
         <Heading
           color="brand.500"
-          size="lg"
+          fontSize={{md:33,base:22}}
           mx="auto"
           align={"center"}
           my={"5"}

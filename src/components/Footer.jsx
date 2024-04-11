@@ -113,6 +113,14 @@ export default function Footer() {
                 textDecoration="none"
                 _hover={{ color: "text.500" }}
                 as={RouterLink}
+                to={"/blogs?page=1"}
+              >
+                Blogs
+              </Link>
+              <Link
+                textDecoration="none"
+                _hover={{ color: "text.500" }}
+                as={RouterLink}
                 to={"/inspire-and-support"}
               >
                 Inspire & Support
@@ -177,6 +185,14 @@ export default function Footer() {
                 to={"/return-and-refund-policy"}
               >
                 Return & Refund Policy
+              </Link>
+              <Link
+                textDecoration="none"
+                _hover={{ color: "text.500" }}
+                as={RouterLink}
+                to={"/privacy-policy"}
+              >
+                Privacy Policy
               </Link>
             </Stack>
 
