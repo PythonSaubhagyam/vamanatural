@@ -85,15 +85,7 @@ const Aboutus = () => {
               "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/aboutus/section_icon+(1).png"
             }
           />
-          <Box
-            w="100%"
-            backgroundImage={
-              "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/HomePage/line.png"
-            }
-            backgroundSize="100%"
-            backgroundPosition="50% 100%"
-            backgroundRepeat={"no-repeat"}
-          >
+         
             <Heading
               color="brand.500"
               size="lg"
@@ -104,7 +96,7 @@ const Aboutus = () => {
             >
               AVAILABLE AT
             </Heading>
-          </Box>
+         
           <Container maxW={"container.xl"} mb={5} px={0} centerContent>
             <Image
               src={

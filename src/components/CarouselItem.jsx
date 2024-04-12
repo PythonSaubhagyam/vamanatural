@@ -26,7 +26,7 @@ export default function CarouselItem({
     arrows: false,
     infinite: true,
     autoplay:  true,
-    speed: 500,
+    speed: 1500,
     autoplaySpeed:  2000,
     slidesToShow: 4,
     slidesToScroll: 4,
@@ -68,7 +68,7 @@ export default function CarouselItem({
   }, []);
 
   const shouldShowButtons = windowWidth > 330;
-  const side = useBreakpointValue({ base: "0px", md: "0px" });
+  const side = useBreakpointValue({ base: "0px", md: "-60px" });
 
   return (
     <Box
@@ -98,7 +98,7 @@ export default function CarouselItem({
         aria-label="left-arrow"
         icon={<ChevronLeftIcon style={{ fontSize: 34 }} />}
         background={transparentBtn ? "#ffffff00" : "#434242"}
-        color="#fff"
+        color="#545454"
         size={{ base: "sm", md: "md" }}
         position="absolute"
         left={side}
@@ -116,7 +116,7 @@ export default function CarouselItem({
         aria-label="right-arrow"
         icon={<ChevronRightIcon style={{ fontSize: 34 }} />}
         background={transparentBtn ? "#ffffff00" : "#434242"}
-        color="#fff"
+        color="#545454"
         size={{ base: "sm", md: "md" }}
         position="absolute"
         right={side}
