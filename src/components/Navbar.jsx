@@ -747,7 +747,7 @@ export default function Navbar() {
                                                   setOpen(Open);
                                                 } else {
                                                   navigate(
-                                                    `/shop?page=1&category=${subcategory.id}`
+                                                    `/shop?page=1&category=${subcategory.id}&category_name=${encodeURIComponent(subcategory?.name)}`
                                                   );
                                                   setAccordion(!isOpen);
                                                   onClose();
@@ -765,7 +765,7 @@ export default function Navbar() {
                                               <AccordionIcon
                                                 onClick={() =>
                                                   navigate(
-                                                    `/shop?page=1&category=${subcategory.id}`
+                                                    `/shop?page=1&category=${subcategory.id}&category_name=${encodeURIComponent(subcategory?.name)}`
                                                   )
                                                 }
                                                 display={
@@ -798,7 +798,7 @@ export default function Navbar() {
                                                         key={i}
                                                         onClick={() => {
                                                           navigate(
-                                                            `/shop?page=1&category=${children.id}`
+                                                            `/shop?page=1&category=${children.id}&category_name=${encodeURIComponent(children?.name)}`
                                                           );
                                                           onClose();
                                                         }}
@@ -1134,7 +1134,7 @@ export default function Navbar() {
                             key={index}
                             onMouseEnter={() => handleShow1(section.children)}
                             onClick={() =>
-                              navigate(`/shop?category=${section.id}`)
+                              navigate(`/shop?category=${section.id}&category_name=${encodeURIComponent(section?.name)}`)
                             }
                             sx={{
                               "&:hover": {
@@ -1158,7 +1158,7 @@ export default function Navbar() {
                           fontSize={"14"}
                           key={subIndex}
                           onMouseEnter={()=>handleShowSubMenu(item.children)}
-                          onClick={() => navigate(`/shop?category=${item.id}`)}
+                          onClick={() => navigate(`/shop?category=${item.id}&category_name=${encodeURIComponent(item?.name)}`)}
                           sx={{
                             "&:hover": {
                               backgroundColor: "brand.500",
@@ -1175,7 +1175,7 @@ export default function Navbar() {
                         <MenuItem
                           fontSize={"14"}
                           key={nestedIndex}
-                          onClick={() => navigate(`/shop?category=${item.id}`)}
+                          onClick={() => navigate(`/shop?category=${item.id}&category_name=${encodeURIComponent(item?.name)}`)}
                           sx={{
                             "&:hover": {
                               backgroundColor: "brand.500",

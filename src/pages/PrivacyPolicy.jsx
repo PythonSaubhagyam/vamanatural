@@ -25,15 +25,15 @@ const PrivacyPolicy = () => {
             <br />
             This Privacy Policy describes the types of personal information we
             collect on the Suryan Organic website
-            (https://www.vamanatural.com//) further referenced as
+            (<b>https://www.vamanatural.com/</b>) further referenced as
             girgauveda.com, how we may use that information and with whom we may
             share it. Our Privacy Policy also describes the measures we take to
             protect the security of this information as well as how you can
             access, modify or delete your personal information at any time. It
             also explains how you can object to the processing of your personal
             information or to receiving communications about our products and
-            services. This Privacy Policy governs only information provided to
-            www.vamanatural.com. It does not govern any other information or
+            services. This Privacy Policy governs only information provided to{" "}
+             <b>www.vamanatural.com</b>. It does not govern any other information or
             communications that may have been collected in any other manner like
             promotions, personal contact programmer etc.
             <br />
@@ -47,7 +47,7 @@ const PrivacyPolicy = () => {
               Information We Collect:-
             </Text>
             <br />
-            In general, you can visit the www.vamanatural.com/without telling us
+            In general, you can visit the <b>www.vamanatural.com/</b>without telling us
             who you are or revealing any personally identifiable information.
             You can however, also register at our website which enables us to
             contact you by email or text messages on your mobile phone to inform
