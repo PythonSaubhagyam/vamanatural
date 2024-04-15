@@ -96,6 +96,7 @@ export default function CustomerAddressRow({ address, getDetails }) {
           borderDisplay={false}
           onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
+          showDelete={false}
         />
       </Flex>
     </Box>
