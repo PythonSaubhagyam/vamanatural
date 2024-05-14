@@ -1119,7 +1119,7 @@ export default function Navbar() {
                   </MenuButton>
                  <MenuList
                     as={Grid}
-                    width={500}
+                    width={800}
                     //height={400}
                     templateColumns="repeat(9, 1fr)"
                     onMouseLeave={handleClose1}
@@ -1285,6 +1285,16 @@ export default function Navbar() {
             >
               <FaApple fontSize={22} />
             </Link> */}
+            <Link
+                _hover={{ color: "text.500" }}
+                isExternal={true}
+                as={ReactRouterLink}
+                to={
+                  "https://apps.apple.com/in/app/vama/id6477996113"
+                }
+              >
+                <FaApple fontSize={22} />
+              </Link>
           </GridItem>
     
         </Grid>

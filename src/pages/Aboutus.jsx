@@ -3,7 +3,7 @@ import BreadCrumbCom from "../components/BreadCrumbCom";
 import Navbar from "../components/Navbar";
 import { Box, Container, VStack, Image, Text, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
-const Aboutus = () => {
+const AboutUs = () => {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const IsMobileView = searchParams.get("mobile") ?? "false";
@@ -33,7 +33,6 @@ const Aboutus = () => {
         </Text>
       </Container>
       <Container maxW={"container.xl"} mb={4} px={0} centerContent>
-        
         <VStack>
           <Image
             src={
@@ -85,18 +84,18 @@ const Aboutus = () => {
               "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/aboutus/section_icon+(1).png"
             }
           />
-         
-            <Heading
-              color="brand.500"
-              size="lg"
-              mx="auto"
-              align={"center"}
-              my={"5"}
-              pb={"10px"}
-            >
-              AVAILABLE AT
-            </Heading>
-         
+
+          <Heading
+            color="brand.500"
+            size="lg"
+            mx="auto"
+            align={"center"}
+            my={"5"}
+            pb={"10px"}
+          >
+            AVAILABLE AT
+          </Heading>
+
           <Container maxW={"container.xl"} mb={5} px={0} centerContent>
             <Image
               src={
@@ -117,4 +116,4 @@ const Aboutus = () => {
   );
 };
 
-export default Aboutus;
+export default AboutUs;

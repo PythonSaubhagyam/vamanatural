@@ -1,90 +1,90 @@
-import React from 'react'
+import React from "react";
 import {
-    Container,
-    Text,
-    Flex,
-    useMediaQuery,
-    Box,
-    Skeleton,
-    SkeletonText,
-    Grid,
-    GridItem,
-  } from "@chakra-ui/react";
-  import Slider from "react-slick";
-  import "slick-carousel/slick/slick.css";
-  import "slick-carousel/slick/slick-theme.css";
-  import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Import arrow icons
-  import ProductCardHome from './productCardHome';
-  const PrevArrow = (props) => {
-    const { onClick } = props;
-    return (
-      <Box
-        className="slick-arrow slick-prev"
-        onClick={onClick}
-        style={{ left: "40px" }}
-        zIndex={1}
-      >
-        <FaChevronLeft />
-      </Box>
-    );
-  };
-  
-  // Custom arrow component for next button
-  const NextArrow = (props) => {
-    const { onClick } = props;
-    return (
-      <Box
-        className="slick-arrow slick-next"
-        onClick={onClick}
-        style={{ right: "40px" }}
-        zIndex={1}
-      >
-        <FaChevronRight />
-      </Box>
-    );
-  };
+  Container,
+  Text,
+  Flex,
+  useMediaQuery,
+  Box,
+  Skeleton,
+  SkeletonText,
+  Grid,
+  GridItem,
+} from "@chakra-ui/react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Import arrow icons
+import ProductCardHome from "./ProductCardHome";
+const PrevArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <Box
+      className="slick-arrow slick-prev"
+      onClick={onClick}
+      style={{ left: "40px" }}
+      zIndex={1}
+    >
+      <FaChevronLeft />
+    </Box>
+  );
+};
+
+// Custom arrow component for next button
+const NextArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <Box
+      className="slick-arrow slick-next"
+      onClick={onClick}
+      style={{ right: "40px" }}
+      zIndex={1}
+    >
+      <FaChevronRight />
+    </Box>
+  );
+};
 
 const ProductListSectionHome = ({ title, products, loading, type }) => {
-    const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
-    const settings = {
-      dots: false,
-      infinite: true,
-      speed: 500,
-      slidesToShow: isLargerThan768 ? 4 : 1,
-      slidesToScroll: 4,
-      prevArrow: <PrevArrow />,
-      nextArrow: <NextArrow />,
-      centerMode: true,
-      centerPadding: "5%",
-      responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 3,
-            centerMode: true,
-            // centerPadding: "20%",
-          },
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: isLargerThan768 ? 4 : 1,
+    slidesToScroll: 4,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
+    centerMode: true,
+    centerPadding: "5%",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          centerMode: true,
+          // centerPadding: "20%",
         },
-        {
-          breakpoint: 768,
-          settings: {
-            slidesToShow: 2,
-            centerMode: true,
-            // centerPadding: "20%",
-          },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          centerMode: true,
+          // centerPadding: "20%",
         },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1,
-            centerMode: true,
-            // centerPadding: "20%",
-          },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          centerMode: true,
+          // centerPadding: "20%",
         },
-      ],
-    };
-  
+      },
+    ],
+  };
+
   return (
     <>
       <Container maxW={"container.xl"} px={0} pt={4} pb={6}>
@@ -129,8 +129,7 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
             templateColumns={{
               base: "repeat(1, 1fr)",
               md: "repeat(3, 1fr)",
-              xl:"repeat(5, 1fr)"
-             
+              xl: "repeat(5, 1fr)",
             }}
             //justify={ "start"}
             justify="center"
@@ -173,7 +172,7 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
         )}
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default ProductListSectionHome
+export default ProductListSectionHome;
