@@ -64,14 +64,20 @@ function Blog() {
           objectFit={"cover"}
           objectPosition={"center"}
           mb={8}
+          display={"block"}
+          m={"auto"}
+          p={8}
+          maxWidth="100%"
         />
         <Flex
-          gap={10}
+          gap={16}
           justify="space-between"
           pb={6}
           borderBottom={"1px"}
           borderColor="gray.300"
           direction={{ base: "column", md: "row" }}
+          textAlign="center"
+          justifyContent="center"
         >
           <Box
             w={{ base: "100%", lg: "70%" }}
@@ -83,7 +89,7 @@ function Blog() {
               __html: dompurify.sanitize(blogData?.content),
             }}
           />
-          <Flex direction={"column"} gap={10}>
+          <Flex direction={"column"} gap={16}>
             <Box borderLeft={"1px"} borderColor={"brand.900"} p={3}>
               <Image
                 src={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/suryan organic inline.png"}

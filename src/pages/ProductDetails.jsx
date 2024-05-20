@@ -439,8 +439,8 @@ export default function ProductDetails() {
             <Box pr={10} mx={8}>
               <Skeleton isLoaded={!loading}>
                 <Box
-                  whiteSpace={"pre-line"}
-                  lineHeight={1.5}
+                  //whiteSpace={"pre-line"}
+                  lineHeight={1.8}
                   textAlign="justify"
                   dangerouslySetInnerHTML={{
                     // __html: dompurify.sanitize(productData?.description),
