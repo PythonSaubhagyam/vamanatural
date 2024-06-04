@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import Carousel from "../components/Carousel";
 import CarouselWithLinks from "../components/CarouselWithLinks";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-
+import ScrollToTop from "../components/ScrollToTop";
 import ProductListSectionHome from "../components/ProductListSectionHome";
 import {
   Container,
@@ -36,6 +36,20 @@ import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import { useNavigate, NavLink as RouterLink } from "react-router-dom";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import Testimonials from "../components/testimonials";
+
+const productItems = [
+  {
+    id: 8673,
+    imageSrc:
+      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/new_arri/Sunscreen+Lotion.jpg",
+  },
+
+  {
+    id: 8661,
+    imageSrc:
+      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/new_arri/Almond+Oats.jpg",
+  },
+]
 
 const productCategory = [
   {
@@ -238,6 +252,49 @@ export default function Home() {
           </Button>
         </Box>
       </VStack>
+      <Container maxW={"container.xl"} mb={5} centerContent>
+        <LazyLoadImage
+          src={
+            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/home/new-arrival.jpg"
+          }
+          alt=""
+          style={{
+            opacity: 1,
+            transition: "opacity 0.7s", // Note the corrected syntax here
+          }}
+        />
+        <Grid
+          templateColumns={{
+            base: "repeat(1, 1fr)",
+            md: "repeat(2, 1fr)",
+          }}
+          gap={10}
+          my={6}
+          px={15}
+        >
+          {productItems?.map((product) => (
+            <GridItem
+              key={product.id}
+              onClick={() => {
+                if (product.id) {
+                  navigate(`/products/${product.id}`);
+                }
+              }}
+              cursor={product.id ? "pointer" : "default"}
+            >
+              <LazyLoadImage
+                src={product.imageSrc}
+                style={{
+                  opacity: 1,
+                  transition: "opacity 0.7s",
+                  width: "22rem",
+                  
+                }}
+              />
+            </GridItem>
+          ))}
+        </Grid>
+      </Container>
       <Container mb={5} px={0} maxW={"container.xl"} centerContent>
         <LazyLoadImage
           src={require("../assets/home/Vamacertificate.jpg")}
@@ -567,9 +624,9 @@ export default function Home() {
           />
         </Container>
       </Container>
+      <ScrollToTop/>
       <Footer />
-      {/* </>
-      )} */}
+      
     </>
   );
 }

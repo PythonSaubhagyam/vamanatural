@@ -12,6 +12,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 // import { useLocation } from "react-router-dom";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function TermsAndConditions() {
   // let { search } = useLocation();
@@ -125,6 +126,7 @@ export default function TermsAndConditions() {
           </ListItem>
         </UnorderedList>
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

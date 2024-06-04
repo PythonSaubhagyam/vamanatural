@@ -10,6 +10,7 @@ import {
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import ScrollToTop from "../components/ScrollToTop";
 
 const Appreciation = () => {
   return (
@@ -97,6 +98,7 @@ const Appreciation = () => {
           <Image src={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/appreciation/ap6.jpeg"} alt="Appreciation" />
         </SimpleGrid>
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

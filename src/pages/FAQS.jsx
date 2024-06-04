@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import Accordion from "../components/Accordion";
 import { Container, Box, Text,Image } from "@chakra-ui/react";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function FAQS() {
   const generalInformationData = [
@@ -273,6 +274,7 @@ export default function FAQS() {
         </Box>
         <Accordion details={businessInquiryInformation} />
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

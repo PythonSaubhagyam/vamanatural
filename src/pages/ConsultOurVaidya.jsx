@@ -21,7 +21,7 @@ import { HiInformationCircle } from "react-icons/hi";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import { useState } from "react";
 import CarouselOurVaidhya from "../components/CarouselOurVaidhya";
-
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function ConsultOurVaidya() {
   const toast = useToast();
@@ -467,6 +467,7 @@ export default function ConsultOurVaidya() {
           }}
         />
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

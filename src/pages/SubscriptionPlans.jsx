@@ -27,6 +27,7 @@ import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { BiSupport } from "react-icons/bi";
 import checkLogin from "../utils/checkLogin";
 import Router from "../routes/routes";
+import ScrollToTop from "../components/ScrollToTop";
 
 const testimonials = [
   {
@@ -462,6 +463,7 @@ function SubscriptionPlans() {
           </Accordion>
         </Box>
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

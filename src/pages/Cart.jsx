@@ -38,6 +38,7 @@ import { Link, useNavigate } from "react-router-dom";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import checkLogin from "../utils/checkLogin";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function Cart() {
   const messageRef = useRef(null);
@@ -646,6 +647,7 @@ export default function Cart() {
           </>
         )}
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

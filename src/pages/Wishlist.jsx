@@ -28,6 +28,7 @@ import { Link } from "react-router-dom";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import Loader from "../components/Loader";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function Addtocart() {
   const [loading, setLoading] = useState(true);
@@ -171,6 +172,7 @@ export default function Addtocart() {
           </Flex>
         )}
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

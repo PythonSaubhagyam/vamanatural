@@ -11,6 +11,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function ShippingPolicy() {
   let { search } = useLocation();
@@ -101,6 +102,7 @@ export default function ShippingPolicy() {
           </ListItem>
         </UnorderedList>
       </Container>
+      <ScrollToTop/>
       {IsMobileView !== "true" && <Footer />}
     </>
   );

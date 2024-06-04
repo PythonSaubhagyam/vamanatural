@@ -16,6 +16,7 @@ import {
     AccordionPanel,
     useBreakpointValue,
 } from "@chakra-ui/react";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function Testimonials() {
     const width = useBreakpointValue({ base: "100%", lg: "890" });
@@ -843,6 +844,7 @@ export default function Testimonials() {
                     </AccordionItem>
                 </Accordion>
             </Container>
+            <ScrollToTop/>
             <Footer />
         </>
     );

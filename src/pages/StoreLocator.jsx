@@ -28,6 +28,7 @@ import Loader from "../components/Loader";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { FaStreetView } from "react-icons/fa";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function StoreLocator() {
   const [storeData, setStoreData] = useState([]);
@@ -384,7 +385,7 @@ export default function StoreLocator() {
           {/* </Container> */}
         </Flex>
       </Container>
-
+      <ScrollToTop/>
       <Footer />
     </>
   );

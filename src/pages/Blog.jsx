@@ -18,6 +18,7 @@ import {
 import { TimeIcon } from "@chakra-ui/icons";
 import { FaFacebookSquare, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import dompurify from "dompurify";
+import ScrollToTop from "../components/ScrollToTop";
 
 function Blog() {
   const [blogData, setBlogData] = useState(null);
@@ -161,6 +162,7 @@ function Blog() {
           </AspectRatio>
         </Box>
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

@@ -12,7 +12,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Carousel from "../components/Carousel";
 import BreadCrumbCom from "../components/BreadCrumbCom";
-
+import ScrollToTop from "../components/ScrollToTop";
 export default function OrganicLiving() {
     const banners = [
         {
@@ -437,7 +437,7 @@ export default function OrganicLiving() {
                     </Text>
                 </Container>
             </Container>
-
+            <ScrollToTop/>
             <Footer />
         </>
     );

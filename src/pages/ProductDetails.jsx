@@ -18,6 +18,19 @@ import {
   Icon,
   CardFooter,
   Center,
+  Link,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Input,
+  FormControl,
+  FormLabel,
+  Textarea,
 } from "@chakra-ui/react";
 import { AiFillHeart, AiFillStar } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
@@ -36,6 +49,8 @@ import dompurify from "dompurify";
 import Loader from "../components/Loader";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ProductImageSection from "../components/ProductImageSection";
+import StarRating from "../components/StarRatings";
+import ScrollToTop from "../components/ScrollToTop";
 
 function ButtonIncrement(props) {
   return (
@@ -71,6 +86,12 @@ function Display(props) {
 }
 
 export default function ProductDetails() {
+  const [formData, setFormData] = useState({
+    id: null,
+    name: null,
+    rating: 1,
+    review: null,
+  });
   const [productData, setProductData] = useState(null);
   const [avgRating, setAvgRating] = useState(null);
   const [nobenefits, setNoBenefits] = useState("");
@@ -102,7 +123,7 @@ export default function ProductDetails() {
       Authorization: `token ${loginInfo.token}`,
     };
   }
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { productId } = useParams();
   useEffect(() => {
     getProductDetails(); // eslint-disable-next-line
@@ -155,10 +176,65 @@ export default function ProductDetails() {
       });
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      // const { id, _, ...data } = formData;
+      formData.name = productData.name;
+      const loginInfo = checkLogin();
+      const response = await client.post(
+        `/rating_review/${productId}/`,
+        { ...formData },
+        {
+          headers: { Authorization: `token ${loginInfo.token}` },
+        }
+      );
+      if (response.data.status === true) {
+        getProductDetails();
+        toast({
+          title: response.data.message,
+          status: "success",
+          position: "top-right",
+          duration: 3000,
+          isClosable: true,
+        });
+        onClose();
+      } else {
+        toast({
+          title: response.data.message,
+          status: "error",
+          position: "top-right",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: error.response.data.message ?? "error",
+        status: "error",
+        position: "top-right",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }
   const handleWishlistChange = async (id) => {
     const wishlistResponse = await AddOrRemoveInWishlist(id);
     if (wishlistResponse.status === true) {
       setWished((isWished) => !isWished);
+    }
+  };
+
+  const handleWriteReview = () => {
+    if (loginInfo.isLoggedIn) {
+      onOpen();
+    } else {
+      // window.alert(
+      //   "Sorry! You are not allowed to review this product since you haven't login"
+      // );
+
+      navigate("/login");
     }
   };
   const scrollToElement = () => {
@@ -191,7 +267,7 @@ export default function ProductDetails() {
             </Box>
           </Container>
 
-          <Container maxW={"6xl"} mb={0} centerContent>
+          <Container maxW={"6xl"} mb={0} alignItems={"baseline"}>
             <Flex
               position={"relative"}
               direction={{ base: "column", sm: "row" }}
@@ -236,7 +312,7 @@ export default function ProductDetails() {
                       .join(" ")}
                   </Heading>
                   <Flex>
-                    <Badge
+                    {/* <Badge
                       as={Flex}
                       w="fit-content"
                       gap={1}
@@ -249,24 +325,7 @@ export default function ProductDetails() {
                     >
                       <Text fontSize={16}>{avgRating}</Text>
                       <Icon as={AiFillStar} marginTop={1} boxSize={4} />
-                    </Badge>
-                    {noOfReviews && noOfReviews !== 0 && (
-                      <Text
-                        as="span"
-                        color="gray.500"
-                        fontSize={"lg"}
-                        ms={2}
-                        align={"center"}
-                        onClick={scrollToElement}
-                        cursor={"pointer"}
-                      >
-                        {/* {noOfReviews} customer review */}
-                        {noOfReviews} Review
-                        {noOfReviews > 1 ? "s" : null}
-                      </Text>
-                    )}
-                  </Flex>
-                  <>
+                    </Badge> */}
                     {productData.brand_name &&
                       productData.brand_name.length > 0 && (
                         <Text
@@ -283,7 +342,7 @@ export default function ProductDetails() {
                     <Box
                       // as="ul"
                       whiteSpace={"pre-line"}
-                      marginLeft={5}
+                      marginLeft={2}
                       fontSize={{
                         base: "14px",
                         lg: "18px",
@@ -297,7 +356,82 @@ export default function ProductDetails() {
                           <li key={index}>{brand}</li>
                         ))}
                     </Box>
-                  </>
+                    {avgRating && <StarRating avgRating={avgRating} />}
+                  </Flex>
+                  <Flex>
+                    {/* {loginInfo.isLoggedIn &&( */}
+                    <Link
+                      pt={0.5}
+                      //pl={2}
+                      fontWeight={400}
+                      fontSize={"lg"}
+                      color={"dimgray"}
+                      //bgGradient="linear-gradient(to left, #096917, #197608)"
+                      //bgClip="text"
+                      textDecoration="none"
+                      _hover={{ color: "brand:500" }}
+                      //as={RouterLink}
+                      to={"/products"}
+                      // onClick={() => {
+                      //   // setFormData({
+                      //   //   ...formData,
+                      //   //   id: item.id,
+                      //   //   name: item.product_name,
+                      //   // });
+                      //   onOpen();
+                      // }}
+                      onClick={handleWriteReview}
+                    >
+                      Write a review
+                    </Link>
+                    {/* )} */}
+                    {noOfReviews && noOfReviews !== 0 && (
+                      <Text
+                        as="span"
+                        color="gray.500"
+                        fontSize={"lg"}
+                        pl={2}
+                        align={"center"}
+                        onClick={scrollToElement}
+                        cursor={"pointer"}
+                      >
+                        {/* {noOfReviews} customer review */}({noOfReviews}{" "}
+                        Review
+                        {noOfReviews > 1 ? "s" : null})
+                      </Text>
+                    )}
+
+                    {/* {productData.brand_name &&
+                      productData.brand_name.length > 0 && (
+                        <Text
+                          fontSize={{
+                            base: "14px",
+                            lg: "18px",
+                          }}
+                          color={"black"}
+                          fontWeight={"500"}
+                        >
+                          {productData.brand_name}
+                        </Text>
+                      )} 
+                    <Box
+                      // as="ul"
+                      whiteSpace={"pre-line"}
+                      marginLeft={5}
+                      fontSize={{
+                        base: "14px",
+                        lg: "18px",
+                      }}
+                      fontWeight={"380"}
+                      textAlign="justify"
+                      color={"black"}
+                    >
+                      {Array.isArray(productData.brand_name) &&
+                        productData.brand_name.map((brand, index) => (
+                          <li key={index}>{brand}</li>
+                        ))}
+                    </Box> */}
+                  </Flex>
 
                   <>
                     <Text
@@ -349,6 +483,7 @@ export default function ProductDetails() {
                       ₹{productData?.base_price}
                     </Text>
                   </Skeleton>
+
                   <SimpleGrid spacing={{ base: 8, md: 10 }} zIndex={0}>
                     {totalQuantity?.Quantity !== 0 && (
                       <ButtonGroup
@@ -372,7 +507,11 @@ export default function ProductDetails() {
                         />
                       </ButtonGroup>
                     )}
-                    <ButtonGroup>
+                    <ButtonGroup
+                      as={"Flex"}
+                      gap={{ base: 3 }}
+                      flexDirection={{ base: "column", md: "row" }}
+                    >
                       {totalQuantity?.Quantity === 0 ? (
                         <Button
                           id="addToCartButton"
@@ -440,8 +579,9 @@ export default function ProductDetails() {
               <Skeleton isLoaded={!loading}>
                 <Box
                   //whiteSpace={"pre-line"}
-                  lineHeight={1.8}
+                  lineHeight={1.9}
                   textAlign="justify"
+                  mt={1}
                   dangerouslySetInnerHTML={{
                     // __html: dompurify.sanitize(productData?.description),
                     __html: productData?.description,
@@ -459,7 +599,7 @@ export default function ProductDetails() {
                 justifyContent={{ base: "center", lg: "start" }}
                 px={0}
               >
-                <Box>
+                <Box width={"container.lg"} mt={7}>
                   <Text
                     fontSize={{ base: "xl", sm: "2xl" }}
                     bgColor={"bg.100"}
@@ -490,9 +630,9 @@ export default function ProductDetails() {
                                 count={5}
                                 value={review.rating}
                                 edit={false}
-                                size={24}
+                                size={28}
                                 color1={"black"}
-                                color2={"#D4AF37"}
+                                color2={"#ffc107"}
                               />
                             </CardBody>
                             <CardFooter pt={0} pb={4}>
@@ -547,7 +687,63 @@ export default function ProductDetails() {
               type={"carousal"}
             />
           )}
+          <Modal
+            size={"xl"}
+            closeOnOverlayClick={false}
+            isCentered={true}
+            isOpen={isOpen}
+            onClose={onClose}
+          >
+            <ModalOverlay
+              bg="blackAlpha.300"
+              backdropFilter="blur(2px) hue-rotate(90deg)"
+            />
+            <ModalContent>
+              <form onSubmit={handleSubmit}>
+                <ModalHeader fontWeight={600}>
+                  Write Review for {productData.name}
+                </ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Input type="hidden" />
+                  <FormControl isRequired mb={4}>
+                    <FormLabel>Ratings</FormLabel>
+                    <ReactStars
+                      count={5}
+                      initialValue={4}
+                      value={formData.rating}
+                      onChange={(newRating) =>
+                        setFormData({ ...formData, rating: newRating })
+                      }
+                      size={28}
+                      half={false}
+                      color1={"black"}
+                      color2={"#ffc107"}
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Write review</FormLabel>
+                    <Textarea
+                      rows={4}
+                      onChange={(e) =>
+                        setFormData({ ...formData, review: e.target.value })
+                      }
+                    />
+                  </FormControl>
+                </ModalBody>
 
+                <ModalFooter>
+                  <Button colorScheme="brand" type="submit">
+                    Submit
+                  </Button>
+                  <Button variant="ghost" ms={3} onClick={onClose}>
+                    Close
+                  </Button>
+                </ModalFooter>
+              </form>
+            </ModalContent>
+          </Modal>
+          <ScrollToTop />
           {/* </Flex> */}
         </>
       )}
