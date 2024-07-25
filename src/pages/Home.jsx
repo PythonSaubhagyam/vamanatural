@@ -39,15 +39,14 @@ import Testimonials from "../components/testimonials";
 
 const productItems = [
   {
-    id: 8673,
+    id: 8663,
     imageSrc:
-      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/new_arri/Sunscreen+Lotion.jpg",
+      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/imgpsh_fullsize_anim_sose_website.jpg",
   },
-
   {
-    id: 8661,
+    id: 8859,
     imageSrc:
-      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/new_arri/Almond+Oats.jpg",
+      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/imgpsh_fullsize_anim_sose_image.jpg",
   },
 ]
 
@@ -287,7 +286,7 @@ export default function Home() {
                 style={{
                   opacity: 1,
                   transition: "opacity 0.7s",
-                  width: "22rem",
+                 
                   
                 }}
               />
