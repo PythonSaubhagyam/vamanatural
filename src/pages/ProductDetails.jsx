@@ -363,13 +363,11 @@ export default function ProductDetails() {
                     <Link
                       pt={0.5}
                       //pl={2}
-                      fontWeight={400}
+                      fontWeight={500}
                       fontSize={"lg"}
-                      color={"dimgray"}
-                      //bgGradient="linear-gradient(to left, #096917, #197608)"
-                      //bgClip="text"
+                      color={"brand.500"}
                       textDecoration="none"
-                      _hover={{ color: "brand:500" }}
+                      _hover={{ color: "brand.500" }}
                       //as={RouterLink}
                       to={"/products"}
                       // onClick={() => {

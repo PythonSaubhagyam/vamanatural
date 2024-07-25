@@ -64,12 +64,14 @@ export default function ShopProductCard({
                     alt="Best Seller"
                     height={"4rem"}
                     width={"4rem"}
+                    ml={"-2px"}
+                    mt={"-11px"}
                   />
                 )}
                 {(tag === "Sugar Free" || tag === "New Products") && (
                   <Flex
                     justifyContent={"space-between"}
-                    align={"center"}
+                    align={"baseline"}
                     gap={1}
                   >
                     <Badge

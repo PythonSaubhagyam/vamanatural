@@ -53,7 +53,7 @@ function ProductImageSection({ images }) {
           </Grid>
         </Box>
         <ReactImageZoom
-          width={340}
+          width={400}
           zoomWidth={500}
           img={images?.[selectedImageIndex]}
         />

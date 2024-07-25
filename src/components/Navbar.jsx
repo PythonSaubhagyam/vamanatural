@@ -64,16 +64,21 @@ import { TfiYoutube } from "react-icons/tfi";
 import { FaApple, FaFacebookF, FaGooglePlay, FaWhatsapp } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
 import { debounce } from "lodash";
+import CartEmitter from "./EventEmitter";
 
 const Links = [
-  // {
-  //   name: "Home",
-  //   location: "/",
-  // },
-  // {
-  //   name: "Shop",
-  //   location: "/shop?page=1",
-  // },
+  {
+    name: "SOSE Elite",
+    location: "/subscription-plans",
+  },
+  {
+    name: "Gift Voucher",
+    location: "/gift-voucher",
+  },
+  {
+    name: "Consult Our Vaidya",
+    location: "/consult-our-vaidya",
+  },
   {
     name: "About us",
     location: "/about-us",
@@ -82,29 +87,40 @@ const Links = [
     name: "Inspire & Support",
     location: "/inspire-and-support",
   },
-  // {
-  //   name: "Organic Living",
-  //   location: "/organic-living",
-  // },
-  {
-    name: "Consult Our Vaidya",
-    location: "/consult-our-vaidya",
-  },
-
+  //  {
+  //    name: "Organic Living",
+  //    location: "/organic-living",
+  //  },
+  //  {
+  //    name: "Exports",
+  //    location: "/exports",
+  //  },
+  //  {
+  //    name: "B2B",
+  //    location: "/bussiness",
+  //  },
+  //  {
+  //    name: "Franchise",
+  //    location: "/franchise",
+  //  },
   {
     name: "Store Locator",
     location: "/store-locator",
   },
-  { name: "Blogs", location: "/blogs?page=1" },
+  {
+    name: "Blogs",
+    location: "/blogs?page=1",
+  },
   {
     name: "Contact Us",
     location: "/contact-us",
   },
- 
-  // {
-  //   name: "Gifting",
-  //   location: "/shop?gift=true",
-  // },
+  //   // { name: "Natural Products", location: "/shop" },
+
+  //   // {
+  //   //   name: "Gifting",
+  //   //   location: "/shop?gift=true",
+  //   // },
 ];
 
 
@@ -375,6 +391,8 @@ export default function Navbar() {
   }, []);
   const Logout = () => {
     localStorage.clear();
+    CartEmitter.emit("updateCartCount", 0);
+    CartEmitter.emit("updateProductTotal",0);
     toast({
       title: "Logged out successfully!",
       status: "success",
@@ -1090,7 +1108,7 @@ export default function Navbar() {
           >
             <Flex
               as={"nav"}
-              gap={{ md: 6, lg: 4, xl: 5 }}
+              gap={{ md: 6, lg: 4, xl: 4 }}
               display={{ base: "flex", lg: "flex" }}
               fontSize={{ lg: 11, xl: 14, md: 9 }}
               alignItems={"center"}

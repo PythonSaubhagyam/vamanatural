@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import CartRow from "../components/cartRow";
 import ShopProductCard from "../components/ShopProductCard";
+import ScrollToTop from "../components/ScrollToTop";
 import {
   Container,
   Flex,
@@ -38,7 +39,6 @@ import { Link, useNavigate } from "react-router-dom";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import checkLogin from "../utils/checkLogin";
 import BreadCrumbCom from "../components/BreadCrumbCom";
-import ScrollToTop from "../components/ScrollToTop";
 
 export default function Cart() {
   const messageRef = useRef(null);
@@ -85,6 +85,7 @@ export default function Cart() {
       setTaxes(response.data.data.gst_amt);
       setGrandTotal(response.data.data.final_total);
       localStorage.setItem("cart_counter", response.data.data.cart_counter);
+      localStorage.setItem("product_total", response.data.data.final_total);
       if (
         loginInfo.isLoggedIn === true &&
         response.data.data.cart_counter > 0
@@ -150,6 +151,7 @@ export default function Cart() {
       setDiscount(response.data.discount_amt);
       setGrandTotal(response.data.final_total);
       localStorage.setItem("cart_counter", response.data.cart_counter);
+      localStorage.setItem("product_total", response.data.final_total);
     } else
       toast({
         title: response.data.error,
@@ -158,6 +160,8 @@ export default function Cart() {
         duration: 4000,
         isClosable: true,
       });
+      setVoucherCode("")
+      setVoucherApplied(false);
   };
 
   async function handleQuantityChange(
@@ -193,6 +197,8 @@ export default function Cart() {
             isClosable: true,
           });
         }
+        setVoucherCode("")
+        setVoucherApplied(false);
         getCart();
       } else {
         toast({
@@ -356,7 +362,7 @@ export default function Cart() {
                 </Tr>
               </Tbody>
             </Table>
-            <Checkbox
+            {/* <Checkbox
               colorScheme="brand"
               ps={6}
               pt={4}
@@ -369,10 +375,10 @@ export default function Cart() {
               <Text fontSize="sm">
                 Send as a gift. <br /> Include custom gift message
               </Text>
-            </Checkbox>
+            </Checkbox> */}
             {localStorage.getItem("token") && (
               <form onSubmit={checkVoucherCodeAvailability} display={{}}>
-                {/* <FormControl as={Flex} direction="column" my={6} px={4}>
+                <FormControl as={Flex} direction="column" my={6} px={4}>
                   <FormLabel fontSize="sm" fontWeight={600}>
                     Have a voucher code?
                   </FormLabel>
@@ -424,7 +430,7 @@ export default function Cart() {
                       Apply code
                     </Button>
                   )}
-                </FormControl> */}
+                </FormControl>
               </form>
             )}
 
@@ -647,6 +653,7 @@ export default function Cart() {
           </>
         )}
       </Container>
+
       <ScrollToTop/>
       <Footer />
     </>

@@ -3,6 +3,7 @@ import client from "../setup/axiosClient";
 import checkLogin from "./checkLogin";
 import { createStandaloneToast } from "@chakra-ui/react";
 import CheckOrSetUDID from "./checkOrSetUDID";
+import CartEmitter from "../components/EventEmitter";
 
 export default async function AddToCart(product_id, quantity) {
   const { ToastContainer, toast } = createStandaloneToast();
@@ -29,6 +30,8 @@ export default async function AddToCart(product_id, quantity) {
       }
     );
     if (response.data.status === true) {
+      CartEmitter.emit("updateProductTotal", true);
+      localStorage.setItem("cart_counter", response.data.cart_counter);
       toast({
         title: "Product added to cart!",
         status: "success",
@@ -36,12 +39,6 @@ export default async function AddToCart(product_id, quantity) {
         duration: 3000,
         isClosable: true,
       });
-      localStorage.setItem("cart_counter", response.data.cart_counter);
-      // if (window.location.pathname === "/cart") {
-      //   window.location.reload();
-      // } else {
-      //   // Router.navigate("/cart");
-      // }
     } else {
       toast({
         description:
