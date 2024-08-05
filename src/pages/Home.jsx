@@ -48,6 +48,11 @@ const productItems = [
     imageSrc:
       "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/imgpsh_fullsize_anim_sose_image.jpg",
   },
+  {
+    id: 8924,
+    imageSrc:
+      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/baby_cream.jpg",
+  },
 ]
 
 const productCategory = [
@@ -265,7 +270,7 @@ export default function Home() {
         <Grid
           templateColumns={{
             base: "repeat(1, 1fr)",
-            md: "repeat(2, 1fr)",
+            md: "repeat(3, 1fr)",
           }}
           gap={10}
           my={6}
