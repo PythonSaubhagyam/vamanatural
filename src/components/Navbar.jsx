@@ -1080,7 +1080,7 @@ export default function Navbar() {
                       color: "brand.900",
                     }}
                     fontWeight={500}
-                    fontSize={{ md: "16px" }}
+                    fontSize={{ md: "14px" }}
                     onClick={() => navigate("/login")}
                   >
                     Login
@@ -1093,7 +1093,7 @@ export default function Navbar() {
                       color: "brand.900",
                     }}
                     fontWeight={500}
-                    fontSize={{ md: "16px" }}
+                    fontSize={{ md: "14px" }}
                   >
                     Sign up
                   </Link>

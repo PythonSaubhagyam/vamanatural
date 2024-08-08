@@ -196,17 +196,22 @@ export default function Home() {
           <Carousel banners={banners} />
         )}
       </Container>
-      <VStack background={"#fff6f0"} p={6}>
+      <VStack background={"#fff6f0"} 
+       p={{ base: 4, md: 6, lg: 8 }}
+       spacing={{ base: 6, md: 8 }} 
+       maxW="container.xl"
+       mx="auto" 
+       >
         <Box
           fontWeight={"600"}
           color="brand.500"
           fontSize={{md:30,base:24}}
-          alignContent={"flex-start"}
+          // alignContent={"flex-start"}
         >
           Our Mission
         </Box>
 
-        <Box maxW={"6xl"} textAlign={"center"}>
+        <Box maxW={"6xl"} textAlign={"center"} px={{ base: 4, md: 6 }} >
           VAMA Herbal & Natural draw inspiration from Bansi Gir Gaushala, and
           its work towards reviving Bharat’s ancient “GauSanskriti”.
           <br />

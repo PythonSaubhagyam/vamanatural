@@ -78,7 +78,7 @@ export default function Carousel({
         <>
       <IconButton
         aria-label="left-arrow"
-        icon={<ChevronLeftIcon style={{ fontSize: 34 }} />}
+        icon={<ChevronLeftIcon style={{ fontSize: 30 }} />}
         background={transparentBtn ? "#ffffff00" : "#434242"}
         color="#fff"
         size={{ base: "sm", md: "md" }}
@@ -87,7 +87,7 @@ export default function Carousel({
         top={"50%"}
         transform={"translate(50%, -50%)"}
         zIndex={2}
-        display={{ base: "none", md: "block" }}
+        display={{ base: "block", md: "block" }}
         onClick={() => slider?.slickPrev()}
         _hover={"background:#ffffff00"}
         borderRadius={"40px"}
@@ -96,7 +96,7 @@ export default function Carousel({
       {/* Right Icon */}
       <IconButton
         aria-label="right-arrow"
-        icon={<ChevronRightIcon style={{ fontSize: 34 }} />}
+        icon={<ChevronRightIcon style={{ fontSize: 30 }} />}
         background={transparentBtn ? "#ffffff00" : "#434242"}
         color="#fff"
         size={{ base: "sm", md: "md" }}
@@ -105,7 +105,7 @@ export default function Carousel({
         top={"50%"}
         transform={"translate(-50%, -50%)"}
         zIndex={2}
-        display={{ base: "none", md: "block" }}
+        display={{ base: "block", md: "block" }}
         onClick={() => slider?.slickNext()}
         _hover={"background:#ffffff00 "}
         borderRadius={"40px"}

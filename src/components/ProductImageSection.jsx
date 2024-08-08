@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, Flex, Grid, GridItem, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Image,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import ReactImageZoom from "react-image-zoom";
 
 function ImageContainer({ children }) {
@@ -18,7 +25,7 @@ function ProductImageSection({ images }) {
   if (!images) {
     return <ImageContainer />;
   }
-
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
   return (
     <>
       <Flex>
@@ -26,14 +33,14 @@ function ProductImageSection({ images }) {
           <Grid
             gridTemplateRows="repeat(3, 1fr)"
             gap={2}
-            display={"grid"}
+            display={"Grid"}
             marginRight={2}
           >
             {images?.map((url, index) => (
               <GridItem key={index}>
                 <Image
                   src={url}
-                  //   height={{ base: "60px", md: "60px" }}
+                  //height={{ base: "60px", md: "60px" }}
                   maxW={{ base: "60px", md: "60px" }}
                   minW={{ base: "60px", md: "60px" }}
                   position="relative"
@@ -52,11 +59,18 @@ function ProductImageSection({ images }) {
             ))}
           </Grid>
         </Box>
-        <ReactImageZoom
-          width={400}
-          zoomWidth={500}
-          img={images?.[selectedImageIndex]}
-        />
+        {!isMobile ? (
+          <ReactImageZoom
+            width={500}
+            zoomWidth={500}
+            img={images?.[selectedImageIndex]}
+            //img={require("../assets/pulav_front.jpg")}
+          />
+        ) : (
+          <>
+            <Image width={"300px"} src={images?.[selectedImageIndex]} />
+          </>
+        )}
       </Flex>
     </>
   );

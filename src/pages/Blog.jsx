@@ -45,11 +45,11 @@ function Blog() {
   return (
     <>
       <Navbar />
-      <Container maxW="container.xl" my={10}>
-        <Heading fontWeight={300} lineHeight={1.25} mb={4}>
+      <Container maxW="6xl" my={10}>
+        <Heading fontWeight={300} lineHeight={1.25} mb={4} ml={9}>
           {blogData?.title}
         </Heading>
-        <Text color="gray.500" fontSize={"sm"}>
+        <Text color="gray.500" fontSize={"sm"} ml={9}>
           <TimeIcon me={2} />{" "}
           {blogData?.published_at &&
             new Intl.DateTimeFormat("en-CA", {
@@ -59,8 +59,8 @@ function Blog() {
         </Text>
         <Image
           src={blogData?.banner_url}
-          // w="100%"
-          // maxH="400px"
+           w="100%"
+          //  maxH="400px"
           my={3}
           objectFit={"cover"}
           objectPosition={"center"}
@@ -91,11 +91,11 @@ function Blog() {
             }}
           />
           <Flex direction={"column"} gap={16}>
-            <Box borderLeft={"1px"} borderColor={"brand.900"} p={3}>
+            <Box borderLeft={"1px"} borderColor={"brand.900"} p={3} >
               <Image
                 src={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/suryan organic inline.png"}
               />
-              <Text fontSize={"xs"} color="gray.500" mt={2}>
+              <Text fontSize={"xs"} color="gray.500" mt={2}> 
                 {blogData?.published_at &&
                   new Intl.DateTimeFormat("en-CA", {
                     dateStyle: "long",
@@ -109,28 +109,35 @@ function Blog() {
                 borderBottom={"1px"}
                 borderColor="gray.300"
                 pb={4}
+              
               >
                 SHARE THIS POST
               </Heading>
-              <ButtonGroup p={4} gap={2}>
-                <IconButton
-                  isRound
-                  border="1px"
-                  borderColor={"gray.300"}
-                  icon={<Icon as={FaFacebookSquare} color="facebook.600" />}
-                />
-                <IconButton
-                  isRound
-                  border="1px"
-                  borderColor={"gray.300"}
-                  icon={<Icon as={FaTwitter} color="twitter.500" />}
-                />
-                <IconButton
-                  isRound
-                  border="1px"
-                  borderColor={"gray.300"}
-                  icon={<Icon as={FaLinkedinIn} color="linkedin.900" />}
-                />
+               <ButtonGroup p={4} gap={2}>
+                <a href="https://www.facebook.com/soseorganic/" target="_blank" rel="noopener noreferrer">
+                  <IconButton
+                    isRound
+                    border="1px"
+                    borderColor="gray.300"
+                    icon={<Icon as={FaFacebookSquare} color="facebook.600" />}
+                  />
+                </a>
+                <a href="" target="_blank" rel="noopener noreferrer">
+                  <IconButton
+                    isRound
+                    border="1px"
+                    borderColor="gray.300"
+                    icon={<Icon as={FaTwitter} color="twitter.500" />}
+                  />
+                </a>
+                <a href="" target="_blank" rel="noopener noreferrer">
+                  <IconButton
+                    isRound
+                    border="1px"
+                    borderColor="gray.300"
+                    icon={<Icon as={FaLinkedinIn} color="linkedin.900" />}
+                  />
+                </a>
               </ButtonGroup>
             </Box>
           </Flex>

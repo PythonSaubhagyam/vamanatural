@@ -14,6 +14,8 @@ import {
   useToast,
   Center,
   Box,
+  SimpleGrid,
+  Grid,
 } from "@chakra-ui/react";
 import ScrollToTop from "../components/ScrollToTop";
 import { useEffect, useRef, useState } from "react";
@@ -23,7 +25,11 @@ import client from "../setup/axiosClient";
 import { AiFillGift } from "react-icons/ai";
 import checkLogin from "../utils/checkLogin";
 import Loader from "../components/Loader";
+import { useLocation } from "react-router-dom";
 export default function GiftVoucher() {
+  let { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const IsMobileView = searchParams.get("mobile") ?? "false";
   const txnId = useRef(new Date().getTime().toString());
   const defaultValue = {
     amount: null,
@@ -156,152 +162,107 @@ export default function GiftVoucher() {
   };
   return (
     <>
-      <Navbar />
+      {IsMobileView !== "true" && <Navbar />}
       <Card m={3}>
         <CardBody>
           <Container
             maxW="container.xl"
-            p={10}
+            p={5}
             my={10}
             border="1px"
             borderColor={"gray.300"}
             borderRadius="lg"
             boxShadow={"base"}
           >
-            <Flex justify={"space-between"} direction="row">
+            <Flex
+              justify={"space-between"}
+              direction={{ base: "column", md: "row" }}
+            >
               <Box as="form" onSubmit={handleSubmit}>
+                <Grid
+                  // {Width < 400 ? 'block' : 'flex'}
+                  // {Width < 400 ? 'start' : 'center'}
+                  width={{ base: "100%", md: "0%" }}
+                  mb={3}
+                >
+                  {/*  // width="50%"
+                width={{ base: "50%", md: "50%" }}
+                mt={3}  */}
+                  <img
+                    src={
+                      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/giftbanner.jpg"
+                    }
+                    alt=""
+                    // style={{ width: "100%", height: "auto" }}
+                  />
+                </Grid>
                 <Flex
                   justify={"space-between"}
                   direction="column"
-                  width={"90%"}
+                  width={{ md: "90%", base: "90%" }}
                 >
-                  <Text fontSize="3xl" as="b">
+                  <Text fontSize={{ md: "3xl",  base: "xl" }} as="b">
                     SOSE Gift Voucher
                   </Text>
-                  {width > 600 ? (
-                    <FormControl pt={5}>
-                      <FormLabel fontSize="sm">Choose an amount</FormLabel>
-                      <Stack direction={"row"} align="center">
-                        <Button
-                          colorScheme="green"
-                          variant={amount === 100 ? "solid" : "outline"}
-                          onClick={() => priceHandler(100)}
-                          fontSize={20}
-                        >
-                          <AiFillGift
-                            fontSize={35}
-                            style={{ marginRight: "6px" }}
-                          />{" "}
-                          ₹100
-                        </Button>
-                        <Button
-                          colorScheme="green"
-                          variant={amount === 500 ? "solid" : "outline"}
-                          onClick={() => priceHandler(500)}
-                          fontSize={20}
-                        >
-                          <AiFillGift
-                            fontSize={35}
-                            style={{ marginRight: "6px" }}
-                          />{" "}
-                          ₹500
-                        </Button>
-                        <Button
-                          colorScheme="green"
-                          variant={amount === 1000 ? "solid" : "outline"}
-                          onClick={() => priceHandler(1000)}
-                          fontSize={20}
-                        >
-                          <AiFillGift
-                            fontSize={35}
-                            style={{ marginRight: "6px" }}
-                          />{" "}
-                          ₹1000
-                        </Button>
-                        <Button
-                          colorScheme="green"
-                          variant={amount === 2000 ? "solid" : "outline"}
-                          onClick={() => priceHandler(2000)}
-                          fontSize={20}
-                        >
-                          <AiFillGift
-                            fontSize={35}
-                            style={{ marginRight: "6px" }}
-                          />{" "}
-                          ₹2000
-                        </Button>
-                      </Stack>
-                    </FormControl>
-                  ) : (
-                    <FormControl pt={5}>
-                      <FormLabel fontSize="sm">Choose an amount</FormLabel>
-                      <Stack
-                        mt={2}
-                        direction={width > 400 ? "row" : "column"}
-                        spacing={2}
-                        wrap={width > 800 ? "wrap" : "nowrap"}
-                        align="center"
+                  {/* {width > 600 ? ( */}
+                  <FormControl pt={5}>
+                    <FormLabel fontSize="sm">Choose an amount</FormLabel>
+                    <SimpleGrid columns={{ base: 2, md: 2, lg:4 }} spacing={3}>
+                      <Button
+                        colorScheme="green"
+                        variant={amount === 100 ? "solid" : "outline"}
+                        onClick={() => priceHandler(100)}
+                        fontSize={{ base: "14px", md: "18px"}}
+                        leftIcon={<AiFillGift fontSize={24} />}
+                         //w={{ base: 125, md: 120 }}
                       >
-                        <Button
-                          colorScheme="green"
-                          variant={amount === 100 ? "solid" : "outline"}
-                          onClick={() => priceHandler(100)}
-                          fontSize={width > 800 ? "20" : "12"}
-                        >
-                          <AiFillGift
-                            fontSize={30}
-                            style={{ marginRight: "6px" }}
-                          />{" "}
-                          ₹100
-                        </Button>
-                        <Button
-                          colorScheme="green"
-                          variant={amount === 500 ? "solid" : "outline"}
-                          onClick={() => priceHandler(500)}
-                          fontSize={width > 800 ? "20" : "12"}
-                        >
-                          <AiFillGift
-                            fontSize={30}
-                            style={{ marginRight: "6px" }}
-                          />{" "}
-                          ₹500
-                        </Button>
-                      </Stack>
-
-                      <Stack
-                        mt={2}
-                        direction={width > 400 ? "row" : "column"}
-                        spacing={2}
-                        wrap={width > 800 ? "wrap" : "nowrap"}
-                        align="center"
+                        ₹100
+                      </Button>
+                      <Button
+                        colorScheme="green"
+                        variant={amount === 500 ? "solid" : "outline"}
+                        onClick={() => priceHandler(500)}
+                        fontSize={{ base: "14px", md: "18px" }}
+                        leftIcon={<AiFillGift fontSize={24} />}
+                         //w={{ base: 125, md: 120 }}
                       >
-                        <Button
-                          colorScheme="green"
-                          variant={amount === 1000 ? "solid" : "outline"}
-                          onClick={() => priceHandler(1000)}
-                          fontSize={width > 800 ? "20" : "12"}
-                        >
-                          <AiFillGift
-                            fontSize={30}
+                        {/* <AiFillGift
+                            fontSize={35}
                             style={{ marginRight: "6px" }}
-                          />{" "}
-                          ₹1000
-                        </Button>
-                        <Button
-                          colorScheme="green"
-                          variant={amount === 2000 ? "solid" : "outline"}
-                          onClick={() => priceHandler(2000)}
-                          fontSize={width > 800 ? "20" : "12"}
-                        >
-                          <AiFillGift
-                            fontSize={30}
+                          />{" "} */}
+                        ₹500
+                      </Button>
+                      <Button
+                        colorScheme="green"
+                        variant={amount === 1000 ? "solid" : "outline"}
+                        onClick={() => priceHandler(1000)}
+                        fontSize={{ base: "14px", md: "18px" }}
+                        leftIcon={<AiFillGift fontSize={24} />}
+                         //w={{ base: 125, md: 120 }}
+                      >
+                        {/* <AiFillGift
+                            fontSize={35}
                             style={{ marginRight: "6px" }}
-                          />{" "}
-                          ₹2000
-                        </Button>
-                      </Stack>
-                    </FormControl>
-                  )}
+                          />{" "} */}
+                        ₹1000
+                      </Button>
+                      <Button
+                        colorScheme="green"
+                        variant={amount === 2000 ? "solid" : "outline"}
+                        onClick={() => priceHandler(2000)}
+                        fontSize={{ base: "14px", md: "18px" }}
+                        leftIcon={<AiFillGift fontSize={24} />}
+                         //w={{ base: 125, md: 120 }}
+                      
+                      >
+                        {/* <AiFillGift
+                            fontSize={35}
+                            style={{ marginRight: "6px" }}
+                          />{" "} */}
+                        ₹2000
+                      </Button>
+                    </SimpleGrid>
+                  </FormControl>
 
                   <FormControl>
                     <Input
@@ -419,21 +380,27 @@ export default function GiftVoucher() {
                   </Button>
                 </Flex>
               </Box>
-              <Card
-                width="50%"
+
+              <Grid
+                  display={{base:"none",md:"block"}}
+                // {Width < 400 ? 'start' : 'center'}
+                // width={{ base: "0%", md: "100%" }}
+                // style={{ height:"100%"}}
                 mt={3}
-                style={{ display: width > 800 ? "flex" : "none" }}
               >
+                {/*  // width="50%"
+                width={{ base: "50%", md: "50%" }}
+                mt={3}  */}
                 <img
                   src={
                     "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/giftbanner.jpg"
                   }
                   alt=""
-                  style={{ display: width > 800 ? "block" : "none" }}
+                  style={{ width: "100%",  objectFit: "cover" }}
                 />
-              </Card>
+              </Grid>
             </Flex>
-            <Card mt={12} boxShadow={"none"}>
+            <Card mt={12} boxShadow={"none"} mx={5}>
               <Text fontSize={16} as="b" mb={2}>
                 SOSE Gift Card Terms and Conditions
               </Text>
@@ -476,8 +443,8 @@ export default function GiftVoucher() {
           </Container>
         </CardBody>
       </Card>
-      <ScrollToTop/>
-      <Footer />
+      <ScrollToTop />
+      {IsMobileView !== "true" && <Footer />}
     </>
   );
 }
