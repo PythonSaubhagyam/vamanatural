@@ -1,4 +1,3 @@
-
 import {
   Container,
   Text,
@@ -140,7 +139,7 @@ export default function ProductListSection({ title, products, loading, type }) {
             direction={{ base: "column", md: "row" }}
             // wrap={"wrap"}
             wrap={{ md: "wrap", lg: "nowrap" }}
-            gap={6}
+            gap={3}
           >
             {loading === true ? (
               <>

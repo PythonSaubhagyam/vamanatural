@@ -12,10 +12,12 @@ import { Link, useNavigate } from "react-router-dom";
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
   return (
-    <Card
-      w={{ base: "100vw", sm: "xs"}}
+     <Card
+    //   w={{ base: "90vw", sm: "xs" }}
+     // w= {{ base: "80vw", lg: "18vw" }}
+     w= {{ base: "80vw", lg: "93%" }}
       //  maxW="container.xl"
-      //  mx="auto" 
+      //  mx="auto"
       border="1px"
       borderColor="brand.100"
       borderRadius={"lg"}
