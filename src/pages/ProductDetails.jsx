@@ -274,6 +274,8 @@ export default function ProductDetails() {
               gap={{ base: 8, md: 10 }}
               pt={{ base: 18, md: 10 }}
               pb={{ base: 18, md: 0 }}
+              alignItems={{ base: "center" }}
+      
             >
               <Box width={"50%"}>
                 <Skeleton isLoaded={!loading}>

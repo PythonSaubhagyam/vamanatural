@@ -1,178 +1,82 @@
+
 import {
-  Container,
-  Text,
-  Flex,
-  useMediaQuery,
+  Card,
+  CardBody,
+  Button,
+  CardFooter,
+  Heading,
+  Image,
   Box,
-  Skeleton,
-  SkeletonText,
-  Grid,
-  GridItem,
 } from "@chakra-ui/react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Import arrow icons
-import ProductCard from "./ProductCard";
+import { Link, useNavigate } from "react-router-dom";
 
-// Custom arrow component for previous button
-const PrevArrow = (props) => {
-  const { onClick } = props;
+export default function ProductCard({ product }) {
+  const navigate = useNavigate();
   return (
-    <Box
-      className="slick-arrow slick-prev"
-      onClick={onClick}
-      style={{ left: "40px" }}
-      zIndex={1}
+    <Card
+      //w={{ base: "80vw", sm: "3xs", lg: "18vw" }}
+      border="1px"
+      borderColor="brand.100"
+      borderRadius={"lg"}
+      onClick={() => {
+        window.location.href = `/products/${product.id}`;
+        // navigate(),
+        //   window.scrollTo({
+        //     top: 0,
+        //     left: 0,
+        //     behavior: "smooth",
+
+        //   });
+      }}
+      cursor={"pointer"}
     >
-      <FaChevronLeft />
-    </Box>
-  );
-};
-
-// Custom arrow component for next button
-const NextArrow = (props) => {
-  const { onClick } = props;
-  return (
-    <Box
-      className="slick-arrow slick-next"
-      onClick={onClick}
-      style={{ right: "40px" }}
-      zIndex={1}
-    >
-      <FaChevronRight />
-    </Box>
-  );
-};
-export default function ProductListSection({ title, products, loading, type }) {
-  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
-
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: isLargerThan768 ? 4 : 1,
-    slidesToScroll: 4,
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
-    centerMode: true,
-    centerPadding: "5%",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          centerMode: true,
-          // centerPadding: "20%",
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          centerMode: true,
-          // centerPadding: "20%",
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          centerMode: true,
-          // centerPadding: "20%",
-        },
-      },
-    ],
-  };
-
-  return (
-    <>
-      <Container maxW={"container.xl"} px={0} pt={4} pb={6}>
-        <Text
-          fontSize={{ base: "xl", sm: "2xl", xl: "3xl" }}
-          bgColor={"bg.500"}
-          px={{ base: 2, md: 8 }}
-          py={4}
-          mb={8}
-          textAlign={{ base: "center", md: "start" }}
-          fontWeight={500}
+      <CardBody backgroundColor={"white"} borderRadius="lg">
+        <Image
+          src={product.home_image ? product.home_image : product.image1}
+          alt={product.name}
+          borderRadius="lg"
+          boxSize="200px"
+          objectFit={"contain"}
+          mx="auto"
+        />
+      </CardBody>
+      <CardFooter
+        align={"center"}
+        py={3}
+        flexDirection="column"
+        backgroundColor={"bg.500"}
+        borderBottomRadius="lg"
+      >
+        <Box
+          h="80px"
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"center"}
         >
-          {title}
-        </Text>
-
-        {type === "carousal" && products.length > 4 ? (
-          <Slider {...settings}>
-            {loading === true
-              ? [0, 1, 2, 3, 4].map((index) => (
-                  <Box
-                    key={index}
-                    padding="6"
-                    boxShadow="lg"
-                    bg="white"
-                    w={{ base: "80vw", sm: "3xs", lg: "2xs" }}
-                  >
-                    <Skeleton width={150} mx={"auto"} height={150} />
-                    <SkeletonText
-                      my="4"
-                      noOfLines={1}
-                      spacing="4"
-                      skeletonHeight="2"
-                    />
-                    <Skeleton mx="auto" width={100} height={5} />
-                  </Box>
-                ))
-              : products?.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-          </Slider>
-        ) : (
-          <Grid
-            templateColumns={{
-              base: "repeat(1, 1fr)",
-              md: "repeat(3, 1fr)",
-              xl: "repeat(5, 1fr)",
-            }}
-            px={4}
-            // justify={ "start"}
-            justify="center"
-            align="center"
-            direction={{ base: "column", md: "row" }}
-            // wrap={"wrap"}
-            wrap={{ md: "wrap", lg: "nowrap" }}
-            gap={3}
+          <Heading
+            size="sm"
+            mb={3}
+            noOfLines={3}
+            fontWeight="500"
+            title={product.name}
           >
-            {loading === true ? (
-              <>
-                {[0, 1, 2, 3, 4].map(() => (
-                  <Box
-                    padding="6"
-                    boxShadow="lg"
-                    bg="white"
-                    w={{ base: "80vw", sm: "3xs", lg: "2xs" }}
-                  >
-                    <Skeleton width={150} mx={"auto"} height={150} />
-                    <SkeletonText
-                      my="4"
-                      noOfLines={1}
-                      spacing="4"
-                      skeletonHeight="2"
-                    />
-                    <Skeleton mx="auto" width={100} height={5} />
-                  </Box>
-                ))}
-              </>
-            ) : (
-              <>
-                {products?.map((product) => (
-                  <GridItem my={4}>
-                    <ProductCard key={product.id} product={product} />
-                  </GridItem>
-                ))}
-              </>
-            )}
-          </Grid>
-        )}
-      </Container>
-    </>
+            {product.name}
+          </Heading>
+        </Box>
+        <Button
+          as={Link}
+          to={`/products/${product.id}`}
+          fontSize="sm"
+          w={{ base: "100%", lg: "80%" }}
+          mx="auto"
+          backgroundColor={"brand.500"}
+          borderColor={"brand.100"}
+          color="white"
+          _hover={{ backgroundColor: "brand.900" }}
+        >
+          View Product
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
