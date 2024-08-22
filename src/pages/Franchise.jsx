@@ -20,7 +20,7 @@ export default function Franchise() {
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Franchise"} secondUrl={"/franchise"} />
       </Container>
-      <Container maxW={"container.xl"} py={8} px={{ base: 4, lg: 0 }}>
+      <Container maxW={"container.xl"} py={1} px={{ base: 4, lg: 0 }}>
         <Box
           w={"100%"}
           bgImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/franchisee.jpg"}

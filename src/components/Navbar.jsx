@@ -1102,7 +1102,7 @@ export default function Navbar() {
             </Flex>
           </GridItem>
           <GridItem
-            colSpan={8}
+            colSpan={9}
             display={"flex"}
             // style={{ borderBottom: "0.5px solid #b7b7b7" }}
           >
@@ -1225,7 +1225,7 @@ export default function Navbar() {
             </Flex>
           </GridItem>
           <GridItem
-            colSpan={3}
+            colSpan={2}
             display={"flex"}
             justifyContent={"end"}
             alignItems={"center"}

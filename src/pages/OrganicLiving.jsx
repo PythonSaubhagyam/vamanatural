@@ -64,7 +64,7 @@ export default function OrganicLiving() {
                 {/* </Container> */}
                 <Container maxW={"6xl"} pb={10}>
                     <Image
-                        maxW={"6xl"}
+                       // maxW={"6xl"}
                         src={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/location & sq yards.jpg"}
                     ></Image>
                     <Heading

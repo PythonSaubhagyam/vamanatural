@@ -125,6 +125,7 @@ export default function ProductDetails() {
   }
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { productId } = useParams();
+
   useEffect(() => {
     getProductDetails(); // eslint-disable-next-line
   }, [productId]);
@@ -219,13 +220,6 @@ export default function ProductDetails() {
       });
     }
   }
-  const handleWishlistChange = async (id) => {
-    const wishlistResponse = await AddOrRemoveInWishlist(id);
-    if (wishlistResponse.status === true) {
-      setWished((isWished) => !isWished);
-    }
-  };
-
   const handleWriteReview = () => {
     if (loginInfo.isLoggedIn) {
       onOpen();
@@ -233,8 +227,21 @@ export default function ProductDetails() {
       // window.alert(
       //   "Sorry! You are not allowed to review this product since you haven't login"
       // );
-
       navigate("/login");
+      //navigate("/login");
+      toast({
+        title: "Please login to write a review!",
+        status: "info",
+        duration: 3000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
+  };
+  const handleWishlistChange = async (id) => {
+    const wishlistResponse = await AddOrRemoveInWishlist(id);
+    if (wishlistResponse.status === true) {
+      setWished((isWished) => !isWished);
     }
   };
   const scrollToElement = () => {
@@ -246,6 +253,7 @@ export default function ProductDetails() {
   return (
     <>
       <Navbar />
+
       {loading ? (
         <Center h="80vh" w="100%">
           <Loader />
@@ -267,30 +275,37 @@ export default function ProductDetails() {
             </Box>
           </Container>
 
-          <Container maxW={"6xl"} mb={0} alignItems={"baseline"}>
+          <Container maxW={"8xl"} px={8} alignItems={"baseline"}>
             <Flex
               position={"relative"}
               direction={{ base: "column", sm: "row" }}
-              gap={{ base: 8, md: 10 }}
-              pt={{ base: 18, md: 10 }}
-              pb={{ base: 18, md: 0 }}
-              alignItems={{ base: "center" }}
-      
+              justify-content= {"space-between" }
+              gap={15}
+              mb={8}
+             
+                //gap={{ base: 30, md: 20 }}
+              // pt={{ base: 18, md: 10 }}
+              // pb={{ base: 18, md: 0 }}
+              alignItems={{ base: "center",md:"flex-start" }}
             >
-              <Box width={"50%"}>
-                <Skeleton isLoaded={!loading}>
+              <Box width={{md:"50%"}} >
+                <Skeleton isLoaded={!loading} >
                   <ProductImageSection images={productData?.images ?? []} />
                 </Skeleton>
               </Box>
 
-              <Stack spacing={{ base: 6, md: 10 }} width={"50%"}>
+              <Stack spacing={{ base: 6, md: 10 }} width={{md:"50%"}} >
                 <Flex
                   justify="center"
                   direction={"column"}
                   gap={2}
-                  align={{ base: "center", lg: "flex-start" }}
+                  align={{ base: "center", md: "flex-start" }}
+                  //mt={{md:16}}
+                  
                 >
                   <Heading
+                  
+                  // mb={2}
                     as={"header"}
                     lineHeight={1.1}
                     fontWeight={"normal"}
@@ -367,9 +382,9 @@ export default function ProductDetails() {
                       //pl={2}
                       fontWeight={500}
                       fontSize={"lg"}
-                      color={"brand.500"}
+                      color={"brand.50"}
                       textDecoration="none"
-                      _hover={{ color: "brand.500" }}
+                      _hover={{ color: "text.50" }}
                       //as={RouterLink}
                       to={"/products"}
                       // onClick={() => {
@@ -484,7 +499,7 @@ export default function ProductDetails() {
                     </Text>
                   </Skeleton>
 
-                  <SimpleGrid spacing={{ base: 8, md: 10 }} zIndex={0}>
+                  <SimpleGrid spacing={{ base: 8, md: 10 }} zIndex={0} pb={3} pt={3} mt={5}>
                     {totalQuantity?.Quantity !== 0 && (
                       <ButtonGroup
                         as={Flex}
@@ -492,7 +507,7 @@ export default function ProductDetails() {
                         alignItems="center"
                         justifyContent={{
                           base: "center",
-                          lg: "start",
+                          md: "start",
                         }}
                       >
                         <ButtonDecrement onClickFunc={decrementCounter} />
@@ -575,11 +590,11 @@ export default function ProductDetails() {
                 </Flex>
               </Stack>
             </Flex>
-            <Box pr={10} mx={8}>
+            <Box pr={{md:10}} mx={{md:8,base:3}}>
               <Skeleton isLoaded={!loading}>
                 <Box
                   //whiteSpace={"pre-line"}
-                  lineHeight={1.9}
+                  lineHeight={1.8}
                   textAlign="justify"
                   mt={1}
                   dangerouslySetInnerHTML={{
@@ -590,19 +605,19 @@ export default function ProductDetails() {
               </Skeleton>
             </Box>
             {/* </Container> */}
-            {reviews && (
+           
+          </Container>
+          {reviews && (
               <Container
-                maxW="container.xl"
-                centerContent
+              mt={3}
+                maxW="8xl"
                 id="review-area"
-                display={"flex"}
-                justifyContent={{ base: "center", lg: "start" }}
                 px={0}
               >
-                <Box width={"container.lg"} mt={7}>
+             
                   <Text
                     fontSize={{ base: "xl", sm: "2xl" }}
-                    bgColor={"bg.100"}
+                    bgColor={"bg.500"}
                     px={{ base: 2, md: 8 }}
                     py={4}
                   >
@@ -656,37 +671,37 @@ export default function ProductDetails() {
                       </Button>
                     )}
                   </Flex>
-                </Box>
+               
               </Container>
             )}
-          </Container>
-          {relatedProducts.length > 0 && (
-            <ProductListSection
-              title="Related Products"
-              products={relatedProducts}
-              justify="center"
-              fontSize={{ base: "sm", lg: "md" }}
-              type={"carousal"}
-            />
-          )}
-          {otherProducts.length > 0 && (
-            <ProductListSection
-              title="Other Products"
-              products={otherProducts}
-              justify="center"
-              fontSize={{ base: "sm", lg: "md" }}
-              type={"carousal"}
-            />
-          )}
-          {recentlyViewedProducts.length > 0 && (
-            <ProductListSection
-              title="Recently Viewed Products"
-              products={recentlyViewedProducts}
-              justify="center"
-              fontSize={{ base: "sm", lg: "md" }}
-              type={"carousal"}
-            />
-          )}
+
+          <ProductListSection
+            title="Related Products"
+            products={relatedProducts}
+            loading={loading}
+            justify="center"
+            fontSize={{ base: "sm", lg: "md" }}
+            type={"carousal"}
+          />
+
+          <ProductListSection
+            title="Other Products"
+            products={otherProducts}
+            justify="center"
+            loading={loading}
+            fontSize={{ base: "sm", lg: "md" }}
+            type={"carousal"}
+          />
+
+          <ProductListSection
+            title="Recently Viewed Products"
+            products={recentlyViewedProducts}
+            justify="center"
+            loading={loading}
+            fontSize={{ base: "sm", lg: "md" }}
+            type={"carousal"}
+          />
+
           <Modal
             size={"xl"}
             closeOnOverlayClick={false}
@@ -732,7 +747,7 @@ export default function ProductDetails() {
                   </FormControl>
                 </ModalBody>
 
-                <ModalFooter>
+                <ModalFooter> 
                   <Button colorScheme="brand" type="submit">
                     Submit
                   </Button>
@@ -743,8 +758,9 @@ export default function ProductDetails() {
               </form>
             </ModalContent>
           </Modal>
-          <ScrollToTop />
+
           {/* </Flex> */}
+          <ScrollToTop />
         </>
       )}
       <Footer />

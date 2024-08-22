@@ -28,7 +28,7 @@ export default function ShippingPolicy() {
           secondUrl={"/shipping-policy"}
         />
       </Container>
-      <Container maxW={"container.xl"} py={8} px={0} position="relative">
+      <Container maxW={"container.xl"} py={1} px={0} position="relative">
         <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/shipping.jpg" />
 
         <Text
@@ -47,7 +47,7 @@ export default function ShippingPolicy() {
           Shipping Policy
         </Text>
       </Container>
-      <Container maxW={"6xl"} pt={10}>
+      <Container maxW={"6xl"} pt={5}>
         <Heading
           fontSize="3xl"
           fontWeight={600}
