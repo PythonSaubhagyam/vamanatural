@@ -279,33 +279,31 @@ export default function ProductDetails() {
             <Flex
               position={"relative"}
               direction={{ base: "column", sm: "row" }}
-              justify-content= {"space-between" }
+              justify-content={"space-between"}
               gap={15}
               mb={8}
-             
-                //gap={{ base: 30, md: 20 }}
+              //gap={{ base: 30, md: 20 }}
               // pt={{ base: 18, md: 10 }}
               // pb={{ base: 18, md: 0 }}
-              alignItems={{ base: "center",md:"flex-start" }}
+              alignItems={{ base: "center", md: "flex-start" }}
             >
-              <Box width={{md:"50%"}} >
-                <Skeleton isLoaded={!loading} >
+              <Box width={{ md: "50%" }}>
+                <Skeleton isLoaded={!loading}>
                   <ProductImageSection images={productData?.images ?? []} />
                 </Skeleton>
               </Box>
 
-              <Stack spacing={{ base: 6, md: 10 }} width={{md:"50%"}} >
+              <Stack spacing={{ base: 6, md: 10 }} width={{ md: "50%" }}>
                 <Flex
                   justify="center"
                   direction={"column"}
                   gap={2}
-                  align={{ base: "center", md: "flex-start" }}
+                  align={{ base: "flex-start", md: "flex-start" }}
+
                   //mt={{md:16}}
-                  
                 >
                   <Heading
-                  
-                  // mb={2}
+                    // mb={2}
                     as={"header"}
                     lineHeight={1.1}
                     fontWeight={"normal"}
@@ -353,6 +351,7 @@ export default function ProductDetails() {
                           color={"black"}
                           fontWeight={"500"}
                         >
+                          Brand :{"  "}
                           {productData.brand_name}
                         </Text>
                       )}
@@ -382,9 +381,9 @@ export default function ProductDetails() {
                       //pl={2}
                       fontWeight={500}
                       fontSize={"lg"}
-                      color={"brand.50"}
+                      color={"brand.500"}
                       textDecoration="none"
-                      _hover={{ color: "text.50" }}
+                      _hover={{ color: "text.500" }}
                       //as={RouterLink}
                       to={"/products"}
                       // onClick={() => {
@@ -452,7 +451,7 @@ export default function ProductDetails() {
                     <Text
                       fontSize={{
                         base: "20px",
-                        lg: "22px",
+                        lg: "18px",
                       }}
                       // color={"brand.500"}
                       color={"black"}
@@ -466,8 +465,9 @@ export default function ProductDetails() {
                       marginLeft={5}
                       fontSize={{
                         base: "16px",
-                        lg: "20px",
+                        lg: "16px",
                       }}
+                      // height={130}
                       // lineHeight={1.5}
                       fontWeight={"400"}
                       textAlign="justify"
@@ -475,7 +475,9 @@ export default function ProductDetails() {
                       color={"black"}
                     >
                       {productData?.benefits.map((benefit, index) => (
-                        <li key={index}>{benefit}</li>
+                        <li key={index} style={{ fontSize: "16px" }}>
+                          {benefit}
+                        </li>
                       ))}
                     </Box>
                   </>
@@ -499,14 +501,14 @@ export default function ProductDetails() {
                     </Text>
                   </Skeleton>
 
-                  <SimpleGrid spacing={{ base: 8, md: 10 }} zIndex={0} pb={3} pt={3} mt={5}>
+                  <SimpleGrid spacing={{ base: 8, md: 7 }} zIndex={0} pt={5}>
                     {totalQuantity?.Quantity !== 0 && (
                       <ButtonGroup
                         as={Flex}
                         p={0}
                         alignItems="center"
                         justifyContent={{
-                          base: "center",
+                          base: "start",
                           md: "start",
                         }}
                       >
@@ -525,6 +527,7 @@ export default function ProductDetails() {
                     <ButtonGroup
                       as={"Flex"}
                       gap={{ base: 3 }}
+                      alignItems={"flex-start"}
                       flexDirection={{ base: "column", md: "row" }}
                     >
                       {totalQuantity?.Quantity === 0 ? (
@@ -544,7 +547,8 @@ export default function ProductDetails() {
                         <Button
                           id="addToCartButton"
                           as={Flex}
-                          textAlign={"center"}
+                          //textAlign={"center"}
+
                           gap={2}
                           colorScheme="brand"
                           size="sm"
@@ -554,19 +558,21 @@ export default function ProductDetails() {
                             bg: "brand.500",
                             cursor: "pointer",
                           }}
-                          me={3}
+                          //pt={2}
+                          //me={3}
                           onClick={() => AddToCart(productData?.id, counter)}
                         >
                           <FaShoppingCart />
-                          ADD TO CART
+                          <Text>ADD TO CART</Text>
                         </Button>
                       )}
 
                       <Button
                         colorScheme={isWished ? "red" : "brand"}
                         as={Flex}
-                        gap={1}
+                        gap={3}
                         size="sm"
+                        style={{ marginLeft: 0 }}
                         _hover={
                           isWished
                             ? {
@@ -583,14 +589,18 @@ export default function ProductDetails() {
                         onClick={() => handleWishlistChange(productData?.id)}
                       >
                         <AiFillHeart />
-                        {isWished ? "REMOVE FROM WISHLIST" : "ADD TO WISHLIST"}
+                        <Text >
+                          {isWished
+                            ? "REMOVE FROM WISHLIST"
+                            : "ADD TO WISHLIST"}
+                        </Text>
                       </Button>
                     </ButtonGroup>
                   </SimpleGrid>
                 </Flex>
               </Stack>
             </Flex>
-            <Box pr={{md:10}} mx={{md:8,base:3}}>
+            <Box pr={{ md: 10 }} mx={{ md: 8, base: 3 }}>
               <Skeleton isLoaded={!loading}>
                 <Box
                   //whiteSpace={"pre-line"}
@@ -599,81 +609,69 @@ export default function ProductDetails() {
                   mt={1}
                   dangerouslySetInnerHTML={{
                     // __html: dompurify.sanitize(productData?.description),
-                    __html: productData?.description,
+                    __html: productData.description,
                   }}
                 />
               </Skeleton>
             </Box>
             {/* </Container> */}
-           
           </Container>
           {reviews && (
-              <Container
-              mt={3}
-                maxW="8xl"
-                id="review-area"
-                px={0}
+            <Container mt={3} maxW="8xl" id="review-area" px={0}>
+              <Text
+                fontSize={{ base: "xl", sm: "2xl" }}
+                bgColor={"bg.500"}
+                px={{ base: 2, md: 8 }}
+                py={4}
               >
-             
-                  <Text
-                    fontSize={{ base: "xl", sm: "2xl" }}
-                    bgColor={"bg.500"}
-                    px={{ base: 2, md: 8 }}
-                    py={4}
-                  >
-                    Product Reviews
-                  </Text>
-                  <Flex direction="column" mb={4} id="reviews">
-                    {reviews &&
-                      reviews.map((review) => (
-                        <Skeleton isLoaded={!loading}>
-                          <Card
-                            direction={"column"}
-                            overflow="hidden"
-                            variant="outline"
-                            border={"none"}
-                          >
-                            <CardBody pb={0}>
-                              <Heading size="sm">{review.name}</Heading>
-                              <Text fontSize="xs" color="gray.700">
-                                Published at{" "}
-                                {new Date(
-                                  review.published_at
-                                ).toLocaleDateString()}
-                              </Text>
-                              <ReactStars
-                                count={5}
-                                value={review.rating}
-                                edit={false}
-                                size={28}
-                                color1={"black"}
-                                color2={"#ffc107"}
-                              />
-                            </CardBody>
-                            <CardFooter pt={0} pb={4}>
-                              <Text maxW="75%">{review.review}</Text>
-                            </CardFooter>
-                          </Card>
-                          <Divider h="2.5px" bg={"green.400"} m={0} />
-                        </Skeleton>
-                      ))}
-                    {noOfReviews - 3 >= 1 && (
-                      <Button
-                        w={{ base: "75%", md: "20vw" }}
-                        mx="auto"
-                        mt={4}
-                        colorScheme="brand"
-                        onClick={() =>
-                          navigate(`/products/${productId}/reviews`)
-                        }
+                Product Reviews
+              </Text>
+              <Flex direction="column" mb={4} id="reviews">
+                {reviews &&
+                  reviews.map((review) => (
+                    <Skeleton isLoaded={!loading}>
+                      <Card
+                        direction={"column"}
+                        overflow="hidden"
+                        variant="outline"
+                        border={"none"}
                       >
-                        View all reviews
-                      </Button>
-                    )}
-                  </Flex>
-               
-              </Container>
-            )}
+                        <CardBody pb={0}>
+                          <Heading size="sm">{review.name}</Heading>
+                          <Text fontSize="xs" color="gray.700">
+                            Published at{" "}
+                            {new Date(review.published_at).toLocaleDateString()}
+                          </Text>
+                          <ReactStars
+                            count={5}
+                            value={review.rating}
+                            edit={false}
+                            size={28}
+                            color1={"black"}
+                            color2={"#ffc107"}
+                          />
+                        </CardBody>
+                        <CardFooter pt={0} pb={4}>
+                          <Text maxW="75%">{review.review}</Text>
+                        </CardFooter>
+                      </Card>
+                      <Divider h="2.5px" bg={"green.400"} m={0} />
+                    </Skeleton>
+                  ))}
+                {noOfReviews - 3 >= 1 && (
+                  <Button
+                    w={{ base: "75%", md: "20vw" }}
+                    mx="auto"
+                    mt={4}
+                    colorScheme="brand"
+                    onClick={() => navigate(`/products/${productId}/reviews`)}
+                  >
+                    View all reviews
+                  </Button>
+                )}
+              </Flex>
+            </Container>
+          )}
 
           <ProductListSection
             title="Related Products"
@@ -747,7 +745,7 @@ export default function ProductDetails() {
                   </FormControl>
                 </ModalBody>
 
-                <ModalFooter> 
+                <ModalFooter>
                   <Button colorScheme="brand" type="submit">
                     Submit
                   </Button>
