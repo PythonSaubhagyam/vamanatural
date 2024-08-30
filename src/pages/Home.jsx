@@ -39,12 +39,12 @@ import Testimonials from "../components/testimonials";
 
 const productItems = [
   {
-    id: 8663,
+    id: 8659,
     imageSrc:
       "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/imgpsh_fullsize_anim_sose_website.jpg",
   },
   {
-    id: 8859,
+    id: 9249,
     imageSrc:
       "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/imgpsh_fullsize_anim_sose_image.jpg",
   },
