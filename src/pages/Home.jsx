@@ -49,7 +49,7 @@ const productItems = [
       "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/imgpsh_fullsize_anim_sose_image.jpg",
   },
   {
-    id: 8924,
+    id: 9248,
     imageSrc:
       "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/baby_cream.jpg",
   },
