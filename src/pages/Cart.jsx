@@ -28,7 +28,7 @@ import {
   FormControl,
   FormLabel,
   Input,
-  useMediaQuery,
+  useMediaQuery
 } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
 import { EditIcon } from "@chakra-ui/icons";
