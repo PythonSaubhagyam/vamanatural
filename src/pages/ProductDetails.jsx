@@ -167,7 +167,7 @@ export default function ProductDetails() {
             
           })
           if (Response) {
-            setRelatedProducts(response.data.data)
+            setOtherProducts(response.data.data)
            }
           
           //setLoading(false)
