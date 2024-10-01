@@ -14,15 +14,18 @@ import {
   Button,
   useToast,
   Box,
-  Image,
-  useBreakpointValue
+  Image, useBreakpointValue
 } from "@chakra-ui/react";
 import client from "../setup/axiosClient";
 import { AsyncSelect } from "chakra-react-select";
 import checkLogin from "../utils/checkLogin";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import { useLocation } from "react-router-dom";
 
 export default function ContactUs() {
+  let { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const IsMobileView = searchParams.get("mobile") ?? "false";
   const initialFormData = Object.freeze({
     company: "",
     name: "",
@@ -35,6 +38,7 @@ export default function ContactUs() {
   });
 
   const [formData, setFormData] = useState(initialFormData);
+  const [loading , setLoading] = useState(false)
   const [countries, setCountries] = useState([]);
   const [callingCode, setCallingCode] = useState("");
   const toast = useToast();
@@ -64,6 +68,7 @@ export default function ContactUs() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       formData.country = formData.country.value;
       const response = await client.post("/inquiries/", {
@@ -71,6 +76,7 @@ export default function ContactUs() {
         phone: "+" + callingCode + formData.phone,
       });
       if (response.data.status === true) {
+        setLoading(false)
         toast({
           title: response.data.message,
           status: "success",
@@ -80,6 +86,7 @@ export default function ContactUs() {
         });
         setFormData(initialFormData);
       } else {
+        setLoading(false)
         toast({
           title: response.data.message,
           status: "error",
@@ -89,6 +96,7 @@ export default function ContactUs() {
         });
       }
     } catch (error) {
+      setLoading(false)
       toast({
         title: error.response.data.message,
         status: "error",
@@ -122,10 +130,38 @@ export default function ContactUs() {
   };
   return (
     <>
-      <Navbar />
+       {IsMobileView !== "true" && <Navbar />}
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Contact Us"} secondUrl={"/contact-us"} />
       </Container>
+      {/* <Container maxW={"container.xl"} mb={4} px={0} >
+      <Box
+        w={"100%"}
+        bgImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/contact.jpg"}
+        bgSize="cover"
+        bgPosition="center"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={"-10px"}
+        py={20}
+        boxShadow={"0px 0px 0px 0px"}
+        backdropFilter="blur(10px)"
+        height={"550px"}
+        // mb={10}
+      >
+        <Text
+          pb={2}
+          color={"brand.100"}
+          textAlign={"center"}
+          textShadow={"lightgreen"}
+          fontSize="6xl"
+          fontWeight="700"
+        >
+          Contact  Us
+        </Text>
+      </Box>
+      </Container> */}
       <Container maxW={"container.xl"} py={1} px={0} position="relative">
         <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/contact.jpg" />
 
@@ -146,6 +182,15 @@ export default function ContactUs() {
         </Text>
       </Container>
       <Container maxW="container.lg" pb={10}>
+        {/* <Text
+          pb={2}
+          size="xl"
+          fontSize="4xl"
+          fontWeight="medium"
+          color="brand.500"
+        >
+          Contact Us
+        </Text> */}
         <Text pb={2} pt={2}>
           Contact us about anything related to our company or services.
         </Text>
@@ -157,7 +202,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-            align={{md:"center",base:"flex-start"}}
+             align={{md:"center",base:"start"}}
             isRequired
           >
             <FormLabel
@@ -185,7 +230,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-            align={{md:"center",base:"flex-start"}}
+            align={{md:"center",base:"start"}}
             isRequired
             mt="5"
           >
@@ -214,7 +259,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-            align={{md:"center",base:"flex-start"}}
+             align={{md:"center",base:"start"}}
             isRequired
             mt="5"
           >
@@ -254,8 +299,8 @@ export default function ContactUs() {
               chakraStyles={{
                 inputContainer: (provided) => ({
                   ...provided,
-                  maxWidth: width,
-                  minWidth: width,
+                  maxWidth:width,
+                  minWidth:width,
                 }),
               }}
               variant={"outline"}
@@ -278,7 +323,7 @@ export default function ContactUs() {
             <FormControl
               as={Flex}
               direction={{ base: "column", md: "row" }}
-              align={{md:"center",base:"flex-start"}}
+               align={{md:"center",base:"start"}}
               isRequired
               mt="5"
             >
@@ -314,7 +359,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-            align={{md:"center",base:"flex-start"}}
+             align={{md:"center",base:"start"}}
             isRequired
             mt="5"
           >
@@ -343,7 +388,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-            align={{md:"center",base:"start"}}
+             align={{md:"center",base:"start"}}
             isRequired
             mt="5"
           >
@@ -372,7 +417,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-            align={{md:"center",base:"flex-start"}}
+             align={{md:"center",base:"start"}}
             isRequired
             mt="5"
             mb={"5"}
@@ -401,14 +446,14 @@ export default function ContactUs() {
             />
           </FormControl>
           <Container maxW={"lg"} p="0">
-            <Button type="submit" colorScheme={"brand"}>
+            <Button type="submit" isLoading={loading} loadingText={"Sending"} colorScheme={"brand"}>
               Send
             </Button>
           </Container>
         </form>
 
       </Container>
-      <Footer />
+      {IsMobileView !== "true" && <Footer />}
     </>
   );
 }
