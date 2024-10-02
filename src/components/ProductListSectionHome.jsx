@@ -99,7 +99,7 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
         >
           {title}
         </Text>
-        {type === "carousal" && products.length > 4 ? (
+        {type === "carousal" && products && products.length > 4 ? (
           <Slider {...settings}>
             {loading === true
               ? [0, 1, 2, 3, 4].map((index) => (
@@ -121,7 +121,9 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
                   </Box>
                 ))
               : products?.map((product) => (
+                <Box key={product.id} px={{base:"20px",md:"20px"}} >
                   <ProductCardHome key={product.id} product={product} />
+                  </Box>
                 ))}
           </Slider>
         ) : (

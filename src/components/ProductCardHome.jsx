@@ -16,7 +16,7 @@ const ProductCardHome = ({ product }) => {
       <Card
        // w={{ base: "80vw", sm: "3xs", xl: "2xs",md:"200px" }}
         //w={{ base: "80vw", sm: "3xs", lg: "18vw" }}
-        maxW="container.xl"
+        //maxW="container.xl"
        mx="auto" 
         border="1px"
         borderColor="brand.100"
