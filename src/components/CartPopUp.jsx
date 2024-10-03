@@ -20,14 +20,14 @@ const CartPopUp = () => {
   const [CartCount, setCartCount] = useState(
     localStorage.getItem("cart_counter") ?? 0
   );
-  const checkOrSetUDIDInfo = CheckOrSetUDID();
+  // const checkOrSetUDIDInfo = CheckOrSetUDID();
   const loginInfo = checkLogin();
 
-  let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
+  // let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
 
-  if (loginInfo.isLoggedIn === true) {
-    headers = { Authorization: `token ${loginInfo?.token}` };
-  }
+  // if (loginInfo.isLoggedIn === true) {
+  //   headers = { Authorization: `token ${loginInfo?.token}` };
+  // }
 
   const [total, setTotal] = useState(
     localStorage.getItem("product_total") === null ||
@@ -38,6 +38,11 @@ const CartPopUp = () => {
 
   useEffect(() => {
     const updateProductTotal = async () => {
+      const checkOrSetUDIDInfo = await CheckOrSetUDID();
+      let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
+      if (loginInfo.isLoggedIn === true) {
+        headers = { Authorization: `token ${loginInfo?.token}` };
+      }
       const cartRes = await client.get("/cart/", {
         headers: headers,
       });

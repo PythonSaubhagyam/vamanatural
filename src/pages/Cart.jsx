@@ -63,14 +63,15 @@ export default function Cart() {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   const loginInfo = checkLogin();
-  const checkOrSetUDIDInfo = CheckOrSetUDID();
-  let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
-
-  if (loginInfo.isLoggedIn === true) {
-    headers = { Authorization: `token ${loginInfo?.token}` };
-  }
+ 
 
   async function getCart() {
+    const checkOrSetUDIDInfo = await CheckOrSetUDID();
+    let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
+  
+    if (loginInfo.isLoggedIn === true) {
+      headers = { Authorization: `token ${loginInfo?.token}` };
+    }
     const response = await client.get("/cart/", {
       headers: headers,
     });
@@ -124,6 +125,12 @@ export default function Cart() {
 
   const removeProductFromCart = async (id) => {
     setCartRemoveLoading(id);
+    const checkOrSetUDIDInfo = await CheckOrSetUDID();
+    let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
+  
+    if (loginInfo.isLoggedIn === true) {
+      headers = { Authorization: `token ${loginInfo?.token}` };
+    }
     const response = await client.delete(`/cart/${id}`, {
       headers: {
         Accept: "application/json",
@@ -169,6 +176,12 @@ export default function Cart() {
     newQuantity
     // handleAmountChange
   ) {
+    const checkOrSetUDIDInfo = await CheckOrSetUDID();
+    let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
+  
+    if (loginInfo.isLoggedIn === true) {
+      headers = { Authorization: `token ${loginInfo?.token}` };
+    }
     try {
       const response = await client.patch(
         `/cart/${cartItemId}/`,

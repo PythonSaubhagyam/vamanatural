@@ -297,8 +297,14 @@ export default function Navbar() {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
-    CheckOrSetUDID();
-    getCategories();
+    const init = async () => {
+      await CheckOrSetUDID();
+      getCategories();
+    };
+  
+    init();
+    // CheckOrSetUDID();
+    // getCategories();
   }, []);
 
   const mergeArraysById = (array1, array2) =>

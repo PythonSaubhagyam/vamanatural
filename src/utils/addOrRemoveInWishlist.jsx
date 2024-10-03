@@ -8,7 +8,7 @@ export default async function AddOrRemoveInWishlist(product_id) {
   const { ToastContainer, toast } = createStandaloneToast();
 
   const loginInfo = checkLogin();
-  const checkOrSetUDIDInfo = CheckOrSetUDID();
+  const checkOrSetUDIDInfo = await CheckOrSetUDID();
   let headers = { visitor: checkOrSetUDIDInfo.visitor_id };
   if (loginInfo.isLoggedIn === true) {
     headers = { Authorization: `Token ${loginInfo.token}` };

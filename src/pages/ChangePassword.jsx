@@ -48,7 +48,7 @@ export default function ChangePassword() {
         });
         localStorage.clear();
         navigate("/login", { replace: true });
-        checkOrSetUDID();
+        await checkOrSetUDID();
       } else {
         toast({
           title: `${response.data.message}`,

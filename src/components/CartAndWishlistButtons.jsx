@@ -9,11 +9,7 @@ import checkLogin from "../utils/checkLogin";
 export default function CartAndWishlistButtons() {
   const location = useLocation();
   const loginInfo = checkLogin();
-  const checkOrSetUDIDInfo = CheckOrSetUDID();
-  let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
-  if (loginInfo.isLoggedIn === true) {
-    headers = { Authorization: `token ${loginInfo?.token}` };
-  }
+ 
   const [CartCount, setCartCount] = useState(0);
   const [Wishlist, setWishlistCount] = useState(
     localStorage.getItem("wishlist_counter") ?? 0
@@ -31,6 +27,11 @@ export default function CartAndWishlistButtons() {
   }, [location.pathname]);
 
   async function getCart() {
+    const checkOrSetUDIDInfo =await CheckOrSetUDID();
+    let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
+    if (loginInfo.isLoggedIn === true) {
+      headers = { Authorization: `token ${loginInfo?.token}` };
+    }
     const response = await client.get("/cart/", {
       headers: headers,
     });
