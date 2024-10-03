@@ -130,38 +130,73 @@ export default function ProductDetails() {
     getProductDetails(); // eslint-disable-next-line
   }, [productId]);
 
+  useEffect(() => {
+   
+    getProductsList(productId); // eslint-disable-next-line
+  }, [productId]);
+
+  async function getProductsList(productId) {
+    const promise1 = await client.get(
+      `/web/single/product/related/${productId}/`,
+      {
+        headers: headers,
+      }
+    );
+    const promise2 = await client.get(`/web/single/product/other/${productId}/`, {
+      headers: headers,
+    });
+    const promise3 = await client.get(
+      `/web/single/product/recently-viewed/${productId}/`,
+      {
+        headers: headers,
+      }
+    );
+   
+
+    Promise.all([promise1, promise2, promise3])
+      .then(function (responses) {
+        if (responses[0].data.status === true) {
+         setRelatedProducts(responses[0].data?.data)
+        }
+        if (responses[1].data.status === true) {
+          setOtherProducts(responses[1].data?.data)
+        }
+        if (responses[2].data.status === true) {
+         setRecentlyViewedProducts(responses[2].data?.data)
+        }
+
+        //setLoading(false);
+      })
+      .catch(function (error) {
+        //setLoading(false);
+        console.error("Error fetching data:", error);
+      });
+  }
+
   async function getProductDetails() {
     setLoading(true);
     client
-      .get(`/products/${productId}/`, {
+      .get(`web/single/product/${productId}/`, {
         headers: headers,
       })
       .then((response) => {
         if (response.data.status) {
           setTotalQuantity(
-            response.data.data.products?.available_stock_quantity
+            response.data.data?.available_stock_quantity
           );
 
-          setProductData(response.data.data.products);
-          if (response.data.data.average_rating > MINIMUM_RATING_THRESHOLD) {
-            setAvgRating(response.data.data.average_rating);
+          setProductData(response.data.data);
+          if (response.data.data?.average_rating?.average_rating > MINIMUM_RATING_THRESHOLD) {
+            setAvgRating(response.data.data.average_rating?.average_rating);
           }
           if (response.data.data.rating_review_data !== null) {
-            setReviews(response.data.data.rating_review_data);
+            setReviews(response.data.data?.rating_review_data);
           }
           if (response.data.data.review_count > 0) {
-            setNoOfReviews(response.data.data.review_count);
+            setNoOfReviews(response.data.data?.average_rating?.review_count);
           }
-          setWished(response.data.data.products.is_wished);
-          setRecentlyViewedProducts(
-            response.data.data.recently_viewed_products
-          );
-          if (response.data?.data?.related_products !== undefined) {
-            setRelatedProducts(response.data.data.related_products);
-          }
-          if (response.data?.data?.other_products !== undefined) {
-            setOtherProducts(response.data.data.other_products);
-          }
+          setWished(response.data.data?.is_wished);
+         
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
           setLoading(false);
         } else {
@@ -351,6 +386,7 @@ export default function ProductDetails() {
                           }}
                           color={"#A05D26"}
                           fontWeight={"500"}
+                          mr={2}
                           cursor={"pointer"}
                           onClick={()=>navigate(`/shop?page=1&brand=${productData.brand}&brand_name=${productData.brand_name}`)}
                         >
@@ -505,7 +541,7 @@ export default function ProductDetails() {
                   </Skeleton>
 
                   <SimpleGrid spacing={{ base: 8, md: 7 }} zIndex={0} pt={5}>
-                    {totalQuantity?.Quantity !== 0 && (
+                    {totalQuantity !== 0 && (
                       <ButtonGroup
                         as={Flex}
                         p={0}
@@ -521,7 +557,7 @@ export default function ProductDetails() {
                         </Button>
                         <ButtonIncrement
                           disabled={
-                            totalQuantity?.Quantity === counter ? true : false
+                            totalQuantity === counter ? true : false
                           }
                           onClickFunc={incrementCounter}
                         />
@@ -533,7 +569,7 @@ export default function ProductDetails() {
                       alignItems={"flex-start"}
                       flexDirection={{ base: "column", md: "row" }}
                     >
-                      {totalQuantity?.Quantity === 0 ? (
+                      {totalQuantity === 0 ? (
                         <Button
                           id="addToCartButton"
                           as={Flex}
@@ -619,7 +655,7 @@ export default function ProductDetails() {
             </Box>
             {/* </Container> */}
           </Container>
-          {reviews && (
+          {reviews && reviews?.length > 0 && (
             <Container mt={3} maxW="8xl" id="review-area" px={0}>
               <Text
                 fontSize={{ base: "xl", sm: "2xl" }}

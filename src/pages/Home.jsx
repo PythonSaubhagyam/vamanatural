@@ -332,7 +332,7 @@ export default function Home() {
         </Box>
         <Grid
           templateColumns={{
-            base: "repeat(1, 1fr)",
+            base: "repeat(2, 1fr)",
             md: "repeat(3, 1fr)",
             lg: "repeat(6, 1fr)",
           }}
@@ -375,17 +375,20 @@ export default function Home() {
         title="Try Our New Products"
         loading={loading}
         products={newArrival}
+        type={isMobile && "carousal"}
       />
 
       <ProductListSectionHome
         title="Must Try: Vama Products"
         loading={loading}
         products={mustTry}
+        type={isMobile && "carousal"}
       />
       <ProductListSectionHome
         title="All Time Best Sellers"
         loading={loading}
         products={bestSeller}
+        type={isMobile && "carousal"}
       />
       <Container mb={5} px={0} maxW={"container.xl"} centerContent>
         <LazyLoadImage
