@@ -304,7 +304,7 @@ export default function Home() {
           ))}
         </Grid>
       </Container>
-      <Container mb={5} px={0} maxW={"container.xl"} centerContent>
+      <Container  px={0} maxW={"container.xl"} centerContent>
         <LazyLoadImage
           src={require("../assets/home/Vamacertificate.jpg")}
           alt=""
@@ -315,12 +315,12 @@ export default function Home() {
         />
       </Container>
 
-      <Container maxW={"container.xl"} mb={5} px={0}>
+      <Container maxW={"container.xl"}  px={0}>
         <Box
           bgColor={"bg.500"}
           px={{ base: 2, md: 8 }}
           py={4}
-          my={7}
+          //my={7}
           textAlign={{ base: "center", md: "start" }}
         >
           <Text
