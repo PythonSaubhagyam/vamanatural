@@ -127,6 +127,8 @@ export default function Home() {
   const [isMobile] = useMediaQuery("(max-width: 480px)");
   const [newArrival, setNewArrival] = useState([]);
   const [mustTry, setMustTry] = useState([]);
+  const [sections, setSections] = useState([]);
+  //const [error, setError] = useState(null);
   const [bestSeller, setBestSeller] = useState([]);
   // let [isFull] = useMediaQuery("(max-width:1920px)");
   const [blogs, setBlogs] = useState([]);
@@ -139,6 +141,7 @@ export default function Home() {
     getBestSeller();
     getNewArrival();
     getBlogs();
+    getImage();
   }, []);
 
   // async function getHomePageData() {
@@ -179,6 +182,16 @@ export default function Home() {
       setBlogs(response.data.blogs);
     }
   }
+  async function getImage() {
+    const params = {};
+    const response = await client.get("/lower-section", {
+      params: params,
+    });
+    if (response.data.status === true) {
+      setSections(response.data.data);
+    }
+  }
+
 
   return (
     <>
@@ -483,7 +496,7 @@ export default function Home() {
           mt={3}
           //pb={"10px"}
         >
-          OUR CERTIFICATIONS & AWARDS
+           {sections?.length >0 && sections[0].label}
         </Heading>
 
         <Text mt={3} mb={5} textAlign={"center"} color="text.300">
@@ -499,9 +512,9 @@ export default function Home() {
           pb={6}
         >
           <LazyLoadImage
-            src={
-              "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/HomePage/global-certificate.jpg"
-            }
+           
+              src={sections?.length > 0 && sections[0]?.images[0].image}
+            
             alt="global-certificate"
             style={{
               opacity: 1,
@@ -593,14 +606,12 @@ export default function Home() {
           my={"5"}
           pb={"10px"}
         >
-          OUR SERVICES ARE AVAILABLE IN 
+         {sections?.length >0 && sections[1].label}
         </Heading>
 
         <Box display={"flex"} px={0} justifyContent={"center"}>
           <LazyLoadImage
-            src={
-              "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/Map.webp"
-            }
+            src={sections?.length > 0 && sections[1]?.images[0].image}
             w={{ base: "100%", md: "100%" }}
             alt=""
             py={4}
@@ -619,14 +630,12 @@ export default function Home() {
           my={"5"}
           pb={"10px"}
         >
-          AVAILABLE AT
+          {sections?.length >0 && sections[2].label}
         </Heading>
 
         <Container maxW={"container.xl"} mb={5} px={0} centerContent>
           <Image
-            src={
-              require("../assets/001.jpg")
-            }
+            src={sections?.length > 0 && sections[2]?.images[0].image}
             w={"container.xl"}
             alt=""
             style={{
