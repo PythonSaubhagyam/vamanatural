@@ -528,7 +528,7 @@ export default function Home() {
           />
           <LazyLoadImage
             src={
-              "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/HomePage/ciolook-certificate.jpg"
+              sections?.length > 0 && sections[0]?.images[1].image
             }
             alt="ciolook-certificate"
             style={{
@@ -618,7 +618,7 @@ export default function Home() {
           <LazyLoadImage
             src={sections?.length > 0 && sections[1]?.images[0].image}
             w={{ base: "100%", md: "100%" }}
-            alt=""
+            alt="image 1"
             py={4}
             style={{
               opacity: 1,
@@ -642,7 +642,7 @@ export default function Home() {
           <Image
             src={sections?.length > 0 && sections[2]?.images[0].image}
             w={"container.xl"}
-            alt=""
+            alt="available at"
             style={{
               opacity: 1,
               transition: "opacity 0.7s", // Note the corrected syntax here
