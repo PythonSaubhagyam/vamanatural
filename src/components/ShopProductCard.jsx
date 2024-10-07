@@ -123,11 +123,11 @@ export default function ShopProductCard({
             boxSize={"175px"}
           />
         </Flex> */}
-        <Flex marginTop={6}>
+        <Flex marginTop={6} justifyContent={"center"}>
           <Image
             src={productDetails.image1}
             alt={productDetails.name}
-            objectFit="contain"
+            //objectFit="contain"
             boxSize={"175px"}
           />
         </Flex>
