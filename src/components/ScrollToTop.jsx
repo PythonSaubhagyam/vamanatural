@@ -33,12 +33,12 @@ const ScrollToTop = () => {
       {isVisible === true && (
         <div style={{ display: "flex" }}>
           <IconButton
-            style={{ position: "fixed", right: "50px", bottom: "50px", zIndex: "100", borderRadius: "50%", boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;"}}
+            style={{ position: "fixed", right: "30px", bottom: "50px", zIndex: "100", borderRadius: "50%", boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;"}}
             colorScheme="brand"
-            size={"lg"}
+            size={"md"}
             onClick={scrollToTopClick}
             //icon={<FaArrowUp size={24}/>}
-            icon={<RiArrowUpSLine size={45}/>}
+            icon={<RiArrowUpSLine size={30}/>}
           />
         </div>
       )}

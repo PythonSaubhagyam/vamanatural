@@ -20,6 +20,7 @@ import CartPopUp from "./CartPopUp";
 import CartEmitter from "./EventEmitter";
 import checkLogin from "../utils/checkLogin";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
+import WhatsUp from "./WhatsUp";
 
 const ListHeader = ({ children }) => {
   return (
@@ -306,7 +307,7 @@ export default function Footer() {
         </Box>
       </Container>
       {loginInfo.isLoggedIn && <CartPopUp />}
-
+<WhatsUp/>
     </>
   );
 }
