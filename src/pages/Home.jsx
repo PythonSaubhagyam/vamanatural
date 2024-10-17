@@ -128,6 +128,9 @@ export default function Home() {
   const [newArrival, setNewArrival] = useState([]);
   const [mustTry, setMustTry] = useState([]);
   const [sections, setSections] = useState([]);
+  const [servicesSection, setServicesSection] = useState();
+  const [availableSection, setAvailableSection] = useState();
+  const [ourAwardsSection, setAwardSection] =useState();
   //const [error, setError] = useState(null);
   const [bestSeller, setBestSeller] = useState([]);
   // let [isFull] = useMediaQuery("(max-width:1920px)");
@@ -146,7 +149,7 @@ export default function Home() {
     getBestSeller();
     getNewArrival();
     getBlogs();
-    getImage();
+    getLowerSection();
   }, []);
 
   // async function getHomePageData() {
@@ -187,13 +190,28 @@ export default function Home() {
       setBlogs(response.data.blogs);
     }
   }
-  async function getImage() {
+  async function getLowerSection() {
     const params = {};
     const response = await client.get("/lower-section", {
       params: params,
     });
     if (response.data.status === true) {
       setSections(response.data.data);
+
+      const ourServicesSection = response.data.data?.filter(
+        (section) => section.id === 2
+      );
+      const availableAtSection = response.data.data?.filter(
+        (section) => section.id === 3
+      );
+      const ourAwardsSection = response.data.data?.filter(
+        (section) => section.id === 1
+      );
+
+      setAwardSection(ourAwardsSection);
+      setServicesSection(ourServicesSection);
+      setAvailableSection(availableAtSection);
+     
     }
   }
 
@@ -492,6 +510,7 @@ export default function Home() {
           ))}
         </Grid>
       </Container>
+      {/* {awardsSection?.length > 0 && awardsSection[0]?.is_visible_on_website === true &&( */}
       <Container maxW={{ base: "100vw", md: "container.xl" }}>
         <Heading
           color="brand.500"
@@ -538,6 +557,7 @@ export default function Home() {
           />
         </Flex>
       </Container>
+      {/* )} */}
       <Container backgroundColor={"bg.500"} maxW={"container.xl"} px={0} py={2}>
         <SimpleGrid
           columns={[2, 3, null, 5]}
@@ -591,8 +611,11 @@ export default function Home() {
           </Stat> */}
         </SimpleGrid>
       </Container>
-      <Container maxW={{ base: "100vw", md: "container.xl" }}>
-        <Image
+     
+        {servicesSection?.length > 0 &&
+        servicesSection[0]?.is_visible_on_website === true && (
+          <Container maxW={{ base: "100vw", md: "container.xl" }}>
+            <Image
           w={{md:"65%"}}
           my={10}
           src={require("../assets/home/vama_icon(1).jpg")}
@@ -602,54 +625,63 @@ export default function Home() {
             transition: "opacity 0.7s", // Note the corrected syntax here
           }}
         />
-
-        <Heading
-          color="brand.500"
-         fontSize={{md:33,base:20}}
-          mx="auto"
-          align={"center"}
-          my={"5"}
-          pb={"10px"}
-        >
-         {sections?.length >0 && sections[1].label}
-        </Heading>
-
-        <Box display={"flex"} px={0} justifyContent={"center"}>
-          <LazyLoadImage
-            src={sections?.length > 0 && sections[1]?.images[0].image}
-            w={{ base: "100%", md: "100%" }}
-            alt="image 1"
-            py={4}
-            style={{
-              opacity: 1,
-              transition: "opacity 0.7s", // Note the corrected syntax here
-            }}
-          />
-        </Box>
-
-        <Heading
-          color="brand.500"
-          fontSize={{md:33,base:22}}
-          mx="auto"
-          align={"center"}
-          my={"5"}
-          pb={"10px"}
-        >
-          {sections?.length >0 && sections[2].label}
-        </Heading>
-
-        <Container maxW={"container.xl"} mb={5} px={0} centerContent>
-          <Image
-            src={sections?.length > 0 && sections[2]?.images[0].image}
-            w={"container.xl"}
-            alt="available at"
-            style={{
-              opacity: 1,
-              transition: "opacity 0.7s", // Note the corrected syntax here
-            }}
-          />
-        </Container>
-      </Container>
+              <Heading
+                color="brand.500"
+                fontSize={{ md: 33, base: 20 }}
+                mx="auto"
+                align={"center"}
+                my={"5"}
+                pb={"10px"}
+              >
+                {servicesSection?.length > 0 && servicesSection[0].label}
+              </Heading>
+           
+            <Box display={"flex"} justifyContent={"center"}>
+              <LazyLoadImage
+                src={
+                  servicesSection?.length > 0 &&
+                  servicesSection[0]?.images[0].image
+                }
+                w={{ base: "100%", md: "100%" }}
+                alt=""
+                py={4}
+                style={{
+                  opacity: 1,
+                  transition: "opacity 0.7s", // Note the corrected syntax here
+                }}
+              />
+            </Box>
+          </Container>
+        )}
+        {availableSection?.length > 0 &&
+        availableSection[0]?.is_visible_on_website === true && (
+          <Container maxW={"container.xl"} mb={5} px={0} centerContent>
+            
+              <Heading
+                color="brand.500"
+                fontSize={{ md: 33, base: 22 }}
+                mx="auto"
+                align={"center"}
+                my={"5"}
+                pb={"10px"}
+              >
+                {availableSection?.length > 0 && availableSection[0].label}
+              </Heading>
+            
+            <Image
+              src={
+                availableSection?.length > 0 &&
+                availableSection[0]?.images[0].image
+              }
+              w={"container.xl"}
+              alt=""
+              style={{
+                opacity: 1,
+                transition: "opacity 0.7s", // Note the corrected syntax here
+              }}
+            />
+          </Container>
+        )}
       <ScrollToTop/>
       <Footer />
       
