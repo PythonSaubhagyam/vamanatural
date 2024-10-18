@@ -49,7 +49,7 @@ export default function BookAppointment() {
     problem_suffering_from: "",
     problem_description: "",
     landmark: "",
-    taking_any_medicine: false,
+    is_taking_medicine: false,
     type_of_medicine_list: [],
   });
 
@@ -99,6 +99,7 @@ export default function BookAppointment() {
     e.preventDefault();
     let data = { ...formData };
     data.start_datetime = data.start_date + "T" + data.start_time;
+    data.country_id = data.country_id?.value 
     delete data.start_date;
     delete data.start_time;
     data.mobile = "+" + callingCode + data.mobile;
@@ -311,9 +312,9 @@ export default function BookAppointment() {
                     variant="outline"
                     name="Countries"
                     placeholder="Select Country"
-                    value={formData?.country}
+                    value={formData?.country_id}
                     onChange={(e) => {
-                      setFormData({ ...formData, country_id: e.value });
+                      setFormData({ ...formData, country_id: e });
                       const callCode = countries.find(
                         (country) => country.id === parseInt(e.value)
                       )?.calling_code;
@@ -451,6 +452,7 @@ export default function BookAppointment() {
                 <Select
                   size="sm"
                   w={{ base: "100%", lg: "50%" }}
+                  value={formData?.problem_suffering_from}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
