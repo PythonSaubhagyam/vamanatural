@@ -130,7 +130,7 @@ export default function Home() {
   const [sections, setSections] = useState([]);
   const [servicesSection, setServicesSection] = useState();
   const [availableSection, setAvailableSection] = useState();
-  const [ourAwardsSection, setAwardSection] =useState();
+  const [awardsSection, setAwardSection] =useState();
   //const [error, setError] = useState(null);
   const [bestSeller, setBestSeller] = useState([]);
   // let [isFull] = useMediaQuery("(max-width:1920px)");
@@ -510,54 +510,58 @@ export default function Home() {
           ))}
         </Grid>
       </Container>
-      {/* {awardsSection?.length > 0 && awardsSection[0]?.is_visible_on_website === true &&( */}
-      <Container maxW={{ base: "100vw", md: "container.xl" }}>
-        <Heading
-          color="brand.500"
-          fontSize={{md:33,base:20}}
-          mx="auto"
-          align={"center"}
-          mt={3}
-          //pb={"10px"}
-        >
-           {sections?.length >0 && sections[0].label}
-        </Heading>
-
-        <Text mt={3} mb={5} textAlign={"center"} color="text.300">
-          We are committed to quality and each of our facilities is
-          independently certified by an industry-accredited agency.
-        </Text>
-        <Flex
-          justifyContent="space-evenly"
-          direction={{ base: "column", md: "row" }}
-          align="center"
-          gap={12}
-          pt={1}
-          pb={6}
-        >
-          <LazyLoadImage
+      {awardsSection?.length > 0 &&
+        awardsSection[0]?.is_visible_on_website === true && (
+          <Container maxW={{ base: "100vw", md: "container.xl" }}>
            
-              src={sections?.length > 0 && sections[0]?.images[0].image}
-            
-            alt="global-certificate"
-            style={{
-              opacity: 1,
-              transition: "opacity 0.7s", // Note the corrected syntax here
-            }}
-          />
-          <LazyLoadImage
-            src={
-              sections?.length > 0 && sections[0]?.images[1].image
-            }
-            alt="ciolook-certificate"
-            style={{
-              opacity: 1,
-              transition: "opacity 0.7s", // Note the corrected syntax here
-            }}
-          />
-        </Flex>
-      </Container>
-      {/* )} */}
+              <Heading
+                color="brand.500"
+                fontSize={{ md: 33, base: 20 }}
+                mx="auto"
+                align={"center"}
+                mt={3}
+                pb={"10px"}
+              >
+                {awardsSection?.length > 0 && awardsSection[0]?.label}
+              </Heading>
+           
+            <Text my={5} textAlign={"center"} color="text.300">
+              We are committed to quality and each of our facilities is
+              independently certified by an industry-accredited agency.
+            </Text>
+            <Flex
+              justifyContent="space-evenly"
+              direction={{ base: "column", md: "row" }}
+              align="center"
+              gap={12}
+              pt={1}
+              pb={6}
+            >
+              <LazyLoadImage
+                src={
+                  awardsSection[0]?.images?.length > 0 &&
+                  awardsSection[0]?.images[0]?.image
+                }
+                alt="global-certificate"
+                style={{
+                  opacity: 1,
+                  transition: "opacity 0.7s", // Note the corrected syntax here
+                }}
+              />
+              <LazyLoadImage
+                src={
+                  awardsSection[0]?.images?.length > 0 &&
+                  awardsSection[0]?.images[1]?.image
+                }
+                alt="ciolook-certificate"
+                style={{
+                  opacity: 1,
+                  transition: "opacity 0.7s", // Note the corrected syntax here
+                }}
+              />
+            </Flex>
+          </Container>
+        )}
       <Container backgroundColor={"bg.500"} maxW={"container.xl"} px={0} py={2}>
         <SimpleGrid
           columns={[2, 3, null, 5]}
