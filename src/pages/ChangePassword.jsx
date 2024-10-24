@@ -14,11 +14,13 @@ import { useNavigate } from "react-router-dom";
 import checkLogin from "../utils/checkLogin";
 import checkOrSetUDID from "../utils/checkOrSetUDID";
 import client from "../setup/axiosClient";
+import LoginModal from "../components/LoginModal";
 
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const toast = useToast();
   const loginInfo = checkLogin();
   const navigate = useNavigate();
@@ -47,7 +49,7 @@ export default function ChangePassword() {
           isClosable: true,
         });
         localStorage.clear();
-        navigate("/login", { replace: true });
+        setIsLoginModalOpen(true)
         await checkOrSetUDID();
       } else {
         toast({
@@ -125,6 +127,12 @@ export default function ChangePassword() {
           </Stack>
         </form>
       </Container>
+      {!checkLogin().isLoggedIn && (
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
+        )}
       <Footer />
     </>
   );

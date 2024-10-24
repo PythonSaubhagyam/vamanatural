@@ -95,7 +95,7 @@ const CartPopUp = () => {
             opacity={0.9}
             fontSize={13}
           >
-            Thank you for being a SOSE Elite member! Enjoy your complimentary delivery and exclusive benefits.
+            
           </Box>
         ) : (
           <Box

@@ -34,6 +34,7 @@ export default function Footer() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
   const [isMobiles, setIsMobiles] = useState(window.innerWidth <= 600);
   const loginInfo = checkLogin();
+  const [isLoggedIn, setIsLoggedIn] = useState(checkLogin().isLoggedIn);
   // const checkOrSetUDIDInfo = CheckOrSetUDID();
   // let headers = { visitor: checkOrSetUDIDInfo.visitor_id };
 
@@ -43,12 +44,23 @@ export default function Footer() {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 600);
-      setIsMobiles(window.innerWidth <= 600);
     };
 
+    const updateLoginStatus = () => {
+      const loginInfo = checkLogin();
+      setIsLoggedIn(loginInfo.isLoggedIn);
+    };
+
+    // Add event listener to window resize
     window.addEventListener("resize", handleResize);
+
+    // Set interval to check login status every few seconds (optional if login can change dynamically)
+    const loginInterval = setInterval(updateLoginStatus, 1000);
+
+    // Cleanup event listener and interval on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
+      clearInterval(loginInterval);
     };
   }, []);
   const navigate = useNavigate();
@@ -306,7 +318,7 @@ export default function Footer() {
           </Text>
         </Box>
       </Container>
-      {loginInfo.isLoggedIn && <CartPopUp />}
+      {isLoggedIn && <CartPopUp />}
 <WhatsUp/>
     </>
   );

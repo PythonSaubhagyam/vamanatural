@@ -1,4 +1,4 @@
-// import React from "react";
+ import React,{useState} from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Carousel from "../components/Carousel";
@@ -29,6 +29,7 @@ import checkLogin from "../utils/checkLogin";
 import Router from "../routes/routes";
 import ScrollToTop from "../components/ScrollToTop";
 import { useLocation } from "react-router-dom";
+import LoginModal from "../components/LoginModal";
 
 const testimonials = [
   {
@@ -62,6 +63,7 @@ function SubscriptionPlans() {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const IsMobileView = searchParams.get("mobile") ?? "false";
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   return (
     <>
@@ -217,7 +219,7 @@ function SubscriptionPlans() {
           <Button
             colorScheme="brand"
             size="lg"
-            onClick={() => Router.navigate("/login")}
+            onClick={() => setIsLoginModalOpen(true)}
           >
             Login to join SOSE Elite
           </Button>
@@ -448,7 +450,12 @@ function SubscriptionPlans() {
           </Accordion>
         </Box>
       </Container>
-
+      {!checkLogin().isLoggedIn && (
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
+        )}
       <ScrollToTop />
       {IsMobileView !== "true" && <Footer />}
     </>

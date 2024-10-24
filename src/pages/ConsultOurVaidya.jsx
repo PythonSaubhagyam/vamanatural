@@ -22,6 +22,7 @@ import BreadCrumbCom from "../components/BreadCrumbCom";
 import { useState } from "react";
 import CarouselOurVaidhya from "../components/CarouselOurVaidhya";
 import ScrollToTop from "../components/ScrollToTop";
+import LoginModal from "../components/LoginModal";
 
 export default function ConsultOurVaidya() {
   const toast = useToast();
@@ -41,7 +42,7 @@ export default function ConsultOurVaidya() {
         duration: 3000,
         isClosable: true,
       });
-      navigate("/login");
+      setIsLoginModalOpen(true)
     }
   }
 
@@ -117,7 +118,8 @@ export default function ConsultOurVaidya() {
   ];
   const [loading, setLoading] = useState(false);
   const [banners, setBanners] = useState(SecondCarousel);
-  
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
   return (
     <>
       <Navbar />
@@ -469,9 +471,7 @@ export default function ConsultOurVaidya() {
       </Box>
       <Container maxW={"container.xl"} mb={5} px={0} centerContent>
         <Image
-           src={
-            require("../assets/001.jpg")
-          }
+          src={require("../assets/001.jpg")}
           w={"container.xl"}
           alt=""
           style={{
@@ -480,6 +480,12 @@ export default function ConsultOurVaidya() {
           }}
         />
       </Container>
+      {!checkLogin().isLoggedIn && (
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+        />
+      )}
       <ScrollToTop />
       <Footer />
     </>

@@ -39,6 +39,7 @@ import { Link, useNavigate } from "react-router-dom";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import checkLogin from "../utils/checkLogin";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import LoginModal from "../components/LoginModal";
 
 export default function Cart() {
   const messageRef = useRef(null);
@@ -55,6 +56,7 @@ export default function Cart() {
   const [giftMessage, setGiftMessage] = useState("");
   const [giftMaterials, setGiftMaterials] = useState([]);
   const [continueCheckout, setContinueCheckout] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [voucherCode, setVoucherCode] = useState("");
   const [checkingVoucherCode, setCheckingVoucherCode] = useState(false);
   const [voucherApplied, setVoucherApplied] = useState(false);
@@ -267,7 +269,7 @@ export default function Cart() {
         });
       }
     } else {
-      navigate("/login");
+      setIsLoginModalOpen(true)
       toast({
         title: "Please login to place an order!",
         status: "info",
@@ -666,7 +668,12 @@ export default function Cart() {
           </>
         )}
       </Container>
-
+      {!checkLogin().isLoggedIn && (
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
+        )}
       <ScrollToTop/>
       <Footer />
     </>

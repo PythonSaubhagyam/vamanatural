@@ -51,6 +51,7 @@ import BreadCrumbCom from "../components/BreadCrumbCom";
 import ProductImageSection from "../components/ProductImageSection";
 import StarRating from "../components/StarRatings";
 import ScrollToTop from "../components/ScrollToTop";
+import LoginModal from "../components/LoginModal";
 
 function ButtonIncrement(props) {
   return (
@@ -103,6 +104,7 @@ export default function ProductDetails() {
   const [isWished, setWished] = useState(false);
   const [counter, setCounter] = useState(1);
   const [totalQuantity, setTotalQuantity] = useState({});
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const toast = useToast();
@@ -271,7 +273,7 @@ export default function ProductDetails() {
       // window.alert(
       //   "Sorry! You are not allowed to review this product since you haven't login"
       // );
-      navigate("/login");
+      setIsLoginModalOpen(true)
       //navigate("/login");
       toast({
         title: "Please login to write a review!",
@@ -803,7 +805,12 @@ export default function ProductDetails() {
               </form>
             </ModalContent>
           </Modal>
-
+          {!checkLogin().isLoggedIn && (
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
+        )}
           {/* </Flex> */}
           <ScrollToTop />
         </>

@@ -36,6 +36,8 @@ import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import { useNavigate, NavLink as RouterLink } from "react-router-dom";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import Testimonials from "../components/testimonials";
+import LoginModal from "../components/LoginModal";
+import checkLogin from "../utils/checkLogin";
 
 const productItems = [
   {
@@ -53,7 +55,7 @@ const productItems = [
     imageSrc:
       "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/baby_cream.jpg",
   },
-]
+];
 
 const productCategory = [
   {
@@ -122,7 +124,7 @@ export default function Home() {
   const [isFullScreen] = useMediaQuery("(min-width: 768px)");
   const width = useBreakpointValue({ base: "100%", lg: "100%" });
   const height = useBreakpointValue({ base: "300", lg: "400" });
-  const [banners, setBanners] = useState(banner);
+  const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isMobile] = useMediaQuery("(max-width: 480px)");
   const [newArrival, setNewArrival] = useState([]);
@@ -130,36 +132,63 @@ export default function Home() {
   const [sections, setSections] = useState([]);
   const [servicesSection, setServicesSection] = useState();
   const [availableSection, setAvailableSection] = useState();
-  const [awardsSection, setAwardSection] =useState();
-  //const [error, setError] = useState(null);
+  const [awardsSection, setAwardSection] = useState();
   const [bestSeller, setBestSeller] = useState([]);
-  // let [isFull] = useMediaQuery("(max-width:1920px)");
+  const [missionSection, setMissionSection] = useState([]);
+  const [visionSection, setVisionSection] = useState([]);
+  const [newArrivalSection, setNewArrivalSection] = useState([]);
+  const [certificateSection, setCertifcateSection] = useState([]);
+  const [ourProductSection, setOurProductSection] = useState([]);
+  const [skinCareSection, setSkinCareSection] = useState([]);
+  const [nonGMOSection, setNonGMOSection] = useState([]);
+  const [statisticsSection, setStatisticsSection] = useState([]);
+
   const [blogs, setBlogs] = useState([]);
+  const loginInfo = checkLogin();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const checkOrSetUDIDInfo = CheckOrSetUDID();
+  const [showPopup, setShowPopup] = useState(
+    sessionStorage.getItem("hasShownPopup")
+  );
   const isMobiles = width <= 768;
   const navigate = useNavigate();
   useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
     };
-  
+
     init();
     //CheckOrSetUDID();
     getMustTry();
     //getHomePageData();
+    getBanners();
     getBestSeller();
     getNewArrival();
     getBlogs();
     getLowerSection();
+    getUpperSectionUpper();
+    getUpperSectionLower();
+    getStatisticsSection();
+    if (showPopup === null && !loginInfo.isLoggedIn) {
+      setIsLoginModalOpen(true);
+    }
   }, []);
 
-  // async function getHomePageData() {
-  //   const response = await client.get("/home");
-  //   if (response.data.status === true) {
-  //     //setBanners(response.data.banners);
-  //     setHome(response.data);
-  //   }
-  //   setLoading(false);
-  // }
+  async function getBanners() {
+    setLoading(true);
+    try {
+      const response = await client.get("/ecommerce/banners/?sequence=Upper");
+
+      if (response.data.status === true) {
+        setBanners(response?.data?.banner);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching data:", error);
+    }
+  }
   async function getNewArrival() {
     const response = await client.get("newarrival/list");
     if (response) {
@@ -211,10 +240,53 @@ export default function Home() {
       setAwardSection(ourAwardsSection);
       setServicesSection(ourServicesSection);
       setAvailableSection(availableAtSection);
-     
     }
   }
 
+  async function getStatisticsSection() {
+    const params = {};
+    const response = await client.get("/statistics-section/", {
+      params: params,
+    });
+    if (response.data.status === true) {
+      setStatisticsSection(response?.data?.data);
+    }
+  }
+  const getUpperSectionUpper = async () => {
+    const response = await client.get("/vamanatural-section/?type=Upper");
+
+    if (response.data.status === true) {
+      const mission = response.data.data?.filter((section) => section.id === 1);
+      const vision = response.data.data?.filter((section) => section.id === 2);
+      const arrival = response.data.data?.filter((section) => section.id === 3);
+      const certificate = response.data.data?.filter(
+        (section) => section.id === 4
+      );
+
+      const products = response.data.data?.filter(
+        (section) => section.id === 5
+      );
+
+      setMissionSection(mission);
+      setVisionSection(vision);
+      setNewArrivalSection(arrival);
+      setCertifcateSection(certificate);
+      setOurProductSection(products);
+    }
+  };
+  const getUpperSectionLower = async () => {
+    const response = await client.get("/vamanatural-section/?type=Lower");
+
+    if (response.data.status === true) {
+      const skinCare = response.data.data?.filter(
+        (section) => section.id === 6
+      );
+      const nonGMO = response.data.data?.filter((section) => section.id === 7);
+
+      setSkinCareSection(skinCare);
+      setNonGMOSection(nonGMO);
+    }
+  };
 
   return (
     <>
@@ -229,190 +301,213 @@ export default function Home() {
         {loading === true ? (
           <Skeleton h={489}></Skeleton>
         ) : (
-          <Carousel banners={banners} />
+          <Carousel banners={banners?.length > 0 && banners} />
         )}
       </Container>
-      <VStack background={"#fff6f0"} 
-       p={{ base: 4, md: 6, lg: 8 }}
-       spacing={{ base: 6, md: 8 }} 
-       maxW="container.xl"
-       mx="auto" 
-       >
-        <Box
-          fontWeight={"600"}
-          color="brand.500"
-          fontSize={{md:30,base:24}}
-          // alignContent={"flex-start"}
-        >
-          Our Mission
-        </Box>
-
-        <Box maxW={"6xl"} textAlign={"center"} px={{ base: 4, md: 6 }} >
-          VAMA Herbal & Natural draw inspiration from Bansi Gir Gaushala, and
-          its work towards reviving Bharat’s ancient “GauSanskriti”.
-          <br />
-          <br />
-          Ancient Bharat holds the solution to many of the challenges facing
-          humanity today.
-          <br />
-          <br />
-          Our mission is to change the way people think about beauty care
-          products, bringing simple Ayurvedic wisdom back into people’s lives.
-          <br />
-          <Button
-            background="text.500"
-            mt={3}
-            type="submit"
-            color={"white"}
-            onClick={() => navigate("/about-us")}
-            _hover={{ color: "white" }}
+      {missionSection?.length > 0 &&
+        missionSection[0]?.is_visible_on_website === true && (
+          <VStack
+            background={"#fff6f0"}
+            p={{ base: 4, md: 6, lg: 8 }}
+            spacing={{ base: 6, md: 8 }}
+            maxW="container.xl"
+            mx="auto"
           >
-            Read more
-          </Button>
-        </Box>
-
-        <br />
-
-        <Box fontWeight={"600"} color="brand.500"  fontSize={{md:30,base:24}}>
-          Our Vision
-        </Box>
-
-        <Box maxW={"6xl"} textAlign={"center"}>
-          Our brand aims to recreate the same purity and authenticity that is
-          characteristic of the VAMA Herbal & Natural and ancient Bharat.
-          <br />
-          <br />
-          While doing so, we help people empower farmers who are the cornerstone
-          of Bharatiya Gau Sanskriti.
-          <br />
-          <Button
-            background="text.500"
-            mt={3}
-            type="submit"
-            color={"white"}
-            onClick={() => navigate("/about-us")}
-            _hover={{ color: "white" }}
-          >
-            Read more
-          </Button>
-        </Box>
-      </VStack>
-      <Container maxW={"container.xl"} mb={5} centerContent>
-        <LazyLoadImage
-          src={
-            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/home/new-arrival.jpg"
-          }
-          alt=""
-          style={{
-            opacity: 1,
-            transition: "opacity 0.7s", // Note the corrected syntax here
-          }}
-        />
-        <Grid
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            md: "repeat(3, 1fr)",
-          }}
-          gap={10}
-          my={6}
-          px={15}
-        >
-          {productItems?.map((product) => (
-            <GridItem
-              key={product.id}
-              onClick={() => {
-                if (product.id) {
-                  navigate(`/products/${product.id}`);
-                }
-              }}
-              cursor={product.id ? "pointer" : "default"}
+            <Box
+              fontWeight={"600"}
+              color="brand.500"
+              fontSize={{ md: 30, base: 24 }}
+              // alignContent={"flex-start"}
             >
-              <LazyLoadImage
-                src={product.imageSrc}
-                style={{
-                  opacity: 1,
-                  transition: "opacity 0.7s",
-                 
-                  
-                }}
-              />
-            </GridItem>
-          ))}
-        </Grid>
-      </Container>
-      <Container  px={0} maxW={"container.xl"} centerContent>
-        <LazyLoadImage
-          src={require("../assets/home/Vamacertificate.jpg")}
-          alt=""
-          style={{
-            opacity: 1,
-            transition: "opacity 0.7s", // Note the corrected syntax here
-          }}
-        />
-      </Container>
+              {missionSection[0]?.label}
+            </Box>
 
-      <Container maxW={"container.xl"}  px={0}>
-        <Box
-          bgColor={"bg.500"}
-          px={{ base: 2, md: 8 }}
-          py={4}
-          //my={7}
-          textAlign={{ base: "center", md: "start" }}
-        >
-          <Text
-            fontSize={{ base: "xl", sm: "2xl", xl: "3xl" }}
-            fontWeight={500}
-          >
-            Our Product Category
-          </Text>
-        </Box>
-        <Grid
-          templateColumns={{
-            base: "repeat(2, 1fr)",
-            md: "repeat(3, 1fr)",
-            lg: "repeat(6, 1fr)",
-          }}
-          gap={4}
-          my={6}
-          px={{ base: 7, md: 15, xl: 20 }}
-        >
-          {productCategory?.map((data) => (
-            <GridItem cursor={"pointer"}>
-              <LazyLoadImage
-                cursor={"pointer"}
-                transition="all 1s ease"
-                _hover={{
-                  transform: "scale(1.25)",
-                }}
-                src={data.image1}
-                alt={data.title}
-                onClick={() => navigate(data?.href)}
-                style={{
-                  opacity: 1,
-                  transition: "opacity 0.7s",
-                  borderRadius: 10,
-                }}
-              />
-              <Text
-                textAlign={"center"}
-                color="text.500"
-                fontSize={{md:18,base:16}}
-                pt={2}
-                fontWeight={600}
+            <Box
+              maxW={"6xl"}
+              textAlign={"center"}
+              whiteSpace={"pre-line"}
+              px={{ base: 4, md: 6 }}
+            >
+              {missionSection[0]?.description}
+              <br />
+              <Button
+                background="text.500"
+                mt={3}
+                type="submit"
+                color={"white"}
+                onClick={() => navigate("/about-us")}
+                _hover={{ color: "white" }}
               >
-                {data.title}
-              </Text>
-            </GridItem>
-          ))}
-        </Grid>
-      </Container>
+                Read more
+              </Button>
+            </Box>
+          </VStack>
+        )}
+      {visionSection?.length > 0 &&
+        visionSection[0]?.is_visible_on_website === true && (
+          <VStack
+            background={"#fff6f0"}
+            p={{ base: 4, md: 6, lg: 8 }}
+            spacing={{ base: 6, md: 8 }}
+            maxW="container.xl"
+            mx="auto"
+          >
+            <Box
+              fontWeight={"600"}
+              color="brand.500"
+              fontSize={{ md: 30, base: 24 }}
+            >
+              {visionSection[0]?.label}
+            </Box>
 
-      <ProductListSectionHome
-        title="Try Our New Products"
-        loading={loading}
-        products={newArrival}
-        type={isMobile && "carousal"}
-      />
+            <Box maxW={"6xl"} textAlign={"center"} whiteSpace={"pre-line"}>
+              {visionSection[0]?.description}
+              <br />
+              <Button
+                background="text.500"
+                mt={3}
+                type="submit"
+                color={"white"}
+                onClick={() => navigate("/about-us")}
+                _hover={{ color: "white" }}
+              >
+                Read more
+              </Button>
+            </Box>
+          </VStack>
+        )}
+      {newArrivalSection?.length > 0 &&
+        newArrivalSection[0]?.is_visible_on_website === true && (
+          <Container maxW={"container.xl"} mb={5} centerContent>
+            <LazyLoadImage
+              src={newArrivalSection[0]?.image}
+              alt=""
+              style={{
+                opacity: 1,
+                transition: "opacity 0.7s", // Note the corrected syntax here
+              }}
+            />
+            <Grid
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                md: "repeat(3, 1fr)",
+              }}
+              gap={10}
+              my={6}
+              px={15}
+            >
+              {newArrivalSection[0]?.images?.length > 0 &&
+                newArrivalSection[0]?.images?.map((product) => (
+                  <GridItem
+                    key={product.id}
+                    onClick={() => {
+                      if (product.product) {
+                        navigate(`/products/${product.product}`);
+                      }
+                    }}
+                    cursor={product.product ? "pointer" : "default"}
+                  >
+                    <LazyLoadImage
+                      src={product.image}
+                      style={{
+                        opacity: 1,
+                        transition: "opacity 0.7s",
+                      }}
+                    />
+                  </GridItem>
+                ))}
+            </Grid>
+          </Container>
+        )}
+      {certificateSection?.length > 0 &&
+        certificateSection[0]?.is_visible_on_website === true && (
+          <Container px={0} maxW={"container.xl"} centerContent>
+            <LazyLoadImage
+              src={certificateSection[0]?.image}
+              alt=""
+              style={{
+                opacity: 1,
+                transition: "opacity 0.7s", // Note the corrected syntax here
+                width: "100%",
+              }}
+            />
+          </Container>
+        )}
+
+      {ourProductSection?.length > 0 &&
+        ourProductSection[0]?.is_visible_on_website === true && (
+          <Container maxW={"container.xl"} px={0}>
+            <Box
+              bgColor={"bg.500"}
+              px={{ base: 2, md: 8 }}
+              py={4}
+              //my={7}
+              textAlign={{ base: "center", md: "start" }}
+            >
+              <Text
+                fontSize={{ base: "xl", sm: "2xl", xl: "3xl" }}
+                fontWeight={500}
+              >
+                {ourProductSection[0]?.label}
+              </Text>
+            </Box>
+            <Grid
+              templateColumns={{
+                base: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                lg: "repeat(6, 1fr)",
+              }}
+              gap={4}
+              my={6}
+              px={{ base: 7, md: 15, xl: 20 }}
+            >
+              {ourProductSection[0]?.images?.length > 0 &&
+                ourProductSection[0]?.images?.map((data) => (
+                  <GridItem cursor={"pointer"}>
+                    <LazyLoadImage
+                      cursor={"pointer"}
+                      transition="all 1s ease"
+                      _hover={{
+                        transform: "scale(1.25)",
+                      }}
+                      src={data.image}
+                      alt={data.category_name}
+                      onClick={() => {
+                        if (data?.category !== null) {
+                          navigate(
+                            `/shop?page=1&category=${data?.category}&category_name=${data?.category_name}`
+                          );
+                        }
+                      }}
+                      style={{
+                        opacity: 1,
+                        transition: "opacity 0.7s",
+                        borderRadius: 10,
+                      }}
+                    />
+                    <Text
+                      textAlign={"center"}
+                      color="text.500"
+                      fontSize={{ md: 18, base: 16 }}
+                      pt={2}
+                      fontWeight={600}
+                    >
+                      {data.category_name}
+                    </Text>
+                  </GridItem>
+                ))}
+            </Grid>
+          </Container>
+        )}
+
+      {newArrival?.length > 0 && (
+        <ProductListSectionHome
+          title="Try Our New Products"
+          loading={loading}
+          products={newArrival}
+          type={isMobile && "carousal"}
+        />
+      )}
 
       <ProductListSectionHome
         title="Must Try: Vama Products"
@@ -426,13 +521,12 @@ export default function Home() {
         products={bestSeller}
         type={isMobile && "carousal"}
       />
-      <Container mb={5} px={0} maxW={"container.xl"} centerContent>
-        <LazyLoadImage
-          src={
-            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/home/skin_care.jpg"
-          }
-        />
-      </Container>
+      {skinCareSection?.length > 0 &&
+        skinCareSection[0]?.is_visible_on_website === true && (
+          <Container mb={5} px={0} maxW={"container.xl"} centerContent>
+            <LazyLoadImage src={skinCareSection[0]?.image} />
+          </Container>
+        )}
       <Container maxW={"container.xl"}>
         <Box
           w="100%"
@@ -443,7 +537,7 @@ export default function Home() {
         >
           <Heading
             color="brand.500"
-            fontSize={{md:33,base:24}}
+            fontSize={{ md: 33, base: 24 }}
             mx="auto"
             align={"center"}
             mt={3}
@@ -513,18 +607,17 @@ export default function Home() {
       {awardsSection?.length > 0 &&
         awardsSection[0]?.is_visible_on_website === true && (
           <Container maxW={{ base: "100vw", md: "container.xl" }}>
-           
-              <Heading
-                color="brand.500"
-                fontSize={{ md: 33, base: 20 }}
-                mx="auto"
-                align={"center"}
-                mt={3}
-                pb={"10px"}
-              >
-                {awardsSection?.length > 0 && awardsSection[0]?.label}
-              </Heading>
-           
+            <Heading
+              color="brand.500"
+              fontSize={{ md: 33, base: 20 }}
+              mx="auto"
+              align={"center"}
+              mt={3}
+              pb={"10px"}
+            >
+              {awardsSection?.length > 0 && awardsSection[0]?.label}
+            </Heading>
+
             <Text my={5} textAlign={"center"} color="text.300">
               We are committed to quality and each of our facilities is
               independently certified by an industry-accredited agency.
@@ -562,84 +655,69 @@ export default function Home() {
             </Flex>
           </Container>
         )}
-      <Container backgroundColor={"bg.500"} maxW={"container.xl"} px={0} py={2}>
-        <SimpleGrid
-          columns={[2, 3, null, 5]}
-          px={6}
-          maxW={"container.xl"}
-          my={6}
-          backgroundColor={"bg.500"}
-          align="center"
-          spacingX={{ base: "10vw", md: "30px" }}
-          spacingY="40px"
-        >
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              22+
-            </StatNumber>
-            <StatHelpText color="gray.600">Natural Products</StatHelpText>
-          </Stat>
+      {statisticsSection?.length > 0 &&
+        statisticsSection[0]?.is_visible_on_website === true && (
+          <Container
+            backgroundColor={"bg.500"}
+            maxW={"container.xl"}
+            px={0}
+            py={2}
+          >
+            <SimpleGrid
+              columns={[2, 3, null, 5]}
+              px={6}
+              maxW={"container.xl"}
+              my={6}
+              backgroundColor={"bg.500"}
+              align="center"
+              spacingX={{ base: "10vw", md: "30px" }}
+              spacingY="40px"
+            >
+              {statisticsSection?.length > 0 &&
+                statisticsSection?.map((data) => (
+                  <Stat>
+                    <StatNumber
+                      color="text.300"
+                      fontSize={{ base: "3xl", md: "3xl" }}
+                    >
+                      {data?.value}
+                    </StatNumber>
+                    <StatHelpText color="gray.600">{data?.name}</StatHelpText>
+                  </Stat>
+                ))}
+            </SimpleGrid>
+          </Container>
+        )}
 
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              20930+
-            </StatNumber>
-            <StatHelpText color="gray.600">Satisfied Clients</StatHelpText>
-          </Stat>
+      {nonGMOSection?.length > 0 &&
+        nonGMOSection[0]?.is_visible_on_website === true && (
+          <Container maxW={"6xl"} centerContent>
+            <Image
+              my={10}
+              src={nonGMOSection[0]?.image}
+              mx="auto"
+              style={{
+                opacity: 1,
+                transition: "opacity 0.7s", // Note the corrected syntax here
+              }}
+            />
+          </Container>
+        )}
 
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              1485+
-            </StatNumber>
-            <StatHelpText color="gray.600">Cities & Towns</StatHelpText>
-          </Stat>
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              7+
-            </StatNumber>
-            <StatHelpText color="gray.600">Countries</StatHelpText>
-          </Stat>
-
-          <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              15+
-            </StatNumber>
-            <StatHelpText color="gray.600">Stores</StatHelpText>
-          </Stat>
-
-          {/* <Stat>
-            <StatNumber color="text.300" fontSize={{ base: "3xl", md: "3xl" }}>
-              11<sup>th</sup>
-            </StatNumber>
-            <StatHelpText color="gray.600">Generation of Farmers</StatHelpText>
-          </Stat> */}
-        </SimpleGrid>
-      </Container>
-     
-        {servicesSection?.length > 0 &&
+      {servicesSection?.length > 0 &&
         servicesSection[0]?.is_visible_on_website === true && (
           <Container maxW={{ base: "100vw", md: "container.xl" }}>
-            <Image
-          w={{md:"65%"}}
-          my={10}
-          src={require("../assets/home/vama_icon(1).jpg")}
-          mx="auto"
-          style={{
-            opacity: 1,
-            transition: "opacity 0.7s", // Note the corrected syntax here
-          }}
-        />
-              <Heading
-                color="brand.500"
-                fontSize={{ md: 33, base: 20 }}
-                mx="auto"
-                align={"center"}
-                my={"5"}
-                pb={"10px"}
-              >
-                {servicesSection?.length > 0 && servicesSection[0].label}
-              </Heading>
-           
+            <Heading
+              color="brand.500"
+              fontSize={{ md: 33, base: 20 }}
+              mx="auto"
+              align={"center"}
+              my={"5"}
+              pb={"10px"}
+            >
+              {servicesSection?.length > 0 && servicesSection[0].label}
+            </Heading>
+
             <Box display={"flex"} justifyContent={"center"}>
               <LazyLoadImage
                 src={
@@ -657,21 +735,20 @@ export default function Home() {
             </Box>
           </Container>
         )}
-        {availableSection?.length > 0 &&
+      {availableSection?.length > 0 &&
         availableSection[0]?.is_visible_on_website === true && (
           <Container maxW={"container.xl"} mb={5} px={0} centerContent>
-            
-              <Heading
-                color="brand.500"
-                fontSize={{ md: 33, base: 22 }}
-                mx="auto"
-                align={"center"}
-                my={"5"}
-                pb={"10px"}
-              >
-                {availableSection?.length > 0 && availableSection[0].label}
-              </Heading>
-            
+            <Heading
+              color="brand.500"
+              fontSize={{ md: 33, base: 22 }}
+              mx="auto"
+              align={"center"}
+              my={"5"}
+              pb={"10px"}
+            >
+              {availableSection?.length > 0 && availableSection[0].label}
+            </Heading>
+
             <Image
               src={
                 availableSection?.length > 0 &&
@@ -686,9 +763,14 @@ export default function Home() {
             />
           </Container>
         )}
-      <ScrollToTop/>
+      {!checkLogin().isLoggedIn && (
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+        />
+      )}
+      <ScrollToTop />
       <Footer />
-      
     </>
   );
 }
