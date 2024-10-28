@@ -25,7 +25,7 @@ const Posts = [
     title: "Sidha Kisan Se",
     content:
       "SIDHA KISAN SE is inspired by Bansi Gir Gaushala, and it's work towards the revival of Bharat's ancient Gau Sanskriti. SIDHA KISAN SE intends to transform the way food is bought and sold in the country by bringing farmers and consumers closer to each other. Under the SIDHA KISAN SE initiative, Suryan Organic offers you an opportunity to buy genuine, pure and authentic organic commodities directly from farmers who are part of our growing network of thousands of trusted and ethically growing natural farmers.",
-    href: "https://www.sidhakisanse.com/",
+    href: "https://www.sidhakisanse.in/",
   },
   {
     image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/inspire-and-support/gotirth.jpg",

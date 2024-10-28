@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import CategoryTree from "../components/CategoryTree";
 // import CategoryAccessTree from "../components/CategoryAccessTree";
+import ScrollToTop from "../components/ScrollToTop";
 import ShopProductCard from "../components/ShopProductCard";
 import {
   Center,
@@ -34,7 +35,7 @@ import {
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import { Select } from "chakra-react-select";
 import CapitalizeLetter from "../utils/CommanFunction";
-import ScrollToTop from "../components/ScrollToTop";
+
 // import Paginator from "../components/Paginator";
 
 export default function Shop() {
@@ -49,7 +50,7 @@ export default function Shop() {
   const [productFoamsArray, setProductFoamsArray] = useState();
   const [brandArray, setBrandArray] = useState();
   const [productFoam, setProductFoam] = useState(null);
-  // const [brandWise, setBrandWise] = useState(null);
+
   const [banners, setBanners] = useState({
     bannerWeb: null,
     bannerMobile: null,
@@ -66,11 +67,12 @@ export default function Shop() {
   const categoryId = searchPar.get("category");
   const prod_search = searchPar.get("search");
   const page = searchPar.get("page") ? searchPar.get("page") : 1;
+  
   const [isMobile] = useMediaQuery("(max-width: 768px)");
   // const [brandWise, setBrandWise] = useState({value:searchPar.get("brand"),label:searchPar.get("brand_name")});
   // console.log("brandWise",brandWise)
-  const brand =searchPar.get("brand")
-  const brand_name =searchPar.get("brand_name")
+  const brand = searchPar.get("brand");
+  const brand_name = searchPar.get("brand_name");
   const { currentPage, setCurrentPage, pages } = usePagination({
     pagesCount: totalPages,
     limits: {
@@ -81,66 +83,27 @@ export default function Shop() {
   });
   const category_name = new URLSearchParams(search).get("category_name");
 
-  //let headers = { visitor: CheckOrSetUDID()?.visitor_id };
+  let headers = { visitor: CheckOrSetUDID()?.visitor_id };
   const loginInfo = checkLogin();
-  // if (loginInfo.isLoggedIn === true) {
-  //   headers = { Authorization: `token ${loginInfo.token}` };
-  // }
+  if (loginInfo.isLoggedIn === true) {
+    headers = { Authorization: `token ${loginInfo.token}` };
+  }
   let name = [
     localStorage.getItem("first_name"),
     localStorage.getItem("last_name"),
   ].join(" ");
 
   useEffect(() => {
-    const init = async () => {
-      await CheckOrSetUDID();
-     
-    };
-  
-    init();
     getFilter();
-    //CheckOrSetUDID();
+    CheckOrSetUDID();
     getProducts(); // eslint-disable-next-line
-  }, [ categoryId, sortKey, prod_search, brand, tagWise, productFoam]);
+  }, [categoryId, sortKey, prod_search, brand, tagWise, productFoam]);
 
   // useEffect(() => {
   //   getCategories();
   // }, []);
 
-  useEffect(() => {
-    setCurrentPage(1);
-    const params = {
-      page: 1,
-    };
-
-    if (categoryId) {
-      params.category = categoryId;
-      
-    }
-    if(category_name){
-      params.category_name = category_name;
-    }
-    if (searchPar.get("brand")) {
-      params.brand = brand;
-      params.brand_name = brand_name;
-    }
-
-    if (prod_search !== null) {
-      params.search = prod_search;
-    }
-
-    setSearchParams(params);
-   
-  }, [sortKey,tagWise, productFoam]);
-
   async function getProducts(nextPage) {
-    const checkOrSetUDIDInfo = await CheckOrSetUDID();
-    let headers = { visitor: checkOrSetUDIDInfo.visitor_id };
-    if (loginInfo.isLoggedIn === true) {
-      headers = {
-        Authorization: `token ${loginInfo.token}`,
-      };
-    }
     setLoading(true);
     try {
       let params = categoryId
@@ -162,7 +125,7 @@ export default function Shop() {
       if (productFoam !== null) {
         params.product_foam = productFoam.value;
       }
-      if (prod_search) {
+      if (prod_search !== null) {
         params.prod_search = prod_search;
       }
       const response = await client.get("/web/products/list/", {
@@ -246,6 +209,7 @@ export default function Shop() {
         client.get("/web/product-foams/list/"),
         client.get("/web/brand/list/"),
       ]);
+
       let TagsArray = [];
       tagsResponse?.data?.data?.map((data) =>
         TagsArray.push({
@@ -274,35 +238,170 @@ export default function Shop() {
       console.error("Error fetching data:", error);
     }
   }
-  // useEffect(() => {
-  //   const filtered = categories.filter((item) => item.id === categoryId);
-  //   setFilteredData(filtered);
-  // }, [data, categoryId]);
+  useEffect(() => {
+    const filtered = categories.filter((item) => item.id === categoryId);
+    setFilteredData(filtered);
+  }, [data, categoryId]);
 
+
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  //   const params = {
+  //     page: 1,
+  //   };
+
+  //   if (categoryId) {
+  //     params.category = categoryId;
+      
+  //   }
+  //   if(category_name){
+  //     params.category_name = category_name;
+  //   }
+  //   if (searchPar.get("brand")) {
+  //     params.brand = brand;
+  //     params.brand_name = brand_name;
+  //   }
+
+  //   if (prod_search !== null) {
+  //     params.search = prod_search;
+  //   }
+
+  //   setSearchParams(params);
+   
+  // }, [sortKey,tagWise, productFoam]);
+
+  // async function handlePageChange(nextPage) {
+  //   setCurrentPage(nextPage);
+  //   getProducts(nextPage);
+  //   if (categoryId) {
+  //     setSearchParams({
+  //       page: nextPage,
+  //       category: categoryId,
+  //       category_name: category_name,
+
+  //     });
+  //   } else {
+  //     setSearchParams({
+  //       page: nextPage,
+
+  //     });
+  //   }
+  //   window.scrollTo({
+  //     top: 0,
+  //     left: 0,
+  //     behavior: "smooth",
+  //   });
+  // }
   async function handlePageChange(nextPage) {
     setCurrentPage(nextPage);
     getProducts(nextPage);
-    if (categoryId) {
-      setSearchParams({
-        page: nextPage,
-        category: categoryId,
-        category_name: category_name,
-      });
 
-    } 
-     if(searchPar.get("brand")){
-      params.brand = brand;
-        params.brand_name = brand_name;
-    } else {
-      setSearchParams({
-        page: nextPage,
-      });
+    const params = {
+      page: nextPage,
+    };
+
+    if (categoryId) {
+      params.category = categoryId;
+      params.category_name = category_name;
     }
+    if (searchPar.get("brand")) {
+      params.brand = brand;
+      params.brand_name = brand_name;
+    }
+
+    if (prod_search !== null) {
+      params.search = prod_search;
+    }
+
+    setSearchParams(params);
+
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: "smooth",
     });
+  }
+
+  const handleSoryKeyChange = (e) =>{
+    setSortKey(e);
+    setCurrentPage(1);
+    const params = {
+      page: 1,
+    };
+
+    if (categoryId) {
+      params.category = categoryId;
+      
+    }
+    if(category_name){
+      params.category_name = category_name;
+    }
+    if (searchPar.get("brand")) {
+      params.brand = brand;
+      params.brand_name = brand_name;
+    }
+
+    if (prod_search !== null) {
+      params.search = prod_search;
+    }
+
+    setSearchParams(params);
+
+  }
+
+  const handleTagWiseChange=(e)=>{
+    setTagWise(e)
+    setCurrentPage(1);
+    const params = {
+      page: 1,
+    };
+
+    if (categoryId) {
+      params.category = categoryId;
+      
+    }
+    if(category_name){
+      params.category_name = category_name;
+    }
+    if (searchPar.get("brand")) {
+      params.brand = brand;
+      params.brand_name = brand_name;
+    }
+
+    if (prod_search !== null) {
+      params.search = prod_search;
+    }
+
+    setSearchParams(params);
+
+
+  }
+
+  const handleProductFoamChange =(e)=>{
+    setProductFoam(e)
+    setCurrentPage(1);
+    const params = {
+      page: 1,
+    };
+
+    if (categoryId) {
+      params.category = categoryId;
+      
+    }
+    if(category_name){
+      params.category_name = category_name;
+    }
+    if (searchPar.get("brand")) {
+      params.brand = brand;
+      params.brand_name = brand_name;
+    }
+
+    if (prod_search !== null) {
+      params.search = prod_search;
+    }
+
+    setSearchParams(params);
+
   }
 
   const handleWishlistChange = async (item, index) => {
@@ -312,6 +411,7 @@ export default function Shop() {
       var elementChange = temp[index];
       elementChange.is_wished = !item.is_wished;
       setProducts(temp);
+      getProducts();
     }
   };
   return (
@@ -329,7 +429,11 @@ export default function Shop() {
           align="center"
           mb={6}
         >
-           {brand_name ? brand_name : category_name ? category_name :`All Products`}
+          {brand_name
+            ? brand_name
+            : category_name
+            ? category_name
+            : `All Products`}
         </Heading>
 
         <Flex
@@ -381,7 +485,10 @@ export default function Shop() {
                   value={sortKey}
                   sx={{ padding: "0 10px" }}
                   variant={"outline"}
-                  onChange={(e) => setSortKey(e)}
+                  onChange={(e) => {
+                    handleSoryKeyChange(e);
+                    
+                  }}
                   placeholder="Select Option"
                   options={[
                     {
@@ -456,7 +563,7 @@ export default function Shop() {
                   value={tagWise}
                   sx={{ padding: "0 10px" }}
                   variant={"outline"}
-                  onChange={(e) => setTagWise(e)}
+                  onChange={(e) => handleTagWiseChange(e)}
                   options={tagsArray}
                 ></Select>
                 <Heading size="sm" my={2} fontFamily={"inter"}>
@@ -488,7 +595,7 @@ export default function Shop() {
                   value={productFoam}
                   sx={{ padding: "0 10px" }}
                   variant={"outline"}
-                  onChange={(e) => setProductFoam(e)}
+                  onChange={(e) => handleProductFoamChange(e)}
                   options={productFoamsArray}
                 ></Select>
               </Box>
@@ -647,7 +754,7 @@ export default function Shop() {
           </div>
         </div> */}
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Footer />
     </>
   );
