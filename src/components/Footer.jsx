@@ -44,22 +44,26 @@ export default function Footer() {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 600);
+      setIsMobiles(window.innerWidth <= 600);
     };
 
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  useEffect(() => {
     const updateLoginStatus = () => {
       const loginInfo = checkLogin();
       setIsLoggedIn(loginInfo.isLoggedIn);
     };
-
-    // Add event listener to window resize
-    window.addEventListener("resize", handleResize);
 
     // Set interval to check login status every few seconds (optional if login can change dynamically)
     const loginInterval = setInterval(updateLoginStatus, 1000);
 
     // Cleanup event listener and interval on component unmount
     return () => {
-      window.removeEventListener("resize", handleResize);
+      //window.removeEventListener("resize", handleResize);
       clearInterval(loginInterval);
     };
   }, []);

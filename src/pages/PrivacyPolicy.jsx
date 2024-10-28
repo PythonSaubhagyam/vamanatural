@@ -318,7 +318,7 @@ const PrivacyPolicy = () => {
            src={
             require("../assets/001.jpg")
           }
-          w={"container.xl"}
+         w="100%"
           alt=""
           style={{
             opacity: 1,

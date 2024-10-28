@@ -47,8 +47,8 @@ export default function InspireSupport() {
           secondUrl={"/inspire-and-support"}
         />{" "}
       </Container>
-      <Container maxW={"container.xl"} py={1} px={0} position="relative">
-        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/inspire and support.jpg" />
+      <Container maxW={"container.xl"} py={1} px={0} position="relative" centerContent>
+        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/inspire and support.jpg" width="100%" />
 
         <Text
           pb={2}
