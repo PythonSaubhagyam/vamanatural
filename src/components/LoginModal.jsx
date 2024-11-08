@@ -30,6 +30,7 @@ import {
   PinInput,
   PinInputField,
   HStack,
+  Text,
 } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import client from "../setup/axiosClient";
@@ -52,6 +53,8 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
   const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [responseStatus, setResponseStatus] = useState();
+  const [responseMessage, setResponseMessage] = useState();
   const location = useLocation();
   const navigate = useNavigate();
   const toast = useToast();
@@ -88,8 +91,10 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
           },
         }
       );
+
       if (response.data.status === true) {
         setButtonLoading(false);
+        setResponseStatus(response.data?.status);
         toast({
           title: response.data.message,
           status: "success",
@@ -99,23 +104,28 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
         });
       } else {
         setButtonLoading(false);
-        toast({
-          title: response.data.message,
-          status: "error",
-          position: "top-right",
-          duration: 4000,
-          isClosable: true,
-        });
+        setResponseStatus(response.data?.status);
+        setResponseMessage(response.data?.message);
+
+        // toast({
+        //   title: response.data.message,
+        //   status: "error",
+        //   position: "top-right",
+        //   duration: 4000,
+        //   isClosable: true,
+        // });
       }
     } catch (error) {
       setButtonLoading(false);
-      toast({
-        title: error.response.data.message,
-        status: "error",
-        position: "top-right",
-        duration: 4000,
-        isClosable: true,
-      });
+      setResponseStatus(error.response.data?.status);
+      setResponseMessage(error.response.data?.message);
+      // toast({
+      //   title: error.response.data.message,
+      //   status: "error",
+      //   position: "top-right",
+      //   duration: 4000,
+      //   isClosable: true,
+      // });
     }
   };
 
@@ -186,7 +196,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
             navigate("/shop", { replace: true });
             onClose();
           } else {
-            onClose()
+            onClose();
           }
         } else {
           // setTimeout(() => {
@@ -298,7 +308,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
                 navigate("/shop", { replace: true });
                 onClose();
               } else {
-                onClose()
+                onClose();
               }
             } else {
               if (location.pathname === "/signup") {
@@ -354,23 +364,28 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
     });
   };
 
-  const countryOptions = async (inputValue) => {
-    let Options = [];
-    if (inputValue.length > 2) {
-      const countryRes = await client.get(
-        `/countries/?filter_search=${inputValue}`
-      );
-      if (countryRes.status) {
-        countryRes.data.data?.map((data) =>
-          Options.push({
-            label: data.calling_code + " " + "(" + data.country_name + ")",
-            value: data.calling_code,
-          })
-        );
-        setCountries(Options);
-      }
+  const handleCloseModal = () => {
+    onClose();
+    setPhoneNumber();
+    setCode();
+    sessionStorage.setItem("hasShownPopup", "true");
+    setShow(false);
+    setResponseMessage();
+    setResponseStatus();
+  };
+
+  const handleTabChange = (index) => {
+    // Update data based on the selected tab index
+    if (index === 0) {
+      setPhoneNumber("");
+      setCode();
+      setShow(false);
+      setResponseMessage();
+      setResponseStatus();
+    } else if (index === 1) {
+      setEmail(null);
+      setPassword(null);
     }
-    return Options;
   };
 
   return (
@@ -391,13 +406,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
       <Modal
         blockScrollOnMount={false}
         isOpen={isOpen}
-        onClose={() => {
-          onClose();
-          setPhoneNumber();
-          setCode();
-          sessionStorage.setItem("hasShownPopup", "true");
-          setShow(false);
-        }}
+        onClose={() => handleCloseModal()}
       >
         <ModalOverlay />
         <ModalContent
@@ -421,7 +430,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
             <GridItem>
               <ModalCloseButton />
               <ModalBody mt={20}>
-                <Tabs isFitted colorScheme="brand">
+                <Tabs isFitted colorScheme="brand" onChange={handleTabChange}>
                   <TabList
                     borderRadius={"10px"}
                     boxShadow={"lg"}
@@ -454,10 +463,18 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
                     <TabPanel>
                       <Flex
                         as={"form"}
-                        onSubmit={() => {
-                          code === undefined || !show
-                            ? handleOTPSubmit()
-                            : handleMobileSubmit();
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          if (
+                            responseStatus === undefined ||
+                            responseStatus === false
+                          ) {
+                            handleOTPSubmit();
+                            console.log("11111111");
+                          } else {
+                            handleMobileSubmit();
+                            console.log("2222222222");
+                          }
                         }}
                         flexDirection={"column"}
                         gap={6}
@@ -472,30 +489,6 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
                             borderColor="gray.300"
                             borderRadius="lg"
                           >
-                            {/* <Box width="100px">
-                          <AsyncSelect
-                            isClearable
-                            size="sm"
-                            chakraStyles={{
-                              inputContainer: (provided) => ({
-                                ...provided,
-                                width: "100px",
-                              }),
-                            }}
-                            variant={"outline"}
-                            name="Countries"
-                            sx={{ padding: "0 10px" }}
-                            placeholder=""
-                            value={code}
-                            onChange={(e) => setCode(e?.value)}
-                            loadOptions={countryOptions}
-                            defaultOptions={countries}
-                            components={{
-                              DropdownIndicator: () => null, // This removes the dropdown icon
-                              IndicatorSeparator: () => null, // Optional: Removes the separator
-                            }}
-                          ></AsyncSelect>
-                        </Box> */}
                             <InputLeftAddon
                               border={"none"}
                               borderRight={"1px solid"}
@@ -521,7 +514,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
                             />
                           </InputGroup>
                         </FormControl>
-                        {show && (
+                        {responseStatus === true && (
                           <FormControl id="mobile">
                             <FormLabel fontSize="sm">OTP</FormLabel>
                             <Flex
@@ -560,6 +553,30 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
                             </Flex>
                           </FormControl>
                         )}
+                        {responseStatus === false && (
+                          <Flex
+                            gap={{ base: 4 }}
+                            alignItems={"flex-start"}
+                            flexDirection={{ base: "column", md: "column" }}
+                          >
+                            <Text color={"red"} fontSize={14}>
+                              {responseMessage}
+                            </Text>
+                            <Button
+                              variant={"link"}
+                              size={"sm"}
+                              colorScheme="brand"
+                              _hover={{ textDecoration: "none" }}
+                              onClick={() => {
+                                onClose();
+                                navigate("/signup");
+                              }}
+                            >
+                              {" "}
+                              Create New Account
+                            </Button>
+                          </Flex>
+                        )}
                         <Button
                           colorScheme="brand"
                           size={"sm"}
@@ -567,17 +584,25 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
                           loadingText={"sending..."}
                           isDisabled={phoneNumber?.length === 10 ? false : true}
                           borderRadius={"10px"}
-                          onClick={() => {
-                            setShow(true);
-                            if (code === undefined || !show) {
-                              handleOTPSubmit(); // OTP submission if not done
-                            } else {
-                              handleMobileSubmit(); // Mobile verification after OTP
-                            }
-                          }}
+                          type="submit"
+                          // onClick={() => {
+                          //   setShow(true);
+                          //   if (code === undefined || !show) {
+                          //     handleOTPSubmit(); // OTP submission if not done
+                          //   } else {
+                          //     handleMobileSubmit(); // Mobile verification after OTP
+                          //   }
+                          // }}
                         >
                           Continue
                         </Button>
+                        <Link
+                          href="/signup"
+                          fontSize={"14"}
+                          color={"brand.500"}
+                        >
+                          Don't have an account?
+                        </Link>
                         {/* {phoneNumber?.length === 10 && (
                           <Checkbox
                             colorScheme="brand"
