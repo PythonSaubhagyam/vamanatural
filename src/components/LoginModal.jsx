@@ -41,8 +41,8 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import CarouselLoginModal from "./CarouselLoginModal";
 
 const imageList = [
-  require("../assets/Login/banner2.jpeg"),
-  require("../assets/Login/banner1.jpeg"),
+  "https://s3organicbucket.s3.amazonaws.com/master/Products/images/login_popup_image2.jpeg",
+ "https://s3organicbucket.s3.amazonaws.com/master/Products/images/login_popup_image1.jpeg"
 ];
 
 const LoginModal = ({ isOpen, onClose, onOpen }) => {
