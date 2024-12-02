@@ -36,7 +36,7 @@ const ProductCardHome = ({ product }) => {
             src={product.product?.home_image ? product.product?.home_image : product.product?.image1}
             alt={product.product?.name}
             borderRadius="lg"
-            boxSize="150px"
+            boxSize="200px"
             objectFit={"contain"}
             mx="auto"
           />
