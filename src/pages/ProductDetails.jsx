@@ -730,8 +730,7 @@ export default function ProductDetails() {
             </Container>
           )}
           {relatedProducts &&
-            relatedProducts?.length >
-              0(
+            relatedProducts?.length >0 &&(
                 <ProductListSection
                   title="Related Products"
                   products={relatedProducts}
@@ -742,8 +741,7 @@ export default function ProductDetails() {
                 />
               )}
           {otherProducts &&
-            otherProducts?.length >
-              0(
+            otherProducts?.length > 0 &&(
                 <ProductListSection
                   title="Other Products"
                   products={otherProducts}
@@ -754,8 +752,7 @@ export default function ProductDetails() {
                 />
               )}
           {recentlyViewedProducts &&
-            recentlyViewedProducts?.length >
-              0(
+            recentlyViewedProducts?.length > 0 &&(
                 <ProductListSection
                   title="Recently Viewed Products"
                   products={recentlyViewedProducts}
