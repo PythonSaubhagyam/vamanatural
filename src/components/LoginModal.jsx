@@ -192,7 +192,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
         if (response.data.data.is_staff || response.data.data.is_superuser) {
           localStorage.setItem("id", response.data.data.id);
           localStorage.setItem("access", true);
-          if (location.pathname === "/signup") {
+          if (location.pathname === "/signup" || location.pathname ==="/reset-password") {
             navigate("/shop", { replace: true });
             onClose();
           } else {
@@ -200,7 +200,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
           }
         } else {
           // setTimeout(() => {
-          if (location.pathname === "/signup") {
+          if (location.pathname === "/signup" || location.pathname ==="/reset-password") {
             navigate("/", { replace: true });
             onClose();
           } else {
@@ -304,14 +304,14 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
             ) {
               localStorage.setItem("id", response.data.data.id);
               localStorage.setItem("access", true);
-              if (location.pathname === "/signup") {
+              if (location.pathname === "/signup" || location.pathname ==="/reset-password") {
                 navigate("/shop", { replace: true });
                 onClose();
               } else {
                 onClose();
               }
             } else {
-              if (location.pathname === "/signup") {
+              if (location.pathname === "/signup" || location.pathname ==="/reset-password") {
                 navigate("/", { replace: true });
                 onClose();
               } else {
