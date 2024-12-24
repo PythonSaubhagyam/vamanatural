@@ -64,7 +64,15 @@ export default function Checkout({ getDetails }) {
   const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isPayment, setPayment] = useState(false);
-
+  const [CartCount, setCartCount] = useState(
+    localStorage.getItem("cart_counter") ?? 0
+  );
+  // const [total, setTotal] = useState(
+  //   localStorage.getItem("product_total") === null ||
+  //     localStorage.getItem("product_total") === undefined
+  //     ? 0
+  //     : localStorage.getItem("product_total")
+  // );
   const [paymentInProgress, setPaymentInProgress] = useState(false);
 
   const location = useLocation();
@@ -195,7 +203,7 @@ export default function Checkout({ getDetails }) {
         localStorage.removeItem("isAGift");
         localStorage.removeItem("giftMessage");
         localStorage.setItem("cart_counter", 0);
-        localStorage.setItem("product_total",0)
+        localStorage.setItem("product_total", 0);
         navigate("/profile#orders", { relative: true });
       }
     } catch (error) {
@@ -241,74 +249,132 @@ export default function Checkout({ getDetails }) {
     }
   }
 
+  // async function handleOnlinePayment() {
+  //   setPayment(true);
+  //   if (formData.billingAddress === null) {
+  //     toast({
+  //       title: "Please select billing address!",
+  //       status: "error",
+  //       position: "top-right",
+  //       duration: 4000,
+  //       isClosable: true,
+  //     });
+  //   } else {
+  //     let data = {};
+  //     data.txnid = new Date().getTime().toString();
+  //     data.amount = `${location.state.grandTotal + formData.shipping_amt}`;
+  //     data.productinfo = location.state.isAGift ? "Gift" : "SOSE";
+  //     data.billing_address = formData.billingAddress;
+  //     data.shipping_amount = formData.shipping_amt;
+  //     data.tax_amount = location.state.taxes;
+  //     data.is_a_gift = location.state.isAGift;
+  //     data.giftMessage = location.state.giftMessage;
+  //     data.voucherCode = location.state?.voucherCode;
+  //     const res = await client.post(
+  //       "/get-order-payment-link/",
+  //       {
+  //         ...data,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `token ${checkLogin().token}`,
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  //     var txt_new = res.data.txn_id;
+  //     if (res.data.status === true) {
+  //       setTxt_new_id(res.data.txn_id);
+  //       // setPaymentInProgress(true);
+  //       // window.open(, "_top");
+  //       const options =
+  //         "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+  //       // openInNewTab(res.data.payment_url);
+  //       setTimeout(() => {
+  //         window.open(res.data.payment_url, "_top", options);
+  //       });
+  //       // const checkPayment = setInterval(async function () {
+  //       //   const res = await getPaymentDetails(txt_new);
+  //       //   if (res.data.status === true) {
+  //       //     setPaymentInProgress(false);
+  //       //     localStorage.removeItem("isAGift");
+  //       //     localStorage.removeItem("giftMessage");
+  //       //     // toast({
+  //       //     //   title: "Your order has been placed!",
+  //       //     //   status: "success",
+  //       //     //   position: "top-right",
+  //       //     //   duration: 5000,
+  //       //     //   isClosable: true,
+  //       //     // });
+  //       //     navigate("/profile#orders");
+  //       //     clearInterval(checkPayment);
+  //       //     localStorage.setItem("cart_counter", 0);
+  //       //   } else {
+  //       //     // setPaymentInProgress(false);
+  //       //     // navigate("/");
+  //       //   }
+  //       // }, 3000);
+  //     } else {
+  //     }
+
+  //     setPayment(false);
+  //   }
+  // }
   async function handleOnlinePayment() {
     setPayment(true);
-    if (formData.billingAddress === null) {
+    if (!formData.billingAddress) {
       toast({
-        title: "Please select billing address!",
+        title: "Please select a billing address!",
         status: "error",
         position: "top-right",
         duration: 4000,
         isClosable: true,
       });
-    } else {
-      let data = {};
-      data.txnid = new Date().getTime().toString();
-      data.amount = `${location.state.grandTotal + formData.shipping_amt}`;
-      data.productinfo = location.state.isAGift ? "Gift" : "SOSE";
-      data.billing_address = formData.billingAddress;
-      data.shipping_amount = formData.shipping_amt;
-      data.tax_amount = location.state.taxes;
-      data.is_a_gift = location.state.isAGift;
-      data.giftMessage = location.state.giftMessage;
-      data.voucherCode = location.state?.voucherCode;
-      const res = await client.post(
-        "/get-order-payment-link/",
-        {
-          ...data,
+      return;
+    }
+
+    const data = {
+      txnid: new Date().getTime().toString(),
+      amount: `${location.state.grandTotal + formData.shipping_amt}`,
+      productinfo: location.state.isAGift ? "Gift" : "SOSE",
+      billing_address: formData.billingAddress,
+      shipping_amount: formData.shipping_amt,
+      tax_amount: location.state.taxes,
+      is_a_gift: location.state.isAGift,
+      giftMessage: location.state.giftMessage,
+      voucherCode: location.state?.voucherCode,
+    };
+
+    try {
+      const res = await client.post("/get-order-payment-link/", data, {
+        headers: {
+          Authorization: `token ${checkLogin().token}`,
+          "Content-Type": "multipart/form-data",
         },
-        {
-          headers: {
-            Authorization: `token ${checkLogin().token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      var txt_new = res.data.txn_id;
+      });
+
       if (res.data.status === true) {
         setTxt_new_id(res.data.txn_id);
-        // setPaymentInProgress(true);
-        // window.open(, "_top");
+        localStorage.setItem("cart_counter", 0); // Clear cart count
+        setCartCount(0);
+        // setTotal(0);
         const options =
           "location=yes,height=570,width=520,scrollbars=yes,status=yes";
-        // openInNewTab(res.data.payment_url);
+        window.open(res.data.payment_url, "_top", options);
         setTimeout(() => {
           window.open(res.data.payment_url, "_top", options);
         });
-        // const checkPayment = setInterval(async function () {
-        //   const res = await getPaymentDetails(txt_new);
-        //   if (res.data.status === true) {
-        //     setPaymentInProgress(false);
-        //     localStorage.removeItem("isAGift");
-        //     localStorage.removeItem("giftMessage");
-        //     // toast({
-        //     //   title: "Your order has been placed!",
-        //     //   status: "success",
-        //     //   position: "top-right",
-        //     //   duration: 5000,
-        //     //   isClosable: true,
-        //     // });
-        //     navigate("/profile#orders");
-        //     clearInterval(checkPayment);
-        //     localStorage.setItem("cart_counter", 0);
-        //   } else {
-        //     // setPaymentInProgress(false);
-        //     // navigate("/");
-        //   }
-        // }, 3000);
-      } else {
       }
-
+    } catch (error) {
+      console.error("Payment Error:", error);
+      toast({
+        title: "Payment failed! Please try again.",
+        status: "error",
+        position: "top-right",
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
       setPayment(false);
     }
   }
