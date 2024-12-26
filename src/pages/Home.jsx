@@ -38,6 +38,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import Testimonials from "../components/testimonials";
 import LoginModal from "../components/LoginModal";
 import checkLogin from "../utils/checkLogin";
+import CategorySlider from "../components/CategorySlider";
 
 const productItems = [
   {
@@ -434,7 +435,12 @@ export default function Home() {
           </Container>
         )}
 
-      {ourProductSection?.length > 0 &&
+
+         {/* Our Product category Section */}
+         
+        <CategorySlider ourProductSection={ourProductSection} />
+
+      {/* {ourProductSection?.length > 0 &&
         ourProductSection[0]?.is_visible_on_website === true && (
           <Container maxW={"container.xl"} px={0}>
             <Box
@@ -498,7 +504,7 @@ export default function Home() {
                 ))}
             </Grid>
           </Container>
-        )}
+        )} */}
 
       {newArrival?.length > 0 && (
         <ProductListSectionHome

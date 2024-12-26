@@ -130,7 +130,7 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
           <Grid
             templateColumns={{
               base: "repeat(1, 1fr)",
-              md: "repeat(3, 1fr)",
+              md: "repeat(5, 1fr)",
               xl: "repeat(5, 1fr)",
             }}
             px={5}
