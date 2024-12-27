@@ -4,6 +4,7 @@ import BreadCrumbCom from "../components/BreadCrumbCom";
 import Navbar from "../components/Navbar";
 import { Box, Container, VStack, Image, Text, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
+import ScrollToTop from "../components/ScrollToTop";
 
 const PrivacyPolicy = () => {
   return (
@@ -314,10 +315,10 @@ const PrivacyPolicy = () => {
       </Box>
       <Container maxW={"container.xl"} mb={5} px={20} centerContent>
         <Image
-          src={
-            "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/01.jpg"
+           src={
+            require("../assets/001.jpg")
           }
-          w={"container.xl"}
+         w="100%"
           alt=""
           style={{
             opacity: 1,
@@ -325,6 +326,7 @@ const PrivacyPolicy = () => {
           }}
         />
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

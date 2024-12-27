@@ -10,21 +10,25 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
- 
   const navigate = useNavigate();
   return (
-    <Card
-      w={{ base: "80vw", sm: "3xs", lg: "2xs" }}
+     <Card
+    //   w={{ base: "90vw", sm: "xs" }}
+     // w= {{ base: "80vw", lg: "18vw" }}
+     w= {{ base: "80vw", lg: "93%" }}
+      //  maxW="container.xl"
+      //  mx="auto"
       border="1px"
       borderColor="brand.100"
       borderRadius={"lg"}
       onClick={() => {
-        navigate(`/products/${product.id}`),
-          window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "smooth",
-          });
+        window.location.href = `/products/${product.id}`;
+        // navigate(),
+        //   window.scrollTo({
+        //     top: 0,
+        //     left: 0,
+        //     behavior: "smooth",
+        //   });
       }}
       cursor={"pointer"}
     >
@@ -33,7 +37,7 @@ export default function ProductCard({ product }) {
           src={product.home_image ? product.home_image : product.image1}
           alt={product.name}
           borderRadius="lg"
-          boxSize="150px"
+          boxSize="200px"
           objectFit={"contain"}
           mx="auto"
         />

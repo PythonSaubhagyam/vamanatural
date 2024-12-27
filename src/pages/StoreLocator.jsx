@@ -28,6 +28,7 @@ import Loader from "../components/Loader";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { FaStreetView } from "react-icons/fa";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function StoreLocator() {
   const [storeData, setStoreData] = useState([]);
@@ -64,12 +65,12 @@ export default function StoreLocator() {
         <BreadCrumbCom second={"Store Locator"} secondUrl={"/store-locator"} />
       </Container>
 
-      <Container maxW={"container.xl"} py={8} px={0} position="relative">
+      <Container maxW={"container.xl"} py={1} px={0} position="relative">
         <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/store-locator.webp" />
 
         <Text
           pb={2}
-          color={"brand.500"}
+          color={"brand.400"}
           textAlign={"center"}
           fontSize={{ lg: "7xl", md: "5xl", base: "2xl" }}
           fontWeight="600"
@@ -81,7 +82,7 @@ export default function StoreLocator() {
           textShadow={"0px 0px 100px lightgreen"}
           // Optional: Add background to improve text readability
         >
-            Store Locator
+          Store Locator
         </Text>
       </Container>
       <Container maxW={"6xl"} px={0} mb={10}>
@@ -222,7 +223,6 @@ export default function StoreLocator() {
                                 >
                                   <Image
                                     minW={{
-                                     
                                       sm: "300px",
                                       lg: "360px",
                                     }}
@@ -385,7 +385,7 @@ export default function StoreLocator() {
           {/* </Container> */}
         </Flex>
       </Container>
-
+      <ScrollToTop/>
       <Footer />
     </>
   );

@@ -12,7 +12,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Carousel from "../components/Carousel";
 import BreadCrumbCom from "../components/BreadCrumbCom";
-
+import ScrollToTop from "../components/ScrollToTop";
 export default function OrganicLiving() {
     const banners = [
         {
@@ -64,7 +64,7 @@ export default function OrganicLiving() {
                 {/* </Container> */}
                 <Container maxW={"6xl"} pb={10}>
                     <Image
-                        maxW={"6xl"}
+                       // maxW={"6xl"}
                         src={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/location & sq yards.jpg"}
                     ></Image>
                     <Heading
@@ -437,7 +437,7 @@ export default function OrganicLiving() {
                     </Text>
                 </Container>
             </Container>
-
+            <ScrollToTop/>
             <Footer />
         </>
     );

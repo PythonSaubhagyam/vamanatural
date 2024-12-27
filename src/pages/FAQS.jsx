@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import Accordion from "../components/Accordion";
 import { Container, Box, Text,Image } from "@chakra-ui/react";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function FAQS() {
   const generalInformationData = [
@@ -192,7 +193,7 @@ export default function FAQS() {
       <Container maxW="container.xl">
         <BreadCrumbCom second={"FAQ"} secondUrl={"/faq"} />
       </Container>
-      <Container maxW={"container.xl"} py={8} px={0} position="relative">
+      <Container maxW={"container.xl"} py={1} px={0} position="relative">
         <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/faqs.jpg" />
 
         <Text
@@ -273,6 +274,7 @@ export default function FAQS() {
         </Box>
         <Accordion details={businessInquiryInformation} />
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

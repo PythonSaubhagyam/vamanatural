@@ -1,4 +1,4 @@
-// import React from "react";
+ import React,{useState} from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Carousel from "../components/Carousel";
@@ -27,6 +27,9 @@ import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { BiSupport } from "react-icons/bi";
 import checkLogin from "../utils/checkLogin";
 import Router from "../routes/routes";
+import ScrollToTop from "../components/ScrollToTop";
+import { useLocation } from "react-router-dom";
+import LoginModal from "../components/LoginModal";
 
 const testimonials = [
   {
@@ -57,11 +60,17 @@ const testimonials = [
 ];
 
 function SubscriptionPlans() {
+  let { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const IsMobileView = searchParams.get("mobile") ?? "false";
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
   return (
     <>
-      <Navbar />
+      {IsMobileView !== "true" && <Navbar />}
 
       {/* <Image src=""></Image> */}
+
       <Container maxW="container.xl" mb={4} px={0} centerContent>
         <Box
           w={"100%"}
@@ -101,12 +110,11 @@ function SubscriptionPlans() {
                 <Icon as={TbDiscount2} boxSize={12} color="brand.500" />
                 <Box>
                   <Text fontSize="lg" fontWeight="bold">
-                    Coupons & Vouchers
+                    BAMS Doctor / Vaid
                   </Text>
                   <Text textAlign={"justify"} fontSize={"14px"}>
-                    SOSE coupons and Vouchers help you save big on your
-                    purchases. Collect from a variety available on our website
-                    and get instant discount at the time of checkout.
+                    Get a free e-consultation from experts in different
+                    specialties, including dieticians and nutritionists.
                   </Text>
                 </Box>
               </Flex>
@@ -133,9 +141,11 @@ function SubscriptionPlans() {
                     Delivery Speed
                   </Text>
                   <Text textAlign={"justify"} fontSize={"14px"}>
-                    Now get all your products delivered to you quicker than
-                    before. Same day or next day delivery on available products
-                    in selected cities and expanding soon to all cities
+                    Now, you can deliver all your products quicker than before.
+                    Same-day or next-day delivery of available products is
+                    available in selected cities and will soon expand to all
+                    cities. Except product unavailability or extreme weather
+                    conditions.
                   </Text>
                 </Box>
               </Flex>
@@ -152,7 +162,7 @@ function SubscriptionPlans() {
                 />
                 <Box>
                   <Text fontSize="lg" fontWeight="bold">
-                    Early Access New Product Announcements
+                    Early Access New Product Announcement
                   </Text>
                   <Text textAlign={"justify"} fontSize={"14px"}>
                     Be among the first ones to shop during our sale days. Get
@@ -167,10 +177,9 @@ function SubscriptionPlans() {
                     Premium Customer Support
                   </Text>
                   <Text textAlign={"justify"} fontSize={"14px"}>
-                    Members would be entitled to our dedicated customer support
-                    experts. We are committed to providing you with responsive
-                    assistance and resolution. Your queries are our priority.
-                    Fastest support to our premium members.
+                    SOSE Elite Plan members enjoy priority order processing. As
+                    our premium members, your orders are prioritized by being
+                    pushed to the front line for validation.
                   </Text>
                 </Box>
               </Flex>
@@ -181,10 +190,10 @@ function SubscriptionPlans() {
                     Priority Processing
                   </Text>
                   <Text textAlign={"justify"} fontSize={"14px"}>
-                    SOSE Elite Plan members enjoy priority processing of their
-                    orders. As our premium members, your orders are priorities
-                    by pushing your orders to the front of the line for
-                    validation.
+                    Members would be entitled to our dedicated customer support
+                    experts. We are committed to providing you with responsive
+                    assistance and resolution. Your queries are our priority.
+                    Fastest support to our premium members.
                   </Text>
                 </Box>
               </Flex>
@@ -193,18 +202,24 @@ function SubscriptionPlans() {
         </Grid>
 
         {checkLogin().isLoggedIn === true ? (
-          <Button
-            colorScheme="brand"
-            size="lg"
-            onClick={() => Router.navigate("/subscription-payment")}
-          >
-            Get SOSE Elite today
-          </Button>
+          <>
+            {localStorage.getItem("is_sose_elite_user") === "false" ? (
+              <Button
+                colorScheme="brand"
+                size="lg"
+                onClick={() => Router.navigate("/subscription-payment")}
+              >
+                Get SOSE Elite today
+              </Button>
+            ) : (
+              ""
+            )}
+          </>
         ) : (
           <Button
             colorScheme="brand"
             size="lg"
-            onClick={() => Router.navigate("/login")}
+            onClick={() => setIsLoginModalOpen(true)}
           >
             Login to join SOSE Elite
           </Button>
@@ -231,40 +246,13 @@ function SubscriptionPlans() {
             Frequently Asked Questions
           </Heading>
 
-          <Accordion defaultIndex={[0]} allowMultiple pb={10} mx={"9%"}>
-            <AccordionItem>
-              <h2>
-                <AccordionButton bg={"brand.100"} _hover={{ bg: "brand.100" }}>
-                  <AccordionIcon color="white" />
-                  <Box
-                    flex="1"
-                    width
-                    textAlign="left"
-                    fontWeight="600"
-                    color="white"
-                  >
-                    How do I avail discount on Products?
-                  </Box>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel
-                pb={4}
-                border="1px"
-                borderColor="gray.200"
-                borderBottom={"none"}
-              >
-                After you become a SOSE Elite user, discount coupons will be
-                auto applied on your cart. Your special discount coupon can be
-                used up within membership period and you can avail discount for
-                cart.
-              </AccordionPanel>
-            </AccordionItem>
+          <Accordion defaultIndex={[0]} pb={10} mx={"9%"}>
             <AccordionItem>
               <h2>
                 <AccordionButton bg={"brand.100"} _hover={{ bg: "brand.100" }}>
                   <AccordionIcon color="white" />
                   <Box flex="1" textAlign="left" fontWeight="600" color="white">
-                    Terms & conditions around Free Shipping
+                    What are the terms & conditions for Free Shipping?
                   </Box>
                 </AccordionButton>
               </h2>
@@ -274,9 +262,9 @@ function SubscriptionPlans() {
                 borderColor="gray.200"
                 borderBottom={"none"}
               >
-                A member is eligible to get Free Shipping Benefit on 20 orders
+                A member is eligible for the Free Shipping Benefit on Orders
                 during his membership period. This cap is introduced keeping in
-                mind that most of our regular users don't get impacted however,
+                mind that most of our regular users don't get impacted; however,
                 it will help us curb the misuse of the membership benefit.
               </AccordionPanel>
             </AccordionItem>
@@ -286,7 +274,7 @@ function SubscriptionPlans() {
                   <AccordionIcon color="white" />
                   <Box flex="1" textAlign="left" fontWeight="600" color="white">
                     SOSE Elite members will not be charged shipping charges on
-                    orders above Rs.250.
+                    orders above Rs.250?
                   </Box>
                 </AccordionButton>
               </h2>
@@ -296,11 +284,10 @@ function SubscriptionPlans() {
                 borderColor="gray.200"
                 borderBottom={"none"}
               >
-                We are introducing this policy change to ensure that we are able
-                to serve our members in the best possible way while maintaining
-                fair usage within reasonable parameters. These changes have been
-                put into effect to avoid any misuse of the subscription program
-                in the future.
+                We are introducing this policy change to ensure that we can
+                serve our members best while maintaining fair usage within
+                reasonable parameters. These changes have been implemented to
+                avoid future misuse of the subscription program.
               </AccordionPanel>
             </AccordionItem>
             <AccordionItem>
@@ -308,8 +295,8 @@ function SubscriptionPlans() {
                 <AccordionButton bg={"brand.100"} _hover={{ bg: "brand.100" }}>
                   <AccordionIcon color="white" />
                   <Box flex="1" textAlign="left" fontWeight="600" color="white">
-                    My SOSE Elite is a one-time membership fee or do I have to
-                    pay extra?
+                    My SOSE Elite is a one-time membership fee, or do I have to
+                    pay anything extra?
                   </Box>
                 </AccordionButton>
               </h2>
@@ -319,10 +306,10 @@ function SubscriptionPlans() {
                 borderColor="gray.200"
                 borderBottom={"none"}
               >
-                Fee is recurring, which means that we will charge you
-                month-on-month or yearly. When you pay for the plan, you pay for
-                all the benefits which we will offer throughout the membership.
-                There are no hidden charges.
+                The fee is recurring, which means that we will charge you
+                monthly or yearly. When you pay for the plan, you pay for all
+                the benefits we offer throughout the membership. There are no
+                hidden charges.
               </AccordionPanel>
             </AccordionItem>
             <AccordionItem>
@@ -340,10 +327,11 @@ function SubscriptionPlans() {
                 borderColor="gray.200"
                 borderBottom={"none"}
               >
-                You can cancel the plan till you have not used any SOSE Elite
-                benefits and you will get a full refund in this case. If you use
-                even one of the benefits then you are not eligible for
-                cancellation & refund.
+                You can cancel the plan until you have not used any SOSE Elite
+                benefits, and you will get a full refund. If you use even one of
+                the benefits, you are not eligible for cancellation and refund.
+                Also the requesting period for the cancellation of the
+                subscription is 3 weeks from the subscription date.
               </AccordionPanel>
             </AccordionItem>
             <AccordionItem>
@@ -351,7 +339,7 @@ function SubscriptionPlans() {
                 <AccordionButton bg={"brand.100"} _hover={{ bg: "brand.100" }}>
                   <AccordionIcon color="white" />
                   <Box flex="1" textAlign="left" fontWeight="600" color="white">
-                    Is the membership fee final?
+                    Is the membership fee static?
                   </Box>
                 </AccordionButton>
               </h2>
@@ -361,11 +349,11 @@ function SubscriptionPlans() {
                 borderColor="gray.200"
                 borderBottom={"none"}
               >
-                Membership plan is currently offered at introductory price and
-                is liable to change at SOSE Organic's discretion. In case of any
-                updating in the membership fee, you don't have to pay anything
-                extra for your ongoing plan. However, the plan renewals will
-                happen at updated prices only.
+                The membership plan is offered at an introductory price and is
+                liable to change at SOSE Organic's discretion. If the membership
+                fee is updated, you don't have to pay anything extra for your
+                ongoing plan. However, plan renewals will happen at updated
+                prices only.
               </AccordionPanel>
             </AccordionItem>
             <AccordionItem>
@@ -373,7 +361,7 @@ function SubscriptionPlans() {
                 <AccordionButton bg={"brand.100"} _hover={{ bg: "brand.100" }}>
                   <AccordionIcon color="white" />
                   <Box flex="1" textAlign="left" fontWeight="600" color="white">
-                    What do you mean by free premium consults?
+                    What do we mean by free premium consults?
                   </Box>
                 </AccordionButton>
               </h2>
@@ -385,9 +373,9 @@ function SubscriptionPlans() {
               >
                 As a part of our SOSE Elite benefit, you will get a free premium
                 consult. Premium consults are a quick way to connect with the
-                doctor, users get a reply within 2-3 hrs. As a part of SOSE
-                Elite benefit, you can chat with a specialist or any other
-                specialist doctor, general physician for medical assistance.
+                doctor, and users get a reply within 2-3 hours. As a part of the
+                SOSE Elite benefit, you can chat with a specialist or any other
+                specialist doctor or general physician for medical assistance.
               </AccordionPanel>
             </AccordionItem>
             <AccordionItem>
@@ -417,7 +405,7 @@ function SubscriptionPlans() {
                 <AccordionButton bg={"brand.100"} _hover={{ bg: "brand.100" }}>
                   <AccordionIcon color="white" />
                   <Box flex="1" textAlign="left" fontWeight="600" color="white">
-                    Termination & Misuse of Membership
+                    Will there be any termination for misuse of Membership?
                   </Box>
                 </AccordionButton>
               </h2>
@@ -427,13 +415,13 @@ function SubscriptionPlans() {
                 borderColor="gray.200"
                 borderBottom={"none"}
               >
-                Misuse of SOSE Elite membership or benefits of membership may
-                result in termination of membership. In such a case SOSE Organic
-                holds sole rights to terminate or withdraw some benefits for
-                such users. Disqualification of a SOSE Elite member, arising out
-                of his/her misconduct, fraud and misuse of benefits may result
-                in termination of his/her membership and will not be eligible to
-                become a member once again.
+                Misuse of SOSE Elite membership or benefits may result in
+                membership termination. SOSE Organic holds sole rights to
+                terminate or withdraw some user benefits in such a case.
+                Disqualification of a SOSE Elite member arising out of his/her
+                misconduct, fraud, or misuse of benefits may result in
+                termination of his/her membership, and he/she will not be
+                eligible to become a member again.
               </AccordionPanel>
             </AccordionItem>
             <AccordionItem>
@@ -462,7 +450,14 @@ function SubscriptionPlans() {
           </Accordion>
         </Box>
       </Container>
-      <Footer />
+      {!checkLogin().isLoggedIn && (
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
+        )}
+      <ScrollToTop />
+      {IsMobileView !== "true" && <Footer />}
     </>
   );
 }

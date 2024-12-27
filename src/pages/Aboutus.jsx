@@ -3,7 +3,8 @@ import BreadCrumbCom from "../components/BreadCrumbCom";
 import Navbar from "../components/Navbar";
 import { Box, Container, VStack, Image, Text, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
-const Aboutus = () => {
+import ScrollToTop from "../components/ScrollToTop";
+const AboutUs = () => {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const IsMobileView = searchParams.get("mobile") ?? "false";
@@ -13,7 +14,7 @@ const Aboutus = () => {
       <Container maxW={"container.xl"} alignContent={"flex-start"}>
         <BreadCrumbCom second={"About Us"} secondUrl={"/about-us"} />{" "}
       </Container>
-      <Container maxW={"container.xl"} py={8} px={0} position="relative">
+      <Container maxW={"container.xl"} py={1} px={0} position="relative">
         <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/aboutUs.jpg" />
 
         <Text
@@ -33,7 +34,6 @@ const Aboutus = () => {
         </Text>
       </Container>
       <Container maxW={"container.xl"} mb={4} px={0} centerContent>
-        
         <VStack>
           <Image
             src={
@@ -85,22 +85,22 @@ const Aboutus = () => {
               "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/aboutus/section_icon+(1).png"
             }
           />
-         
-            <Heading
-              color="brand.500"
-              size="lg"
-              mx="auto"
-              align={"center"}
-              my={"5"}
-              pb={"10px"}
-            >
-              AVAILABLE AT
-            </Heading>
-         
+
+          <Heading
+            color="brand.500"
+            size="lg"
+            mx="auto"
+            align={"center"}
+            my={"5"}
+            pb={"10px"}
+          >
+            AVAILABLE AT
+          </Heading>
+
           <Container maxW={"container.xl"} mb={5} px={0} centerContent>
             <Image
               src={
-                "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/01.jpg"
+                require("../assets/001.jpg")
               }
               w={"container.xl"}
               alt=""
@@ -112,9 +112,10 @@ const Aboutus = () => {
           </Container>
         </VStack>
       </Container>
+      <ScrollToTop/>
       {IsMobileView !== "true" && <Footer />}
     </>
   );
 };
 
-export default Aboutus;
+export default AboutUs;

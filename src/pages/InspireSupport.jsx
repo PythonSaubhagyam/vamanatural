@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import ReadMorePost from "../components/ReadMorePost";
 import { Box, Container, Text,Image } from "@chakra-ui/react";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import ScrollToTop from "../components/ScrollToTop";
 
 const Posts = [
   {
@@ -24,7 +25,7 @@ const Posts = [
     title: "Sidha Kisan Se",
     content:
       "SIDHA KISAN SE is inspired by Bansi Gir Gaushala, and it's work towards the revival of Bharat's ancient Gau Sanskriti. SIDHA KISAN SE intends to transform the way food is bought and sold in the country by bringing farmers and consumers closer to each other. Under the SIDHA KISAN SE initiative, Suryan Organic offers you an opportunity to buy genuine, pure and authentic organic commodities directly from farmers who are part of our growing network of thousands of trusted and ethically growing natural farmers.",
-    href: "https://www.sidhakisanse.com/",
+    href: "https://www.sidhakisanse.in/",
   },
   {
     image: "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/inspire-and-support/gotirth.jpg",
@@ -46,8 +47,8 @@ export default function InspireSupport() {
           secondUrl={"/inspire-and-support"}
         />{" "}
       </Container>
-      <Container maxW={"container.xl"} py={8} px={0} position="relative">
-        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/inspire and support.jpg" />
+      <Container maxW={"container.xl"} py={1} px={0} position="relative" centerContent>
+        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/inspire and support.jpg" width="100%" />
 
         <Text
           pb={2}
@@ -70,6 +71,7 @@ export default function InspireSupport() {
           <ReadMorePost postAlign="horizontal" postDetails={postDetails} />
         ))}
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

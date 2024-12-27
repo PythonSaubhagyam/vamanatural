@@ -38,6 +38,10 @@ export default function Checkout({ getDetails }) {
     });
   }
 
+  // const [showPremiunDeliveryOption, setShowPremiunDeliveryOption] = useState(
+  //   localStorage.getItem("is_sose_elite_user") === "true" ? true : false
+  // );
+  // const [showAllDeliveryOptions, setShowAllDeliveryOptions] = useState();
   const initialFormData = Object.freeze({
     billingAddress: null,
     full_name: "",
@@ -51,16 +55,24 @@ export default function Checkout({ getDetails }) {
     postal_code: "",
     country: "India",
     pay_type: null,
-    shipping_amt: localStorage.getItem("has_active_sub") === "true" ? 0 : 100,
+    shipping_amt:
+      localStorage.getItem("is_sose_elite_user") === "true" ? 0 : 100,
   });
 
   const [addresses, setAddresses] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
   const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showAllDeliveryOptions, setShowAllDeliveryOptions] = useState(
-    localStorage.getItem("has_active_sub") === "true" ? true : false
+  const [isPayment, setPayment] = useState(false);
+  const [CartCount, setCartCount] = useState(
+    localStorage.getItem("cart_counter") ?? 0
   );
+  // const [total, setTotal] = useState(
+  //   localStorage.getItem("product_total") === null ||
+  //     localStorage.getItem("product_total") === undefined
+  //     ? 0
+  //     : localStorage.getItem("product_total")
+  // );
   const [paymentInProgress, setPaymentInProgress] = useState(false);
 
   const location = useLocation();
@@ -76,28 +88,62 @@ export default function Checkout({ getDetails }) {
 
   useEffect(() => {
     getAddresses(); // eslint-disable-next-line
+    getEliteUser();
   }, []);
+
+  const getEliteUser = async () => {
+    try {
+      const response = await client.get("/user/elite_check/", {
+        headers: { Authorization: `token ${loginInfo.token}` },
+      });
+
+      if (response.data.status === true) {
+        localStorage.setItem(
+          "is_sose_elite_user",
+          response.data.is_sose_elite_user
+        );
+      }
+    } catch (err) {
+      setLoading(false);
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later!",
+        position: "top-right",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   async function getAddresses() {
     try {
       const response = await client.get("/user/address/", {
         headers: { Authorization: `token ${loginInfo.token}` },
       });
+
       if (response.data.status) {
         setAddresses(response.data.data);
         const defaultAddress = response.data.data.filter(
           (address) => address.is_default === true
         );
-        setFormData({
-          ...formData,
-          full_name: formData?.full_name ?? "",
-          billingAddress: response.data.data[0]?.id,
-        });
+        console.log(defaultAddress);
 
         if (response.data.data[0]?.city_obj.name === "Ahmedabad") {
-          setShowAllDeliveryOptions(true);
+          setFormData({
+            ...formData,
+            shipping_amt: 0,
+            full_name: formData?.full_name ?? "",
+            billingAddress: response.data.data[0]?.id,
+          });
         } else {
-          setShowAllDeliveryOptions(false);
+          setFormData({
+            ...formData,
+            shipping_amt:
+              localStorage.getItem("is_sose_elite_user") === "true" ? 0 : 100,
+            full_name: formData?.full_name ?? "",
+            billingAddress: response.data.data[0]?.id,
+          });
         }
       } else {
         toast({
@@ -123,6 +169,7 @@ export default function Checkout({ getDetails }) {
   }
 
   const placeOrder = async (e) => {
+    setPayment(true);
     e.preventDefault();
     setLoading(true);
     try {
@@ -156,6 +203,7 @@ export default function Checkout({ getDetails }) {
         localStorage.removeItem("isAGift");
         localStorage.removeItem("giftMessage");
         localStorage.setItem("cart_counter", 0);
+        localStorage.setItem("product_total", 0);
         navigate("/profile#orders", { relative: true });
       }
     } catch (error) {
@@ -169,88 +217,165 @@ export default function Checkout({ getDetails }) {
     }
 
     setLoading(false);
+    setPayment(false);
   };
 
   const toggleShowAll = () => {
     setShowAll(!showAll);
   };
-
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+    if (newWindow) newWindow.opener = null;
+    // navigate("/");
+  };
   async function updateDeliveryOptions(addressId) {
-    console.log("test ");
-    setFormData({ ...formData, billingAddress: addressId });
     let selectedAddress = addresses.find(
       (address) => address.id === parseInt(addressId)
     );
 
     if (selectedAddress.city_obj.name === "Ahmedabad") {
-      setShowAllDeliveryOptions(true);
+      setFormData({
+        ...formData,
+        billingAddress: addressId,
+        shipping_amt: 0,
+      });
     } else {
-      setShowAllDeliveryOptions(false);
+      setFormData({
+        ...formData,
+        billingAddress: addressId,
+        shipping_amt:
+          localStorage.getItem("is_sose_elite_user") === "true" ? 0 : 100,
+      });
     }
   }
 
+  // async function handleOnlinePayment() {
+  //   setPayment(true);
+  //   if (formData.billingAddress === null) {
+  //     toast({
+  //       title: "Please select billing address!",
+  //       status: "error",
+  //       position: "top-right",
+  //       duration: 4000,
+  //       isClosable: true,
+  //     });
+  //   } else {
+  //     let data = {};
+  //     data.txnid = new Date().getTime().toString();
+  //     data.amount = `${location.state.grandTotal + formData.shipping_amt}`;
+  //     data.productinfo = location.state.isAGift ? "Gift" : "SOSE";
+  //     data.billing_address = formData.billingAddress;
+  //     data.shipping_amount = formData.shipping_amt;
+  //     data.tax_amount = location.state.taxes;
+  //     data.is_a_gift = location.state.isAGift;
+  //     data.giftMessage = location.state.giftMessage;
+  //     data.voucherCode = location.state?.voucherCode;
+  //     const res = await client.post(
+  //       "/get-order-payment-link/",
+  //       {
+  //         ...data,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `token ${checkLogin().token}`,
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  //     var txt_new = res.data.txn_id;
+  //     if (res.data.status === true) {
+  //       setTxt_new_id(res.data.txn_id);
+  //       // setPaymentInProgress(true);
+  //       // window.open(, "_top");
+  //       const options =
+  //         "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+  //       // openInNewTab(res.data.payment_url);
+  //       setTimeout(() => {
+  //         window.open(res.data.payment_url, "_top", options);
+  //       });
+  //       // const checkPayment = setInterval(async function () {
+  //       //   const res = await getPaymentDetails(txt_new);
+  //       //   if (res.data.status === true) {
+  //       //     setPaymentInProgress(false);
+  //       //     localStorage.removeItem("isAGift");
+  //       //     localStorage.removeItem("giftMessage");
+  //       //     // toast({
+  //       //     //   title: "Your order has been placed!",
+  //       //     //   status: "success",
+  //       //     //   position: "top-right",
+  //       //     //   duration: 5000,
+  //       //     //   isClosable: true,
+  //       //     // });
+  //       //     navigate("/profile#orders");
+  //       //     clearInterval(checkPayment);
+  //       //     localStorage.setItem("cart_counter", 0);
+  //       //   } else {
+  //       //     // setPaymentInProgress(false);
+  //       //     // navigate("/");
+  //       //   }
+  //       // }, 3000);
+  //     } else {
+  //     }
+
+  //     setPayment(false);
+  //   }
+  // }
   async function handleOnlinePayment() {
-    console.log(formData);
-    if (formData.billingAddress === null) {
+    setPayment(true);
+    if (!formData.billingAddress) {
       toast({
-        title: "Please select billing address!",
+        title: "Please select a billing address!",
         status: "error",
         position: "top-right",
         duration: 4000,
         isClosable: true,
       });
-    } else {
-      let data = {};
-      data.txnid = new Date().getTime().toString();
-      data.amount = `${location.state.grandTotal + formData.shipping_amt}`;
-      data.productinfo = location.state.isAGift ? "Gift" : "SOSE";
-      data.billing_address = formData.billingAddress;
-      data.shipping_amount = formData.shipping_amt;
-      data.tax_amount = location.state.taxes;
-      data.is_a_gift = location.state.isAGift;
-      data.giftMessage = location.state.giftMessage;
-      data.voucherCode = location.state?.voucherCode;
-      const res = await client.post(
-        "/get-order-payment-link/",
-        {
-          ...data,
+      return;
+    }
+
+    const data = {
+      txnid: new Date().getTime().toString(),
+      amount: `${location.state.grandTotal + formData.shipping_amt}`,
+      productinfo: location.state.isAGift ? "Gift" : "SOSE",
+      billing_address: formData.billingAddress,
+      shipping_amount: formData.shipping_amt,
+      tax_amount: location.state.taxes,
+      is_a_gift: location.state.isAGift,
+      giftMessage: location.state.giftMessage,
+      voucherCode: location.state?.voucherCode,
+    };
+
+    try {
+      const res = await client.post("/get-order-payment-link/", data, {
+        headers: {
+          Authorization: `token ${checkLogin().token}`,
+          "Content-Type": "multipart/form-data",
         },
-        {
-          headers: {
-            Authorization: `token ${checkLogin().token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      var txt_new = res.data.txn_id;
+      });
+
       if (res.data.status === true) {
         setTxt_new_id(res.data.txn_id);
-        // setPaymentInProgress(true);
-        window.open(res.data.payment_url, "_blank");
-        // const checkPayment = setInterval(async function () {
-        //   const res = await getPaymentDetails(txt_new);
-        //   if (res.data.status === true) {
-        //     setPaymentInProgress(false);
-        //     localStorage.removeItem("isAGift");
-        //     localStorage.removeItem("giftMessage");
-        //     // toast({
-        //     //   title: "Your order has been placed!",
-        //     //   status: "success",
-        //     //   position: "top-right",
-        //     //   duration: 5000,
-        //     //   isClosable: true,
-        //     // });
-        //     navigate("/profile#orders");
-        //     clearInterval(checkPayment);
-        //     localStorage.setItem("cart_counter", 0);
-        //   } else {
-        //     // setPaymentInProgress(false);
-        //     // navigate("/");
-        //   }
-        // }, 3000);
-      } else {
+        localStorage.setItem("cart_counter", 0); // Clear cart count
+        setCartCount(0);
+        // setTotal(0);
+        const options =
+          "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+        window.open(res.data.payment_url, "_top", options);
+        setTimeout(() => {
+          window.open(res.data.payment_url, "_top", options);
+        });
       }
-      navigate("/");
+    } catch (error) {
+      console.error("Payment Error:", error);
+      toast({
+        title: "Payment failed! Please try again.",
+        status: "error",
+        position: "top-right",
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
+      setPayment(false);
     }
   }
 
@@ -264,6 +389,7 @@ export default function Checkout({ getDetails }) {
     return (
       <>
         <Navbar />
+
         {loading ? (
           <Center h="75vh">
             <Loader site={true} />
@@ -425,30 +551,27 @@ export default function Checkout({ getDetails }) {
                 </Heading>
                 <RadioGroup
                   name="delivery-options"
-                  value={formData.shipping_amt}
-                  onChange={(shippingCost) => {
-                    setFormData({
-                      ...formData,
-                      shipping_amt: parseInt(shippingCost),
-                    });
-                  }}
+                  value={parseInt(formData.shipping_amt)}
+                  // onChange={(shippingCost) => {
+                  //   setFormData({
+                  //     ...formData,
+                  //     shipping_amt: parseInt(shippingCost),
+                  //   });
+                  // }}
                 >
                   <Flex gap={5} direction="column">
-                    {localStorage.getItem("has_active_sub") !== "true" && (
+                    {formData.shipping_amt === 0 ? (
+                      <Radio colorScheme="brand" value={0}>
+                        Free Home Delivery (Elite / within Ahmedabad)
+                      </Radio>
+                    ) : (
                       <Radio colorScheme="brand" value={100}>
                         Normal Delivery{" "}
                         <Text fontWeight="bolder" display="inline">
                           (₹ 100)
-                        </Text>
+                        </Text>{" "}
                       </Radio>
                     )}
-                    <Radio
-                      colorScheme="brand"
-                      value={0}
-                      display={showAllDeliveryOptions ? "block" : "none"}
-                    >
-                      Free Home Delivery (Elite / within Ahmedabad)
-                    </Radio>
                   </Flex>
                 </RadioGroup>
               </FormControl>
@@ -465,6 +588,8 @@ export default function Checkout({ getDetails }) {
                   mx="auto"
                   colorScheme="brand"
                   onClick={handleOnlinePayment}
+                  isLoading={isPayment}
+                  loadingText="Processing..."
                 >
                   Pay online
                 </Button>

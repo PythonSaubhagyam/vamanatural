@@ -226,7 +226,7 @@ export default function CartRow({
         leftIcon={<RiDeleteBin5Line />}
         _hover={{ bg: "brand.100" }}
         size={"sm"}
-        ml={3}
+        ml={8}
         onClick={() => removeProductFromCart(cartItem.id)}
       >
         Remove

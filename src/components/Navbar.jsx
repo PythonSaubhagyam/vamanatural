@@ -64,16 +64,22 @@ import { TfiYoutube } from "react-icons/tfi";
 import { FaApple, FaFacebookF, FaGooglePlay, FaWhatsapp } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
 import { debounce } from "lodash";
+import CartEmitter from "./EventEmitter";
+import LoginModal from "./LoginModal";
 
 const Links = [
-  // {
-  //   name: "Home",
-  //   location: "/",
-  // },
-  // {
-  //   name: "Shop",
-  //   location: "/shop?page=1",
-  // },
+  {
+    name: "SOSE Elite",
+    location: "/subscription-plans",
+  },
+  {
+    name: "Gift Voucher",
+    location: "/gift-voucher",
+  },
+  {
+    name: "Consult Our Vaidya",
+    location: "/consult-our-vaidya",
+  },
   {
     name: "About us",
     location: "/about-us",
@@ -82,31 +88,41 @@ const Links = [
     name: "Inspire & Support",
     location: "/inspire-and-support",
   },
-  // {
-  //   name: "Organic Living",
-  //   location: "/organic-living",
-  // },
-  {
-    name: "Consult Our Vaidya",
-    location: "/consult-our-vaidya",
-  },
-
+  //  {
+  //    name: "Organic Living",
+  //    location: "/organic-living",
+  //  },
+  //  {
+  //    name: "Exports",
+  //    location: "/exports",
+  //  },
+  //  {
+  //    name: "B2B",
+  //    location: "/bussiness",
+  //  },
+  //  {
+  //    name: "Franchise",
+  //    location: "/franchise",
+  //  },
   {
     name: "Store Locator",
     location: "/store-locator",
   },
-  { name: "Blogs", location: "/blogs?page=1" },
+  {
+    name: "Blogs",
+    location: "/blogs?page=1",
+  },
   {
     name: "Contact Us",
     location: "/contact-us",
   },
- 
-  // {
-  //   name: "Gifting",
-  //   location: "/shop?gift=true",
-  // },
-];
+  //   // { name: "Natural Products", location: "/shop" },
 
+  //   // {
+  //   //   name: "Gifting",
+  //   //   location: "/shop?gift=true",
+  //   // },
+];
 
 const mainLinks = [
   {
@@ -226,6 +242,7 @@ export default function Navbar() {
   const [subCategoriesLastIndex, setSubCategoriesLastIndex] = useState([]);
   const [subChildCategories, setSubChildCategories] = useState([]);
   let [searchParams, setSearchParams] = useSearchParams();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [accordion, setAccordion] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState(null);
@@ -238,7 +255,7 @@ export default function Navbar() {
   const [openSubSections, setOpenSubSections] = useState([]);
   const [megaCategories, setMegaCategories] = useState([]);
   const [megaSubCategories, setMegaSubCategories] = useState([]);
-  const [nestedCategories ,setNestedCategories] = useState([])
+  const [nestedCategories, setNestedCategories] = useState([]);
   const [all, setAll] = useState(false);
   const toggleSection = (index, section) => {
     setAll(false);
@@ -281,8 +298,14 @@ export default function Navbar() {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
-    CheckOrSetUDID();
-    getCategories();
+    const init = async () => {
+      await CheckOrSetUDID();
+      getCategories();
+    };
+
+    init();
+    // CheckOrSetUDID();
+    // getCategories();
   }, []);
 
   const mergeArraysById = (array1, array2) =>
@@ -299,6 +322,7 @@ export default function Navbar() {
 
     if (response.data.status === true) {
       setCategories(response.data.categories);
+      setMegaCategories(response.data.categories);
       setTopCategory(mergeArraysById(mainLinks, response.data.categories));
     }
   };
@@ -375,6 +399,8 @@ export default function Navbar() {
   }, []);
   const Logout = () => {
     localStorage.clear();
+    CartEmitter.emit("updateCartCount", 0);
+    CartEmitter.emit("updateProductTotal", 0);
     toast({
       title: "Logged out successfully!",
       status: "success",
@@ -390,7 +416,7 @@ export default function Navbar() {
   const [Open1, setOpen1] = useState(false);
 
   const handleHover1 = () => {
-    if(megaCategories.length>0){
+    if (megaCategories.length > 0) {
       setOpen(true);
     }
   };
@@ -402,13 +428,12 @@ export default function Navbar() {
     setMegaSubCategories(data);
   };
   const handleShowSubMenu = (data) => {
-    setNestedCategories(data)
+    setNestedCategories(data);
   };
 
-
   useEffect(() => {
-    CheckOrSetUDID();
-    getMegaCategories();
+    //CheckOrSetUDID();
+    //getMegaCategories();
   }, []);
 
   const getMegaCategories = async () => {
@@ -422,9 +447,7 @@ export default function Navbar() {
   };
 
   return (
-   
-          <Box position="sticky" top={0} backgroundColor='white' zIndex={999}>
-
+    <Box position="sticky" top={0} backgroundColor="white" zIndex={999}>
       <Flex justify="center" display={isMobile ? "flex" : "none"}>
         <Link as={ReactRouterLink} to="/">
           <Image
@@ -581,8 +604,7 @@ export default function Navbar() {
                     _hover={{ bg: "brand.500" }}
                   > */}
                   <MenuItem
-                    as={Link}
-                    href="/login"
+                    onClick={()=>setIsLoginModalOpen(true)}
                     cursor={"pointer"}
                     _hover={{ textDecoration: "none" }}
                   >
@@ -626,212 +648,226 @@ export default function Navbar() {
                     </Text>
                   </LinkOverlay>
                 </LinkBox> */}
-                
-              <Accordion width={"100%"} onClose={handleClose}>
-                <AccordionItem isOpen={Open}>
-                  <AccordionButton
-                    onClick={() => {
-                      handleHover();
-                      setOpenOuterAccordion(!openOuterAccordion);
-                    }}
-                    style={
-                      all
-                        ? {
-                            background: "#436131",
-                            color: "white",
-                            borderRadius: 5,
-                          }
-                        : {
-                            background: "white",
-                            color: "black",
-                            borderRadius: 5,
-                          }
-                    }
-                  >
-                    <Box
-                      as="span"
-                      flex="1"
-                      fontSize="md"
-                      color="brand.900"
-                      textAlign="left"
+
+                <Accordion width={"100%"} onClose={handleClose}>
+                  <AccordionItem isOpen={Open}>
+                    <AccordionButton
+                      onClick={() => {
+                        handleHover();
+                        setOpenOuterAccordion(!openOuterAccordion);
+                      }}
+                      style={
+                        all
+                          ? {
+                              background: "#436131",
+                              color: "white",
+                              borderRadius: 5,
+                            }
+                          : {
+                              background: "white",
+                              color: "black",
+                              borderRadius: 5,
+                            }
+                      }
                     >
-                      Shop By Category
-                    </Box>{" "}
-                    <AccordionIcon />
-                  </AccordionButton>
+                      <Box
+                        as="span"
+                        flex="1"
+                        fontSize="md"
+                        color="brand.900"
+                        textAlign="left"
+                      >
+                        Shop By Category
+                      </Box>{" "}
+                      <AccordionIcon />
+                    </AccordionButton>
 
-                  <AccordionPanel
-                    pb={4}
-                    display={openOuterAccordion ? "block" : "none"}
-                  >
-                    <Accordion width={"100%"} onClose={handleClose}>
-                      <AccordionItem>
-                        {categories?.map((section, index) => (
-                          <AccordionItem
-                            key={index}
-                            width={"100%"}
-                            textAlign={"start"}
-                            textDecoration="none"
-                            isOpen={!isOpen}
-                          >
-                            <AccordionButton
-                              marginLeft={4}
-                              onClick={() => {
-                                toggleSection(index, section);
-
-                                setSearchParams({
-                                  category: section.id,
-                                });
-                                if (section?.children?.length > 0) {
-                                  setOpenAccrodion();
-                                } else {
-                                  navigate(
-                                    `/shop?page=1&category=${section.id}`
-                                  );
-                                  setAccordion(!isOpen);
-                                  onClose();
-                                }
-                              }}
-                            >
-                              <Box
-                                as="span"
-                                flex="1"
-                                textAlign="left"
-                                textTransform={"capitalize"}
-                                width={"100%"}
-                              >
-                                {section?.name}
-                              </Box>
-                              <AccordionIcon
-                                display={
-                                  section?.children?.length > 0 ? "" : "none"
-                                }
-                              />
-                            </AccordionButton>
-                            <AccordionPanel
-                              pb={4}
+                    <AccordionPanel
+                      pb={4}
+                      display={openOuterAccordion ? "block" : "none"}
+                    >
+                      <Accordion width={"100%"} onClose={handleClose}>
+                        <AccordionItem>
+                          {categories?.map((section, index) => (
+                            <AccordionItem
+                              key={index}
                               width={"100%"}
-                              display={
-                                openSections.includes(index) ? "block" : "none"
-                              }
+                              textAlign={"start"}
+                              textDecoration="none"
+                              isOpen={!isOpen}
                             >
-                              {openSections?.includes(index) ? (
-                                <>
-                                  {section?.children.map(
-                                    (subcategory, subIndex) => (
-                                      <>
-                                        <Accordion
-                                          width={"100%"}
-                                          onClose={handleClose}
-                                        >
-                                          <AccordionItem
-                                            key={subIndex}
-                                            isOpen={isOpen}
-                                          >
-                                            <AccordionButton
-                                              width={"100%"}
-                                              textAlign={"start"}
-                                              onClick={() => {
-                                                subToggleSection(
-                                                  subIndex,
-                                                  subcategory
-                                                );
+                              <AccordionButton
+                                marginLeft={4}
+                                onClick={() => {
+                                  toggleSection(index, section);
 
-                                                if (
-                                                  subcategory?.children
-                                                    ?.length > 0
-                                                ) {
-                                                  setOpenAccrodion(
-                                                    !openAccrodion
-                                                  );
-                                                  setOpen(Open);
-                                                } else {
-                                                  navigate(
-                                                    `/shop?page=1&category=${subcategory.id}&category_name=${encodeURIComponent(subcategory?.name)}`
-                                                  );
-                                                  setAccordion(!isOpen);
-                                                  onClose();
-                                                }
-                                              }}
+                                  setSearchParams({
+                                    category: section.id,
+                                  });
+                                  if (section?.children?.length > 0) {
+                                    setOpenAccrodion();
+                                  } else {
+                                    navigate(
+                                      `/shop?page=1&category=${section.id}`
+                                    );
+                                    setAccordion(!isOpen);
+                                    onClose();
+                                  }
+                                }}
+                              >
+                                <Box
+                                  as="span"
+                                  flex="1"
+                                  textAlign="left"
+                                  textTransform={"capitalize"}
+                                  width={"100%"}
+                                >
+                                  {section?.name}
+                                </Box>
+                                <AccordionIcon
+                                  display={
+                                    section?.children?.length > 0 ? "" : "none"
+                                  }
+                                />
+                              </AccordionButton>
+                              <AccordionPanel
+                                pb={4}
+                                width={"100%"}
+                                display={
+                                  openSections.includes(index)
+                                    ? "block"
+                                    : "none"
+                                }
+                              >
+                                {openSections?.includes(index) ? (
+                                  <>
+                                    {section?.children.map(
+                                      (subcategory, subIndex) => (
+                                        <>
+                                          <Accordion
+                                            width={"100%"}
+                                            onClose={handleClose}
+                                          >
+                                            <AccordionItem
+                                              key={subIndex}
+                                              isOpen={isOpen}
                                             >
-                                              <Box
-                                                as="span"
-                                                flex="1"
-                                                textAlign="left"
-                                                fontSize={14}
+                                              <AccordionButton
+                                                width={"100%"}
+                                                textAlign={"start"}
+                                                onClick={() => {
+                                                  subToggleSection(
+                                                    subIndex,
+                                                    subcategory
+                                                  );
+
+                                                  if (
+                                                    subcategory?.children
+                                                      ?.length > 0
+                                                  ) {
+                                                    setOpenAccrodion(
+                                                      !openAccrodion
+                                                    );
+                                                    setOpen(Open);
+                                                  } else {
+                                                    navigate(
+                                                      `/shop?page=1&category=${
+                                                        subcategory.id
+                                                      }&category_name=${encodeURIComponent(
+                                                        subcategory?.name
+                                                      )}`
+                                                    );
+                                                    setAccordion(!isOpen);
+                                                    onClose();
+                                                  }
+                                                }}
                                               >
-                                                {subcategory?.name}
-                                              </Box>
-                                              <AccordionIcon
-                                                onClick={() =>
-                                                  navigate(
-                                                    `/shop?page=1&category=${subcategory.id}&category_name=${encodeURIComponent(subcategory?.name)}`
-                                                  )
-                                                }
+                                                <Box
+                                                  as="span"
+                                                  flex="1"
+                                                  textAlign="left"
+                                                  fontSize={14}
+                                                >
+                                                  {subcategory?.name}
+                                                </Box>
+                                                <AccordionIcon
+                                                  onClick={() =>
+                                                    navigate(
+                                                      `/shop?page=1&category=${
+                                                        subcategory.id
+                                                      }&category_name=${encodeURIComponent(
+                                                        subcategory?.name
+                                                      )}`
+                                                    )
+                                                  }
+                                                  display={
+                                                    subcategory?.children
+                                                      ?.length > 0
+                                                      ? ""
+                                                      : "none"
+                                                  }
+                                                />
+                                              </AccordionButton>
+                                              <AccordionPanel
+                                                pb={4}
                                                 display={
-                                                  subcategory?.children
-                                                    ?.length > 0
-                                                    ? ""
+                                                  openSubSections.includes(
+                                                    subIndex
+                                                  )
+                                                    ? "block"
                                                     : "none"
                                                 }
-                                              />
-                                            </AccordionButton>
-                                            <AccordionPanel
-                                              pb={4}
-                                              display={
-                                                openSubSections.includes(
+                                              >
+                                                {openSubSections?.includes(
                                                   subIndex
-                                                )
-                                                  ? "block"
-                                                  : "none"
-                                              }
-                                            >
-                                              {openSubSections?.includes(
-                                                subIndex
-                                              ) ? (
-                                                <>
-                                                  {subcategory?.children.map(
-                                                    (children, i) => (
-                                                      <Text
-                                                        textDecoration="none"
-                                                        py={1}
-                                                        key={i}
-                                                        onClick={() => {
-                                                          navigate(
-                                                            `/shop?page=1&category=${children.id}&category_name=${encodeURIComponent(children?.name)}`
-                                                          );
-                                                          onClose();
-                                                        }}
-                                                        fontSize={13}
-                                                        cursor={"pointer"}
-                                                        marginLeft={3}
-                                                      >
-                                                        {children?.name}
-                                                      </Text>
-                                                    )
-                                                  )}
-                                                </>
-                                              ) : (
-                                                <></>
-                                              )}
-                                            </AccordionPanel>
-                                          </AccordionItem>
-                                        </Accordion>
-                                      </>
-                                    )
-                                  )}
-                                </>
-                              ) : (
-                                <></>
-                              )}
-                            </AccordionPanel>
-                          </AccordionItem>
-                        ))}
-                      </AccordionItem>
-                    </Accordion>
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
+                                                ) ? (
+                                                  <>
+                                                    {subcategory?.children.map(
+                                                      (children, i) => (
+                                                        <Text
+                                                          textDecoration="none"
+                                                          py={1}
+                                                          key={i}
+                                                          onClick={() => {
+                                                            navigate(
+                                                              `/shop?page=1&category=${
+                                                                children.id
+                                                              }&category_name=${encodeURIComponent(
+                                                                children?.name
+                                                              )}`
+                                                            );
+                                                            onClose();
+                                                          }}
+                                                          fontSize={13}
+                                                          cursor={"pointer"}
+                                                          marginLeft={3}
+                                                        >
+                                                          {children?.name}
+                                                        </Text>
+                                                      )
+                                                    )}
+                                                  </>
+                                                ) : (
+                                                  <></>
+                                                )}
+                                              </AccordionPanel>
+                                            </AccordionItem>
+                                          </Accordion>
+                                        </>
+                                      )
+                                    )}
+                                  </>
+                                ) : (
+                                  <></>
+                                )}
+                              </AccordionPanel>
+                            </AccordionItem>
+                          ))}
+                        </AccordionItem>
+                      </Accordion>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
                 {Links.map((link) => (
                   // <LinkBox w="100%" key={link.name}>
                   //     <LinkOverlay
@@ -875,10 +911,7 @@ export default function Navbar() {
         }}
         display={isMobile ? "none" : "block"}
       >
-        <Grid
-          templateRows="repeat(2, 1fr)"
-          templateColumns={"repeat(12, 1fr)"}
-        >
+        <Grid templateRows="repeat(2, 1fr)" templateColumns={"repeat(12, 1fr)"}>
           <GridItem
             rowSpan={2}
             colSpan={1}
@@ -1012,7 +1045,6 @@ export default function Navbar() {
               )
             ) : null}
           </GridItem>
-       
 
           <GridItem
             colSpan={4}
@@ -1062,8 +1094,8 @@ export default function Navbar() {
                       color: "brand.900",
                     }}
                     fontWeight={500}
-                    fontSize={{ md: "16px" }}
-                    onClick={() => navigate("/login")}
+                    fontSize={{ md: "14px" }}
+                    onClick={()=>setIsLoginModalOpen(true)}
                   >
                     Login
                   </Link>
@@ -1075,7 +1107,7 @@ export default function Navbar() {
                       color: "brand.900",
                     }}
                     fontWeight={500}
-                    fontSize={{ md: "16px" }}
+                    fontSize={{ md: "14px" }}
                   >
                     Sign up
                   </Link>
@@ -1084,111 +1116,134 @@ export default function Navbar() {
             </Flex>
           </GridItem>
           <GridItem
-            colSpan={8}
+            colSpan={9}
             display={"flex"}
             // style={{ borderBottom: "0.5px solid #b7b7b7" }}
           >
             <Flex
               as={"nav"}
-              gap={{ md: 6, lg: 4, xl: 5 }}
+              gap={{ md: 6, lg: 4, xl: 4 }}
               display={{ base: "flex", lg: "flex" }}
               fontSize={{ lg: 11, xl: 14, md: 9 }}
               alignItems={"center"}
             >
-               <Link
-                  as={ReactRouterLink}
-                  to={"/"}
-                  _hover={{
-                    textDecoration: "none",
-                    color: "brand.900",
-                  }}
-                  // fontWeight={600}
-                  onMouseEnter={handleClose}
+              <Link
+                as={ReactRouterLink}
+                to={"/"}
+                _hover={{
+                  textDecoration: "none",
+                  color: "brand.900",
+                }}
+                // fontWeight={600}
+                onMouseEnter={handleClose}
+              >
+                Home
+              </Link>
+              <Menu isOpen={Open} onClose={handleClose1}>
+                <MenuButton
+                  //color="text.500"
+                  mb={0.5}
+                  onMouseEnter={() => handleHover1()}
+                  // onMouseLeave={handleClose}
+                  onClick={() => navigate("/shop")}
                 >
-                  Home
-                </Link>
-                <Menu isOpen={Open} onClose={handleClose1}>
-                  <MenuButton
-                    //color="text.500"
-                    mb={0.5}
-                    onMouseEnter={()=>handleHover1()}
-                    // onMouseLeave={handleClose}
-                    onClick={() => navigate("/shop")}
-                  >
-                    Shop
-                  </MenuButton>
-                 <MenuList
-                    as={Grid}
-                    width={500}
-                    //height={400}
-                    templateColumns="repeat(9, 1fr)"
-                    onMouseLeave={handleClose1}
-                    zIndex={9999}
-                  >
-                    <GridItem colSpan={3} overflow="auto">
-                      {megaCategories?.map((section, index) => (
-                        <>
-                          <MenuItem
-                            icon={<img src={"./himalayan_logo.jpg"} width={25} alt="" />}
-                            fontSize={"14"}
-                            key={index}
-                            onMouseEnter={() => handleShow1(section.children)}
-                            onClick={() =>
-                              navigate(`/shop?category=${section.id}&category_name=${encodeURIComponent(section?.name)}`)
-                            }
-                            sx={{
-                              "&:hover": {
-                                backgroundColor: "brand.500",
-                                color: "white",
-                              },
-                            }}
-                          >
-                            {" "}
-                            {section?.name}
-                          </MenuItem>
+                  Shop
+                </MenuButton>
+                <MenuList
+                  as={Grid}
+                  width={800}
+                  //height={400}
+                  templateColumns="repeat(9, 1fr)"
+                  onMouseLeave={handleClose1}
+                  zIndex={9999}
+                >
+                  <GridItem colSpan={3} overflow="auto">
+                    {megaCategories?.map((section, index) => (
+                      <>
+                        <MenuItem
+                          icon={
+                            <img
+                              src={"./himalayan_logo.jpg"}
+                              width={25}
+                              alt=""
+                            />
+                          }
+                          fontSize={"14"}
+                          key={index}
+                          onMouseEnter={() => handleShow1(section.children)}
+                          onClick={() =>
+                            navigate(
+                              `/shop?category=${
+                                section.id
+                              }&category_name=${encodeURIComponent(
+                                section?.name
+                              )}`
+                            )
+                          }
+                          sx={{
+                            "&:hover": {
+                              backgroundColor: "brand.500",
+                              color: "white",
+                            },
+                          }}
+                        >
+                          {" "}
+                          {section?.name}
+                        </MenuItem>
 
-                          <Divider />
-                        </>
-                      ))}
-                      
-                    </GridItem>
-                    <GridItem colSpan={3} overflow="auto">
-                      {megaSubCategories?.map((item, subIndex) => (
-                        <MenuItem
-                          fontSize={"14"}
-                          key={subIndex}
-                          onMouseEnter={()=>handleShowSubMenu(item.children)}
-                          onClick={() => navigate(`/shop?category=${item.id}&category_name=${encodeURIComponent(item?.name)}`)}
-                          sx={{
-                            "&:hover": {
-                              backgroundColor: "brand.500",
-                              color: "white",
-                            },
-                          }}
-                        >
-                          {item?.name}
-                        </MenuItem>
-                      ))}
-                    </GridItem>
-                    <GridItem colSpan={3} overflow="auto">
-                      {nestedCategories?.map((item, nestedIndex) => (
-                        <MenuItem
-                          fontSize={"14"}
-                          key={nestedIndex}
-                          onClick={() => navigate(`/shop?category=${item.id}&category_name=${encodeURIComponent(item?.name)}`)}
-                          sx={{
-                            "&:hover": {
-                              backgroundColor: "brand.500",
-                              color: "white",
-                            },
-                          }}
-                        >
-                          {item?.name}
-                        </MenuItem>
-                      ))}
-                    </GridItem>
-                  </MenuList>
-                </Menu>
+                        <Divider />
+                      </>
+                    ))}
+                  </GridItem>
+                  <GridItem colSpan={3} overflow="auto">
+                    {megaSubCategories?.map((item, subIndex) => (
+                      <MenuItem
+                        fontSize={"14"}
+                        key={subIndex}
+                        onMouseEnter={() => handleShowSubMenu(item.children)}
+                        onClick={() =>
+                          navigate(
+                            `/shop?category=${
+                              item.id
+                            }&category_name=${encodeURIComponent(item?.name)}`
+                          )
+                        }
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "brand.500",
+                            color: "white",
+                          },
+                        }}
+                      >
+                        {item?.name}
+                      </MenuItem>
+                    ))}
+                  </GridItem>
+                  <GridItem colSpan={3} overflow="auto">
+                    {nestedCategories?.map((item, nestedIndex) => (
+                      <MenuItem
+                        fontSize={"14"}
+                        key={nestedIndex}
+                        onClick={() =>
+                          navigate(
+                            `/shop?category=${
+                              item.id
+                            }&category_name=${encodeURIComponent(item?.name)}`
+                          )
+                        }
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "brand.500",
+                            color: "white",
+                          },
+                        }}
+                      >
+                        {item?.name}
+                      </MenuItem>
+                    ))}
+                  </GridItem>
+                </MenuList>
+              </Menu>
               {Links.map((link) => (
                 <Link
                   as={ReactRouterLink}
@@ -1207,7 +1262,7 @@ export default function Navbar() {
             </Flex>
           </GridItem>
           <GridItem
-            colSpan={3}
+            colSpan={2}
             display={"flex"}
             justifyContent={"end"}
             alignItems={"center"}
@@ -1285,10 +1340,23 @@ export default function Navbar() {
             >
               <FaApple fontSize={22} />
             </Link> */}
+            <Link
+              _hover={{ color: "text.500" }}
+              isExternal={true}
+              as={ReactRouterLink}
+              to={"https://apps.apple.com/in/app/vama/id6477996113"}
+            >
+              <FaApple fontSize={22} />
+            </Link>
           </GridItem>
-    
         </Grid>
       </Container>
-   </Box>
+      {!checkLogin().isLoggedIn && (
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+        />
+      )}
+    </Box>
   );
 }

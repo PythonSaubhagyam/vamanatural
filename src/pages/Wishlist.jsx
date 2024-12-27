@@ -28,21 +28,23 @@ import { Link } from "react-router-dom";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import Loader from "../components/Loader";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function Addtocart() {
   const [loading, setLoading] = useState(true);
   const [removeLoading, setRemoveLoading] = useState();
   const [wishlistItems, setWishlistItems] = useState([]);
   const loginInfo = checkLogin();
-  const checkOrSetUDIDInfo = CheckOrSetUDID();
-  let headers = { visitor: checkOrSetUDIDInfo.visitor_id };
-
-  if (loginInfo.isLoggedIn === true) {
-    headers = { Authorization: `token ${loginInfo.token}` };
-  }
+ 
 
   useEffect(() => {
     async function getWishlist() {
+      const checkOrSetUDIDInfo = await CheckOrSetUDID();
+      let headers = { visitor: checkOrSetUDIDInfo.visitor_id };
+    
+      if (loginInfo.isLoggedIn === true) {
+        headers = { Authorization: `token ${loginInfo.token}` };
+      }
       const response = await client.get("/wishlist/", {
         headers: headers,
       });
@@ -171,6 +173,7 @@ export default function Addtocart() {
           </Flex>
         )}
       </Container>
+      <ScrollToTop/>
       <Footer />
     </>
   );

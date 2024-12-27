@@ -78,7 +78,7 @@ export default function Carousel({
         <>
       <IconButton
         aria-label="left-arrow"
-        icon={<ChevronLeftIcon style={{ fontSize: 34 }} />}
+        icon={<ChevronLeftIcon style={{ fontSize: 30 }} />}
         background={transparentBtn ? "#ffffff00" : "#434242"}
         color="#fff"
         size={{ base: "sm", md: "md" }}
@@ -87,7 +87,7 @@ export default function Carousel({
         top={"50%"}
         transform={"translate(50%, -50%)"}
         zIndex={2}
-        display={{ base: "none", md: "block" }}
+        display={{ base: "block", md: "block" }}
         onClick={() => slider?.slickPrev()}
         _hover={"background:#ffffff00"}
         borderRadius={"40px"}
@@ -96,7 +96,7 @@ export default function Carousel({
       {/* Right Icon */}
       <IconButton
         aria-label="right-arrow"
-        icon={<ChevronRightIcon style={{ fontSize: 34 }} />}
+        icon={<ChevronRightIcon style={{ fontSize: 30 }} />}
         background={transparentBtn ? "#ffffff00" : "#434242"}
         color="#fff"
         size={{ base: "sm", md: "md" }}
@@ -105,7 +105,7 @@ export default function Carousel({
         top={"50%"}
         transform={"translate(-50%, -50%)"}
         zIndex={2}
-        display={{ base: "none", md: "block" }}
+        display={{ base: "block", md: "block" }}
         onClick={() => slider?.slickNext()}
         _hover={"background:#ffffff00 "}
         borderRadius={"40px"}
@@ -114,7 +114,7 @@ export default function Carousel({
             )}
       {/* Slider */}
       <Slider {...settings} ref={(slider) => setSlider(slider)}>
-        {banners.map((bannerData, index) => (
+        {banners?.length > 0 && banners.map((bannerData, index) => (
           <>
             {textBanners === true ? (
               <Box key={index} textAlign="center" w="50vw" mx={"auto"} pb={4}>
@@ -158,19 +158,32 @@ export default function Carousel({
               </Box>
             ) : (
               <Image
-                cursor={bannerData?.image_url ? "pointer" : ""}
-                key={index}
-                src={bannerData.image}
-                alt={bannerData.alt_text}
-                onClick={() =>
-                  bannerData?.image_url
-                    ? navigate(`${bannerData?.image_url}`)
-                    : {}
+              cursor={
+                bannerData?.category_id === null &&
+                bannerData?.product_id === null
+                  ? ""
+                  : "pointer"
+              }
+              key={index}
+              src={bannerData.image}
+              alt={bannerData.alt_text}
+              onClick={() => {
+                if (
+                  bannerData?.category_id !== null ||
+                  bannerData?.product_id !== null
+                ) {
+                  if (bannerData?.category_id !== null) {
+                    navigate(`/shop?page=1&category=${bannerData?.category_id}`);
+                  } else {
+                    navigate(`/products/${bannerData?.product_id}`);
+                  }
                 }
-                //objectFit="fit"
-                w="100%"
-                //h={{ base: "100%", md: `${desktopHeight}px` }}
-              ></Image>
+              }}
+              objectFit="fit"
+              w="100%"
+              // h="60%"
+              // h={{ base: "100%", md: `${desktopHeight}px` }}
+            ></Image>
             )}
           </>
         ))}

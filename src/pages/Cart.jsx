@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import CartRow from "../components/cartRow";
 import ShopProductCard from "../components/ShopProductCard";
+import ScrollToTop from "../components/ScrollToTop";
 import {
   Container,
   Flex,
@@ -38,6 +39,7 @@ import { Link, useNavigate } from "react-router-dom";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import checkLogin from "../utils/checkLogin";
 import BreadCrumbCom from "../components/BreadCrumbCom";
+import LoginModal from "../components/LoginModal";
 
 export default function Cart() {
   const messageRef = useRef(null);
@@ -54,6 +56,7 @@ export default function Cart() {
   const [giftMessage, setGiftMessage] = useState("");
   const [giftMaterials, setGiftMaterials] = useState([]);
   const [continueCheckout, setContinueCheckout] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [voucherCode, setVoucherCode] = useState("");
   const [checkingVoucherCode, setCheckingVoucherCode] = useState(false);
   const [voucherApplied, setVoucherApplied] = useState(false);
@@ -62,14 +65,15 @@ export default function Cart() {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   const loginInfo = checkLogin();
-  const checkOrSetUDIDInfo = CheckOrSetUDID();
-  let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
-
-  if (loginInfo.isLoggedIn === true) {
-    headers = { Authorization: `token ${loginInfo?.token}` };
-  }
+ 
 
   async function getCart() {
+    const checkOrSetUDIDInfo = await CheckOrSetUDID();
+    let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
+  
+    if (loginInfo.isLoggedIn === true) {
+      headers = { Authorization: `token ${loginInfo?.token}` };
+    }
     const response = await client.get("/cart/", {
       headers: headers,
     });
@@ -84,6 +88,7 @@ export default function Cart() {
       setTaxes(response.data.data.gst_amt);
       setGrandTotal(response.data.data.final_total);
       localStorage.setItem("cart_counter", response.data.data.cart_counter);
+      localStorage.setItem("product_total", response.data.data.final_total);
       if (
         loginInfo.isLoggedIn === true &&
         response.data.data.cart_counter > 0
@@ -93,6 +98,13 @@ export default function Cart() {
     }
     setLoading(false);
   }
+  
+  useEffect(() => {
+    const loginInfo = checkLogin();
+    if (loginInfo.isLoggedIn) {
+      getCart(); 
+    }
+  }, [checkLogin().isLoggedIn]);
 
   useEffect(() => {
     getCart(); // eslint-disable-next-line
@@ -122,6 +134,12 @@ export default function Cart() {
 
   const removeProductFromCart = async (id) => {
     setCartRemoveLoading(id);
+    const checkOrSetUDIDInfo = await CheckOrSetUDID();
+    let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
+  
+    if (loginInfo.isLoggedIn === true) {
+      headers = { Authorization: `token ${loginInfo?.token}` };
+    }
     const response = await client.delete(`/cart/${id}`, {
       headers: {
         Accept: "application/json",
@@ -149,6 +167,7 @@ export default function Cart() {
       setDiscount(response.data.discount_amt);
       setGrandTotal(response.data.final_total);
       localStorage.setItem("cart_counter", response.data.cart_counter);
+      localStorage.setItem("product_total", response.data.final_total);
     } else
       toast({
         title: response.data.error,
@@ -157,6 +176,8 @@ export default function Cart() {
         duration: 4000,
         isClosable: true,
       });
+      setVoucherCode("")
+      setVoucherApplied(false);
   };
 
   async function handleQuantityChange(
@@ -164,6 +185,12 @@ export default function Cart() {
     newQuantity
     // handleAmountChange
   ) {
+    const checkOrSetUDIDInfo = await CheckOrSetUDID();
+    let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
+  
+    if (loginInfo.isLoggedIn === true) {
+      headers = { Authorization: `token ${loginInfo?.token}` };
+    }
     try {
       const response = await client.patch(
         `/cart/${cartItemId}/`,
@@ -192,6 +219,8 @@ export default function Cart() {
             isClosable: true,
           });
         }
+        setVoucherCode("")
+        setVoucherApplied(false);
         getCart();
       } else {
         toast({
@@ -247,7 +276,7 @@ export default function Cart() {
         });
       }
     } else {
-      navigate("/login");
+      setIsLoginModalOpen(true)
       toast({
         title: "Please login to place an order!",
         status: "info",
@@ -355,7 +384,7 @@ export default function Cart() {
                 </Tr>
               </Tbody>
             </Table>
-            <Checkbox
+            {/* <Checkbox
               colorScheme="brand"
               ps={6}
               pt={4}
@@ -368,10 +397,10 @@ export default function Cart() {
               <Text fontSize="sm">
                 Send as a gift. <br /> Include custom gift message
               </Text>
-            </Checkbox>
+            </Checkbox> */}
             {localStorage.getItem("token") && (
               <form onSubmit={checkVoucherCodeAvailability} display={{}}>
-                {/* <FormControl as={Flex} direction="column" my={6} px={4}>
+                <FormControl as={Flex} direction="column" my={6} px={4}>
                   <FormLabel fontSize="sm" fontWeight={600}>
                     Have a voucher code?
                   </FormLabel>
@@ -423,7 +452,7 @@ export default function Cart() {
                       Apply code
                     </Button>
                   )}
-                </FormControl> */}
+                </FormControl>
               </form>
             )}
 
@@ -646,6 +675,13 @@ export default function Cart() {
           </>
         )}
       </Container>
+      {!checkLogin().isLoggedIn && (
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
+        )}
+      <ScrollToTop/>
       <Footer />
     </>
   );
