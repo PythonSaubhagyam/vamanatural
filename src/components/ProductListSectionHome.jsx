@@ -51,8 +51,8 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: isLargerThan768 ? 4 : 1,
-    slidesToScroll: 4,
+    slidesToShow: 4,
+    slidesToScroll: 1,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
     centerMode: true,
@@ -87,7 +87,7 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
 
   return (
     <>
-      <Container maxW={"container.xl"} px={0} pt={4} pb={6}>
+      <Container maxW={"container.xl"} px={0} pt={4} pb={6} >
         <Text
           fontSize={{ base: "xl", sm: "2xl", xl: "3xl" }}
           bgColor={"bg.500"}
@@ -99,10 +99,10 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
         >
           {title}
         </Text>
-        {type === "carousal" && products && products.length > 4 ? (
+        {type === "carousal" && products && products.length > 3 ? (
           <Slider {...settings}>
             {loading === true
-              ? [0, 1, 2, 3, 4].map((index) => (
+              ? [0, 1, 2, 3].map((index) => (
                   <Box
                     key={index}
                     padding="6"
@@ -121,7 +121,7 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
                   </Box>
                 ))
               : products?.map((product) => (
-                <Box key={product.id} px={{base:"20px",md:"20px"}} >
+                <Box key={product.id} px={{base:"50px",lg:"20px"}} >
                   <ProductCardHome key={product.id} product={product} />
                   </Box>
                 ))}
