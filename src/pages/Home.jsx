@@ -39,6 +39,8 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import LoginModal from "../components/LoginModal";
 import checkLogin from "../utils/checkLogin";
 import CategorySlider from "../components/CategorySlider";
+import BlogSliderHome from "../components/BlogSliderHome";
+import CategoryProductSlider from "../components/CategoryProductSlider";
 
 const productItems = [
   {
@@ -127,7 +129,7 @@ export default function Home() {
   const height = useBreakpointValue({ base: "300", lg: "400" });
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isMobile] = useMediaQuery("(max-width: 480px)");
+  const [isMobile] = useMediaQuery("(max-width: 1024px)");
   const [newArrival, setNewArrival] = useState([]);
   const [mustTry, setMustTry] = useState([]);
   const [sections, setSections] = useState([]);
@@ -153,14 +155,15 @@ export default function Home() {
   );
   const isMobiles = width <= 768;
   const navigate = useNavigate();
+  setTimeout(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, 0);
   useEffect(() => {
-setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }, 0); 
+
     const init = async () => {
       await CheckOrSetUDID();
     };
@@ -296,82 +299,7 @@ setTimeout(() => {
     }
   };
 
-  <Container maxW={"container.xl"}>
-    <Box
-      w="100%"
-      //backgroundImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/HomePage/line.png"}
-      backgroundSize="100%"
-      backgroundPosition="50% 100%"
-      backgroundRepeat={"no-repeat"}
-    >
-      <Heading
-        color="brand.500"
-        fontSize={{ md: 33, base: 24 }}
-        mx="auto"
-        align={"center"}
-        mt={3}
-        pb={3}
-      >
-        BLOGS
-      </Heading>
-    </Box>
-    <Grid
-      templateColumns={{
-        base: "repeat(1,1fr)",
-        md: "repeat(2,1fr)",
-        lg: "repeat(4,1fr)",
-      }}
-      px={2}
-      my={6}
-      spacing="40px"
-    >
-      {blogs?.slice(0, 8).map((blog) => (
-        <GridItem key={blog.id} m={4}>
-          <Card>
-            <LinkBox h={400}>
-              <Image
-                src={blog.banner}
-                w="100%"
-                h="300px"
-                loading="lazy"
-                objectFit={"cover"}
-                borderRadius={5}
-                style={{
-                  opacity: 1,
-                  transition: "opacity 0.7s", // Note the corrected syntax here
-                }} />
-              <LinkOverlay
-                _hover={{ color: "brand.500" }}
-                href={`/blogs/${blog.id}/`}
-              >
-                <Heading size="sm" fontWeight={500} m={2}>
-                  {blog.title}
-                </Heading>
-              </LinkOverlay>
-            </LinkBox>
-            <Flex m={2} justifyContent={"space-between"}>
-              <Text fontSize={"sm"} color="gray.500">
-                {new Intl.DateTimeFormat("en-CA", {
-                  dateStyle: "long",
-                  timeZone: "Asia/Kolkata",
-                }).format(new Date(blog.published_at))}
-              </Text>
-              <Text
-                fontSize={"sm"}
-                fontWeight={600}
-                color={"brand.500"}
-                onClick={() => navigate(`/blogs/${blog.id}/`)}
-                cursor={"pointer"}
-              >
-                Read more
-                <ChevronRightIcon />
-              </Text>
-            </Flex>
-          </Card>
-        </GridItem>
-      ))}
-    </Grid>
-  </Container>;
+
   return (
     <>
       {/* {loading === true ? (
@@ -523,111 +451,55 @@ setTimeout(() => {
 
       <CategorySlider ourProductSection={ourProductSection} />
 
+      {/* Category-Product-Slider */}
+      <CategoryProductSlider
+        title="Try Our New Products"
+        products={newArrival}
+        type={"carousal"}
+      />
+      <CategoryProductSlider
+        title="Must Try: Vama Products"
+        products={mustTry}
+        type={"carousal"}
+      />
+      <CategoryProductSlider
+        title="All Time Best Sellers"
+        products={bestSeller}
+        type={"carousal"}
+      />
 
-      {newArrival?.length > 0 && (
+      {/* {newArrival?.length > 0 && (
         <ProductListSectionHome
           title="Try Our New Products"
           loading={loading}
           products={newArrival}
-         type={ "carousal"}
+          type={"carousal"}
         />
-      )}
-
-      <ProductListSectionHome
+      )} */}
+      {/* <ProductListSectionHome
         title="Must Try: Vama Products"
         loading={loading}
         products={mustTry}
-        type={ "carousal"}
+        type={isMobile  && "carousal"}
       />
-      <ProductListSectionHome
+     <ProductListSectionHome
         title="All Time Best Sellers"
         loading={loading}
         products={bestSeller}
-        type={ "carousal"}
-      />
+        type={"carousal"}
+      /> */}
       {skinCareSection?.length > 0 &&
         skinCareSection[0]?.is_visible_on_website === true && (
           <Container mb={5} px={0} maxW={"container.xl"} centerContent>
             <LazyLoadImage src={skinCareSection[0]?.image} />
           </Container>
         )}
-        <Container maxW={"container.xl"}>
-        <Box
-          w="100%"
-          //backgroundImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/HomePage/line.png"}
-          backgroundSize="100%"
-          backgroundPosition="50% 100%"
-          backgroundRepeat={"no-repeat"}
-        >
-          <Heading
-            color="brand.500"
-            fontSize={{ md: 33, base: 24 }}
-            mx="auto"
-            align={"center"}
-            mt={3}
-            pb={3}
-          >
-            BLOGS
-          </Heading>
-        </Box>
-        <Grid
-          templateColumns={{
-            base: "repeat(1,1fr)",
-            md: "repeat(2,1fr)",
-            lg: "repeat(4,1fr)",
-          }}
-          px={2}
-          my={6}
-          spacing="40px"
-        >
-          {blogs?.slice(0, 8).map((blog) => (
-            <GridItem key={blog.id} m={4}>
-              <Card>
-                <LinkBox h={400}>
-                  <Image
-                    src={blog.banner}
-                    w="100%"
-                    h="300px"
-                    loading="lazy"
-                    objectFit={"cover"}
-                    borderRadius={5}
-                    style={{
-                      opacity: 1,
-                      transition: "opacity 0.7s", // Note the corrected syntax here
-                    }}
-                  />
-                  <LinkOverlay
-                    _hover={{ color: "brand.500" }}
-                    href={`/blogs/${blog.id}/`}
-                  >
-                    <Heading size="sm" fontWeight={500} m={2}>
-                      {blog.title}
-                    </Heading>
-                  </LinkOverlay>
-                </LinkBox>
-                <Flex m={2} justifyContent={"space-between"}>
-                  <Text fontSize={"sm"} color="gray.500">
-                    {new Intl.DateTimeFormat("en-CA", {
-                      dateStyle: "long",
-                      timeZone: "Asia/Kolkata",
-                    }).format(new Date(blog.published_at))}
-                  </Text>
-                  <Text
-                    fontSize={"sm"}
-                    fontWeight={600}
-                    color={"brand.500"}
-                    onClick={() => navigate(`/blogs/${blog.id}/`)}
-                    cursor={"pointer"}
-                  >
-                    Read more
-                    <ChevronRightIcon />
-                  </Text>
-                </Flex>
-              </Card>
-            </GridItem>
-          ))}
-        </Grid>
-      </Container>
+
+      {/* Blog-Slider-Home */}
+
+      <BlogSliderHome blogs={blogs} />
+
+
       {awardsSection?.length > 0 &&
         awardsSection[0]?.is_visible_on_website === true && (
           <Container maxW={{ base: "100vw", md: "container.xl" }}>
@@ -788,11 +660,11 @@ setTimeout(() => {
           </Container>
         )}
       {!checkLogin().isLoggedIn && (
-          <LoginModal
-            isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
-          />
-        )}
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+        />
+      )}
       <ScrollToTop />
       <Footer />
     </>

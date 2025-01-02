@@ -10,7 +10,7 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/react";
-import Slider from "react-slick";
+import Slider from "react-slick"; 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Import arrow icons
@@ -51,7 +51,7 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 5,
     slidesToScroll: 1,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -99,10 +99,10 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
         >
           {title}
         </Text>
-        {type === "carousal" && products && products.length > 3 ? (
+        {type === "carousal" && products && products.length > 4 ? (
           <Slider {...settings}>
             {loading === true
-              ? [0, 1, 2, 3].map((index) => (
+              ? [0, 1, 2, 3,4].map((index) => (
                   <Box
                     key={index}
                     padding="6"
@@ -121,7 +121,7 @@ const ProductListSectionHome = ({ title, products, loading, type }) => {
                   </Box>
                 ))
               : products?.map((product) => (
-                <Box key={product.id} px={{base:"50px",lg:"20px"}} >
+                <Box key={product.id} px={{base:"20px",lg:"20px"}} >
                   <ProductCardHome key={product.id} product={product} />
                   </Box>
                 ))}
