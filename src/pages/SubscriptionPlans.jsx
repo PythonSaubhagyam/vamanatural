@@ -429,7 +429,7 @@ function SubscriptionPlans() {
                 <AccordionButton bg={"brand.100"} _hover={{ bg: "brand.100" }}>
                   <AccordionIcon color="white" />
                   <Box flex="1" textAlign="left" fontWeight="600" color="white">
-                    Is there a maximum limit on the discounts?
+                  What is the duration of the SOSE Elite membership plan?
                   </Box>
                 </AccordionButton>
               </h2>
@@ -439,12 +439,7 @@ function SubscriptionPlans() {
                 borderColor="gray.200"
                 borderBottom={"none"}
               >
-                Discounts are subject to a maximum capping for all users on the
-                SOSE Organic platform. SOSE Elite members get a discount on
-                products along with a higher maximum capping for these
-                discounts, as compared to non-SOSE Elite users. The maximum
-                capping at any given point in time is dependent on the platform
-                offer that is live.
+                Our membership plan for SOSE Elite members is structured over a period of one month. Please note that we do not offer any discounts associated with this membership.
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
