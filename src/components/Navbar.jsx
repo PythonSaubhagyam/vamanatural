@@ -446,10 +446,15 @@ export default function Navbar() {
     }
   };
 
+  const logoClickHandler = () =>{
+    navigate("/",{replace: true})
+    window.location.reload()
+  }
+
   return (
     <Box position="sticky" top={0} backgroundColor="white" zIndex={999}>
       <Flex justify="center" display={isMobile ? "flex" : "none"}>
-        <Link as={ReactRouterLink} to="/">
+        <Link onClick={logoClickHandler}>
           <Image
             // width="100px"
             // height="50px"
@@ -625,7 +630,7 @@ export default function Navbar() {
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader as={Flex} justify="center">
-              <Link as={ReactRouterLink} to="/">
+              <Link onClick={logoClickHandler}>
                 <Image
                   boxSize="105px"
                   objectFit="contain"
@@ -917,7 +922,7 @@ export default function Navbar() {
             colSpan={1}
             // style={{ borderBottom: "0.5px solid #b7b7b7" }}
           >
-            <Link as={ReactRouterLink} to="/">
+            <Link  onClick={logoClickHandler} >
               <Image
                 boxSize="100px"
                 objectFit="contain"

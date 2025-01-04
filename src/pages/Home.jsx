@@ -155,15 +155,11 @@ export default function Home() {
   );
   const isMobiles = width <= 768;
   const navigate = useNavigate();
-  setTimeout(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  }, 0);
   useEffect(() => {
+    window.scrollTo(0, 0);
+  })
 
+  useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
     };
@@ -458,7 +454,7 @@ export default function Home() {
         type={"carousal"}
       />
       <CategoryProductSlider
-        title="Must Try: Vama Products"
+        title="Must Try:  VAMA - Herbal & Natural Beauty "
         products={mustTry}
         type={"carousal"}
       />
@@ -491,7 +487,11 @@ export default function Home() {
       {skinCareSection?.length > 0 &&
         skinCareSection[0]?.is_visible_on_website === true && (
           <Container mb={5} px={0} maxW={"container.xl"} centerContent>
-            <LazyLoadImage src={skinCareSection[0]?.image} />
+            <LazyLoadImage src={skinCareSection[0]?.image}
+             style={{
+                opacity: 1,
+                width: "100%",
+              }} />
           </Container>
         )}
 

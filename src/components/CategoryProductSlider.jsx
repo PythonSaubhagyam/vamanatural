@@ -9,8 +9,8 @@ const CategoryProductSlider = ({ products, title, type }) => {
 
     const navigate = useNavigate()
     const [slider, setSlider] = useState(Slider | null)
-
-
+    
+    
     var settings = {
         dots: false,
         infinite: true,
@@ -144,12 +144,7 @@ const CategoryProductSlider = ({ products, title, type }) => {
                                         borderColor="brand.100"
                                         borderRadius={"lg"}
                                         onClick={() => {
-                                            navigate(`/products/${product.product?.id}`);
-                                            window.scrollTo({
-                                                top: 0,
-                                                left: 0,
-                                                behavior: "smooth",
-                                            });
+                                            navigate(`/products/${product.product?.id}`);                   
                                         }}
                                         cursor={"pointer"}
                                     >
