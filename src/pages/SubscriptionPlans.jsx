@@ -246,7 +246,7 @@ function SubscriptionPlans() {
             Frequently Asked Questions
           </Heading>
 
-          <Accordion defaultIndex={[0]} pb={10} mx={"9%"}>
+          <Accordion allowToggle defaultIndex={[0]} pb={10} mx={"9%"}>
             <AccordionItem>
               <h2>
                 <AccordionButton bg={"brand.100"} _hover={{ bg: "brand.100" }}>
