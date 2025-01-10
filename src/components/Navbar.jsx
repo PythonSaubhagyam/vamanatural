@@ -609,7 +609,7 @@ export default function Navbar() {
                     _hover={{ bg: "brand.500" }}
                   > */}
                   <MenuItem
-                    onClick={()=>setIsLoginModalOpen(true)}
+                    onClick={() => setIsLoginModalOpen(true)}
                     cursor={"pointer"}
                     _hover={{ textDecoration: "none" }}
                   >
@@ -1100,7 +1100,7 @@ export default function Navbar() {
                     }}
                     fontWeight={500}
                     fontSize={{ md: "14px" }}
-                    onClick={()=>setIsLoginModalOpen(true)}
+                    onClick={() => setIsLoginModalOpen(true)}
                   >
                     Login
                   </Link>
@@ -1166,13 +1166,13 @@ export default function Navbar() {
                     {megaCategories?.map((section, index) => (
                       <>
                         <MenuItem
-                          icon={
-                            <img
-                              src={"./himalayan_logo.jpg"}
-                              width={25}
-                              alt=""
-                            />
-                          }
+                          // icon={
+                          //   <img
+                          //     src={"./himalayan_logo.jpg"}
+                          //     width={25}
+                          //     alt=""
+                          //   />
+                          // }
                           fontSize={"14"}
                           key={index}
                           onMouseEnter={() => handleShow1(section.children)}
