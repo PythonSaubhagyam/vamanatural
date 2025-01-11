@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Carousel from "../components/Carousel";
 import CarouselWithLinks from "../components/CarouselWithLinks";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import ScrollToTop from "../components/ScrollToTop";
-import ProductListSectionHome from "../components/ProductListSectionHome";
+// import ProductListSectionHome from "../components/ProductListSectionHome";
 import {
   Container,
   Flex,
@@ -31,122 +31,35 @@ import {
   VStack,
   Button,
 } from "@chakra-ui/react";
-import client from "../setup/axiosClient";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import { useNavigate, NavLink as RouterLink } from "react-router-dom";
-import { ChevronRightIcon } from "@chakra-ui/icons";
+// import { ChevronRightIcon } from "@chakra-ui/icons";
 // import Testimonials from "../components/testimonials";
 import LoginModal from "../components/LoginModal";
 import checkLogin from "../utils/checkLogin";
 import CategorySlider from "../components/CategorySlider";
 import BlogSliderHome from "../components/BlogSliderHome";
 import CategoryProductSlider from "../components/CategoryProductSlider";
+import { useDispatch, useSelector } from "react-redux"
 
-const productItems = [
-  {
-    id: 8659,
-    imageSrc:
-      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/imgpsh_fullsize_anim_sose_website.jpg",
-  },
-  {
-    id: 9249,
-    imageSrc:
-      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/imgpsh_fullsize_anim_sose_image.jpg",
-  },
-  {
-    id: 9248,
-    imageSrc:
-      "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/baby_cream.jpg",
-  },
-];
+import {
+  fetchBanner,
+  fetchUpperSection,
+  fetchTryOurNewProduct,
+  fetchMustTry,
+  fetchAllTimeBestSeller,
+  fetchLowerSection1,
+  fetchBlogs,
+  fetchStatisticsSection,
+  fetchLowerSection2,
+} from "../redux/slices/homeapi";
 
-const productCategory = [
-  {
-    image1: require("../assets/home/shampoo.jpg"),
-    title: "SHAMPOO",
-    href: "/shop?page=1&category=467&category_name=Shampoo",
-  },
-  {
-    image1: require("../assets/home/bodywash.jpg"),
-    title: "BODY WASH",
-    href: "/shop?page=1&category=393&category_name=Body Wash",
-  },
-  {
-    image1: require("../assets/home/body srub.jpg"),
-    title: "BODY SCRUB",
-    href: "/shop?page=1&category=396&category_name=Body Scrub",
-  },
-  {
-    image1: require("../assets/home/essential-oil.jpg"),
-    title: "ESSENTIAL OIL",
-    href: "/shop?page=1&category=510&category_name=Ess oil",
-  },
-  {
-    image1: require("../assets/home/handwash.jpg"),
-    title: "HAND WASH",
-    href: "/shop?page=1&category=737&category_name=Hand Wash",
-  },
-  {
-    image1: require("../assets/home/laundry-liquid.jpg"),
-    title: "LAUNDRY LIQUID",
-    href: "/shop?page=1&category=729&category_name=Liquid Detergent",
-  },
-];
-const banner = [
-  {
-    id: 11,
-    alt_text: "Image2",
-    image: require("../assets/Home Page Banners/01.jpg"),
-    display_status: true,
-    image_url: "/products/2488",
-  },
-  {
-    id: 12,
-    alt_text: "Image3",
-    image: require("../assets/Home Page Banners/02.jpg"),
-    display_status: true,
-    image_url: "/products/2462",
-  },
-  {
-    id: 13,
-    alt_text: "Image3",
-    image: require("../assets/Home Page Banners/03.jpg"),
-    display_status: true,
-    image_url: "/products/2453",
-  },
-  {
-    id: 14,
-    alt_text: "Image4",
-    image: require("../assets/Home Page Banners/04.jpg"),
-    display_status: true,
-    image_url: "/products/2445",
-  },
-];
 
 export default function Home() {
   const [isFullScreen] = useMediaQuery("(min-width: 768px)");
   const width = useBreakpointValue({ base: "100%", lg: "100%" });
   const height = useBreakpointValue({ base: "300", lg: "400" });
-  const [banners, setBanners] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isMobile] = useMediaQuery("(max-width: 1024px)");
-  const [newArrival, setNewArrival] = useState([]);
-  const [mustTry, setMustTry] = useState([]);
-  const [sections, setSections] = useState([]);
-  const [servicesSection, setServicesSection] = useState();
-  const [availableSection, setAvailableSection] = useState();
-  const [awardsSection, setAwardSection] = useState();
-  const [bestSeller, setBestSeller] = useState([]);
-  const [missionSection, setMissionSection] = useState([]);
-  const [visionSection, setVisionSection] = useState([]);
-  const [newArrivalSection, setNewArrivalSection] = useState([]);
-  const [certificateSection, setCertifcateSection] = useState([]);
-  const [ourProductSection, setOurProductSection] = useState([]);
-  const [skinCareSection, setSkinCareSection] = useState([]);
-  const [nonGMOSection, setNonGMOSection] = useState([]);
-  const [statisticsSection, setStatisticsSection] = useState([]);
-
-  const [blogs, setBlogs] = useState([]);
   const loginInfo = checkLogin();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const checkOrSetUDIDInfo = CheckOrSetUDID();
@@ -159,161 +72,82 @@ export default function Home() {
     window.scrollTo(0, 0);
   })
 
+
+  const dispatch = useDispatch();
+  const {
+    banners,
+    upperSection,
+    tryOurNewProductSection,
+    mustTrySection,
+    loader,
+    allTimeBestSellerSection,
+    lowerSection1,
+    blogs,
+    statisticsSection,
+    lowerSection2
+  } = useSelector((state) => state.home);
+
+  const {
+    ourMissionSection,
+    ourVissionSection,
+    certificateSection,
+    newArrivalsSection,
+    ourProductSection
+  } = upperSection;
+
+  const {
+    skinCareSection,
+    nonGMOSection,
+  } = lowerSection1;
+
+  const {
+    awardsSection,
+    servicesSection,
+    availableSection,
+  } = lowerSection2;
+  
   useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
     };
 
     init();
-    //CheckOrSetUDID();
-    getMustTry();
-    //getHomePageData();
-    getBanners();
-    getBestSeller();
-    getNewArrival();
-    getBlogs();
-    getLowerSection();
-    getUpperSectionUpper();
-    getUpperSectionLower();
-    getStatisticsSection();
+  
+  
+      dispatch(fetchBanner());
+      dispatch(fetchUpperSection());
+      dispatch(fetchTryOurNewProduct());
+      dispatch(fetchMustTry());
+      dispatch(fetchAllTimeBestSeller());
+      dispatch(fetchLowerSection1());
+      dispatch(fetchBlogs());
+      dispatch(fetchStatisticsSection());
+      dispatch(fetchLowerSection2());
     if (showPopup === null && !loginInfo.isLoggedIn) {
       setIsLoginModalOpen(true);
     }
   }, []);
 
-  async function getBanners() {
-    setLoading(true);
-    try {
-      const response = await client.get("/ecommerce/banners/?sequence=Upper");
-
-      if (response.data.status === true) {
-        setBanners(response?.data?.banner);
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching data:", error);
-    }
-  }
-  async function getNewArrival() {
-    const response = await client.get("newarrival/list");
-    if (response) {
-      setNewArrival(response.data.data);
-    }
-    setLoading(false);
-  }
-  async function getMustTry() {
-    const response = await client.get("musttry/list");
-    if (response) {
-      setMustTry(response.data.data);
-    }
-    setLoading(false);
-  }
-  async function getBestSeller() {
-    const response = await client.get("bestofalltime/list");
-    if (response) {
-      setBestSeller(response.data.data);
-    }
-    setLoading(false);
-  }
-  async function getBlogs() {
-    const params = {};
-    const response = await client.get("/home/blogs/", {
-      params: params,
-    });
-    if (response.data.status === true) {
-      setBlogs(response.data.blogs);
-    }
-  }
-  async function getLowerSection() {
-    const params = {};
-    const response = await client.get("/lower-section", {
-      params: params,
-    });
-    if (response.data.status === true) {
-      setSections(response.data.data);
-
-      const ourServicesSection = response.data.data?.filter(
-        (section) => section.id === 2
-      );
-      const availableAtSection = response.data.data?.filter(
-        (section) => section.id === 3
-      );
-      const ourAwardsSection = response.data.data?.filter(
-        (section) => section.id === 1
-      );
-
-      setAwardSection(ourAwardsSection);
-      setServicesSection(ourServicesSection);
-      setAvailableSection(availableAtSection);
-    }
-  }
-
-  async function getStatisticsSection() {
-    const params = {};
-    const response = await client.get("/statistics-section/", {
-      params: params,
-    });
-    if (response.data.status === true) {
-      setStatisticsSection(response?.data?.data);
-    }
-  }
-  const getUpperSectionUpper = async () => {
-    const response = await client.get("/vamanatural-section/?type=Upper");
-
-    if (response.data.status === true) {
-      const mission = response.data.data?.filter((section) => section.id === 1);
-      const vision = response.data.data?.filter((section) => section.id === 2);
-      const arrival = response.data.data?.filter((section) => section.id === 3);
-      const certificate = response.data.data?.filter(
-        (section) => section.id === 4
-      );
-
-      const products = response.data.data?.filter(
-        (section) => section.id === 5
-      );
-
-      setMissionSection(mission);
-      setVisionSection(vision);
-      setNewArrivalSection(arrival);
-      setCertifcateSection(certificate);
-      setOurProductSection(products);
-    }
-  };
-  const getUpperSectionLower = async () => {
-    const response = await client.get("/vamanatural-section/?type=Lower");
-
-    if (response.data.status === true) {
-      const skinCare = response.data.data?.filter(
-        (section) => section.id === 6
-      );
-      const nonGMO = response.data.data?.filter((section) => section.id === 7);
-
-      setSkinCareSection(skinCare);
-      setNonGMOSection(nonGMO);
-    }
-  };
-
 
   return (
     <>
-      {/* {loading === true ? (
+      {/* {loader === true ? (
         <Center h="100vh" w="100vw" backgroundColor={"bg.500"}>
           <Loader site={true} />
         </Center>
       ) : (
         <> */}
       <Navbar />
+      {/* Upper Banner --------------------------*/}
       <Container maxW={"container.xl"} px={0}>
-        {loading === true ? (
+        {loader === true ? (
           <Skeleton h={489}></Skeleton>
         ) : (
           <Carousel banners={banners?.length > 0 && banners} />
         )}
       </Container>
-      {missionSection?.length > 0 &&
-        missionSection[0]?.is_visible_on_website === true && (
+      {ourMissionSection?.length > 0 &&
+        ourMissionSection[0]?.is_visible_on_website === true && (
           <VStack
             background={"#fff6f0"}
             p={{ base: 4, md: 6, lg: 8 }}
@@ -327,7 +161,7 @@ export default function Home() {
               fontSize={{ md: 30, base: 24 }}
             // alignContent={"flex-start"}
             >
-              {missionSection[0]?.label}
+              {ourMissionSection[0]?.label}
             </Box>
 
             <Box
@@ -336,7 +170,7 @@ export default function Home() {
               whiteSpace={"pre-line"}
               px={{ base: 4, md: 6 }}
             >
-              {missionSection[0]?.description}
+              {ourMissionSection[0]?.description}
               <br />
               <Button
                 background="text.500"
@@ -351,8 +185,8 @@ export default function Home() {
             </Box>
           </VStack>
         )}
-      {visionSection?.length > 0 &&
-        visionSection[0]?.is_visible_on_website === true && (
+      {ourVissionSection?.length > 0 &&
+        ourVissionSection[0]?.is_visible_on_website === true && (
           <VStack
             background={"#fff6f0"}
             p={{ base: 4, md: 6, lg: 8 }}
@@ -365,11 +199,11 @@ export default function Home() {
               color="brand.500"
               fontSize={{ md: 30, base: 24 }}
             >
-              {visionSection[0]?.label}
+              {ourVissionSection[0]?.label}
             </Box>
 
             <Box maxW={"6xl"} textAlign={"center"} whiteSpace={"pre-line"}>
-              {visionSection[0]?.description}
+              {ourVissionSection[0]?.description}
               <br />
               <Button
                 background="text.500"
@@ -384,11 +218,11 @@ export default function Home() {
             </Box>
           </VStack>
         )}
-      {newArrivalSection?.length > 0 &&
-        newArrivalSection[0]?.is_visible_on_website === true && (
+      {newArrivalsSection?.length > 0 &&
+        newArrivalsSection[0]?.is_visible_on_website === true && (
           <Container maxW={"container.xl"} mb={5} centerContent>
             <LazyLoadImage
-              src={newArrivalSection[0]?.image}
+              src={newArrivalsSection[0]?.image}
               alt=""
               style={{
                 opacity: 1,
@@ -404,8 +238,8 @@ export default function Home() {
               my={6}
               px={15}
             >
-              {newArrivalSection[0]?.images?.length > 0 &&
-                newArrivalSection[0]?.images?.map((product) => (
+              {newArrivalsSection[0]?.images?.length > 0 &&
+                newArrivalsSection[0]?.images?.map((product) => (
                   <GridItem
                     key={product.id}
                     onClick={() => {
@@ -450,45 +284,45 @@ export default function Home() {
       {/* Category-Product-Slider */}
       <CategoryProductSlider
         title="Try Our New Products"
-        products={newArrival}
+        products={tryOurNewProductSection}
         type={"carousal"}
       />
       <CategoryProductSlider
         title="Must Try:  VAMA - Herbal & Natural Beauty "
-        products={mustTry}
+        products={mustTrySection}
         type={"carousal"}
       />
       <CategoryProductSlider
         title="All Time Best Sellers"
-        products={bestSeller}
+        products={allTimeBestSellerSection}
         type={"carousal"}
       />
 
-      {/* {newArrival?.length > 0 && (
+      {/* {tryOurNewProductSection?.length > 0 && (
         <ProductListSectionHome
           title="Try Our New Products"
-          loading={loading}
-          products={newArrival}
+          loader={loader}
+          products={tryOurNewProductSection}
           type={"carousal"}
         />
       )} */}
       {/* <ProductListSectionHome
         title="Must Try: Vama Products"
-        loading={loading}
-        products={mustTry}
+        loader={loader}
+        products={mustTrySection}
         type={isMobile  && "carousal"}
       />
      <ProductListSectionHome
         title="All Time Best Sellers"
-        loading={loading}
-        products={bestSeller}
+        loader={loader}
+        products={allTimeBestSellerSection}
         type={"carousal"}
       /> */}
       {skinCareSection?.length > 0 &&
         skinCareSection[0]?.is_visible_on_website === true && (
           <Container mb={5} px={0} maxW={"container.xl"} centerContent>
             <LazyLoadImage src={skinCareSection[0]?.image}
-             style={{
+              style={{
                 opacity: 1,
                 width: "100%",
               }} />

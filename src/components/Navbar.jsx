@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux"
 import {
   useMediaQuery,
   Box,
@@ -66,6 +67,7 @@ import { FiInstagram } from "react-icons/fi";
 import { debounce } from "lodash";
 import CartEmitter from "./EventEmitter";
 import LoginModal from "./LoginModal";
+import { fetchCategories } from "../redux/slices/categoryApi";
 
 const Links = [
   {
@@ -124,81 +126,6 @@ const Links = [
   //   // },
 ];
 
-const mainLinks = [
-  {
-    name: "Gifting",
-    categoryId: 288,
-  },
-  {
-    name: "GIR Gau Products",
-    categoryId: 278,
-  },
-  {
-    name: "Health Care",
-    categoryId: 281,
-  },
-  {
-    name: "Personal Care",
-    categoryId: 344,
-  },
-  {
-    name: "Nutrition",
-    categoryId: 788,
-  },
-
-  {
-    name: "Grocery",
-    categoryId: 291,
-  },
-  {
-    name: "Healthy Breakfast",
-    categoryId: 775,
-  },
-  {
-    name: "Healthy Snacks",
-    categoryId: 317,
-  },
-  {
-    name: "Healthy Powder",
-    categoryId: 716,
-  },
-  {
-    name: "Chocolate & Bars",
-    categoryId: 773,
-  },
-  {
-    name: "Tea & Coffee",
-    categoryId: 769,
-  },
-  {
-    name: "Beverages",
-    categoryId: 772,
-  },
-  {
-    name: "Seasonal Foods",
-    categoryId: 290,
-  },
-  {
-    name: "World Foods",
-    categoryId: 771,
-  },
-  {
-    name: "Home Care",
-    categoryId: 347,
-  },
-
-  // {
-  //   name: "Super Food",
-  //   categoryId: 601,
-  // },
-
-  // {
-  //   name: "Sweetener",
-  //   categoryId: 774,
-  // },
-
-  ,
-];
 
 export default function Navbar() {
   let { search } = useLocation();
@@ -234,7 +161,7 @@ export default function Navbar() {
   const handleCloseCategory = (index) => {
     setOpenCategory();
   };
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [categoriesLastIndex, setCategoriesLastIndex] = useState(0);
   const [subCategories, setSubCategories] = useState([]);
   const [openOuterAccordion, setOpenOuterAccordion] = useState(false);
@@ -296,36 +223,19 @@ export default function Navbar() {
   ].join(" ");
 
   const [isMobile] = useMediaQuery("(max-width: 768px)");
+  const dispatch = useDispatch()
+  const { categories, mergedCategories } = useSelector(
+   (state) => state.category
+ );
 
   useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
-      getCategories();
-    };
-
+      dispatch(fetchCategories());
+    };  
     init();
-    // CheckOrSetUDID();
-    // getCategories();
   }, []);
 
-  const mergeArraysById = (array1, array2) =>
-    array1.reduce((result, obj) => {
-      const matchingObj = array2.find((o) => o.id === obj.categoryId);
-      if (matchingObj) result.push({ ...obj, ...matchingObj });
-      return result;
-    }, []);
-
-  const getCategories = async () => {
-    const response = await client.get("/categories/", {
-      params: { list: true },
-    });
-
-    if (response.data.status === true) {
-      setCategories(response.data.categories);
-      setMegaCategories(response.data.categories);
-      setTopCategory(mergeArraysById(mainLinks, response.data.categories));
-    }
-  };
 
   useEffect(() => {
     if (didMount.current === true) {
@@ -416,7 +326,7 @@ export default function Navbar() {
   const [Open1, setOpen1] = useState(false);
 
   const handleHover1 = () => {
-    if (megaCategories.length > 0) {
+    if (mergedCategories.length > 0) {
       setOpen(true);
     }
   };
@@ -609,7 +519,7 @@ export default function Navbar() {
                     _hover={{ bg: "brand.500" }}
                   > */}
                   <MenuItem
-                    onClick={() => setIsLoginModalOpen(true)}
+                    onClick={()=>setIsLoginModalOpen(true)}
                     cursor={"pointer"}
                     _hover={{ textDecoration: "none" }}
                   >
@@ -693,7 +603,7 @@ export default function Navbar() {
                     >
                       <Accordion width={"100%"} onClose={handleClose}>
                         <AccordionItem>
-                          {categories?.map((section, index) => (
+                          {mergedCategories?.map((section, index) => (
                             <AccordionItem
                               key={index}
                               width={"100%"}
@@ -1100,7 +1010,7 @@ export default function Navbar() {
                     }}
                     fontWeight={500}
                     fontSize={{ md: "14px" }}
-                    onClick={() => setIsLoginModalOpen(true)}
+                    onClick={()=>setIsLoginModalOpen(true)}
                   >
                     Login
                   </Link>
@@ -1163,16 +1073,17 @@ export default function Navbar() {
                   zIndex={9999}
                 >
                   <GridItem colSpan={3} overflow="auto">
-                    {megaCategories?.map((section, index) => (
+                    {mergedCategories?.map((section,index) => (
                       <>
                         <MenuItem
-                          // icon={
-                          //   <img
-                          //     src={"./himalayan_logo.jpg"}
-                          //     width={25}
-                          //     alt=""
-                          //   />
-                          // }
+                        // zIndex={9999}
+                          icon={
+                            <img
+                              src={"./himalayan_logo.jpg"}
+                              width={25}
+                              alt=""
+                            />
+                          }
                           fontSize={"14"}
                           key={index}
                           onMouseEnter={() => handleShow1(section.children)}
@@ -1249,6 +1160,7 @@ export default function Navbar() {
                   </GridItem>
                 </MenuList>
               </Menu>
+              
               {Links.map((link) => (
                 <Link
                   as={ReactRouterLink}
