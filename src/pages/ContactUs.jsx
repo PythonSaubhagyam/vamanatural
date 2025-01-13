@@ -21,6 +21,7 @@ import { AsyncSelect } from "chakra-react-select";
 import checkLogin from "../utils/checkLogin";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import { useLocation } from "react-router-dom";
+import MetaTags from "../context/MetaTagsContext";
 
 export default function ContactUs() {
   let { search } = useLocation();
@@ -38,12 +39,12 @@ export default function ContactUs() {
   });
 
   const [formData, setFormData] = useState(initialFormData);
-  const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [countries, setCountries] = useState([]);
   const [callingCode, setCallingCode] = useState("");
   const toast = useToast();
   const loginInfo = checkLogin();
-  const width = useBreakpointValue({md:"340px",base:"300px"})
+  const width = useBreakpointValue({ md: "340px", base: "300px" })
   useEffect(() => {
     getCountries(); // eslint-disable-next-line
   }, []);
@@ -128,9 +129,12 @@ export default function ContactUs() {
     }
     return Options;
   };
+  const pageUrl = "/contact-us";
+
   return (
     <>
-       {IsMobileView !== "true" && <Navbar />}
+      <MetaTags pageUrl={pageUrl} />
+      {IsMobileView !== "true" && <Navbar />}
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Contact Us"} secondUrl={"/contact-us"} />
       </Container>
@@ -176,7 +180,7 @@ export default function ContactUs() {
           left="50%"
           transform="translate(-50%, -50%)"
           zIndex="1"
-          // Optional: Add background to improve text readability
+        // Optional: Add background to improve text readability
         >
           Contact  Us
         </Text>
@@ -202,7 +206,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
           >
             <FormLabel
@@ -230,7 +234,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-            align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
           >
@@ -259,7 +263,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
           >
@@ -299,8 +303,8 @@ export default function ContactUs() {
               chakraStyles={{
                 inputContainer: (provided) => ({
                   ...provided,
-                  maxWidth:width,
-                  minWidth:width,
+                  maxWidth: width,
+                  minWidth: width,
                 }),
               }}
               variant={"outline"}
@@ -323,7 +327,7 @@ export default function ContactUs() {
             <FormControl
               as={Flex}
               direction={{ base: "column", md: "row" }}
-               align={{md:"center",base:"start"}}
+              align={{ md: "center", base: "start" }}
               isRequired
               mt="5"
             >
@@ -359,7 +363,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
           >
@@ -388,7 +392,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
           >
@@ -417,7 +421,7 @@ export default function ContactUs() {
           <FormControl
             as={Flex}
             direction={{ base: "column", md: "row" }}
-             align={{md:"center",base:"start"}}
+            align={{ md: "center", base: "start" }}
             isRequired
             mt="5"
             mb={"5"}

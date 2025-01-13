@@ -15,6 +15,8 @@ import client from "../setup/axiosClient";
 import { useNavigate } from "react-router-dom";
 import checkLogin from "../utils/checkLogin";
 import LoginModal from "../components/LoginModal";
+import MetaTags from "../context/MetaTagsContext";
+
 
 export default function ResetPassword() {
   const [email, setEmail] = useState(null);
@@ -63,9 +65,12 @@ export default function ResetPassword() {
     setLoading(true);
     await sendResetPasswordRequest();
   };
+  const pageUrl = "/reset-password";
+
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container py={10}>
         <Heading size="lg" color="brand.500" py={4}>

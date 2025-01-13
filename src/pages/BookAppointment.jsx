@@ -33,6 +33,8 @@ import "moment-timezone";
 import formatTime from "../utils/formatTime";
 import { AsyncSelect } from "chakra-react-select";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
+
 
 export default function BookAppointment() {
   const initialFormData = Object.freeze({
@@ -99,7 +101,7 @@ export default function BookAppointment() {
     e.preventDefault();
     let data = { ...formData };
     data.start_datetime = data.start_date + "T" + data.start_time;
-    data.country_id = data.country_id?.value 
+    data.country_id = data.country_id?.value
     delete data.start_date;
     delete data.start_time;
     data.mobile = "+" + callingCode + data.mobile;
@@ -152,9 +154,12 @@ export default function BookAppointment() {
     setCountries(Options);
     return Options;
   };
+  const pageUrl = "/consult-our-vaidya/schedule-appointment";
+
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <form onSubmit={(e) => handleSubmit(e)}>
         <Container
@@ -272,7 +277,7 @@ export default function BookAppointment() {
                 direction={{ base: "column", md: "row" }}
                 align={{ md: "center", base: "start" }}
                 isRequired
-                //width="50%"
+              //width="50%"
               >
                 <FormLabel fontSize="sm" width={"120px"}>
                   Your Country

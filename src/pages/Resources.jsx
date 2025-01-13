@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
+const pageUrl = "/resources";
 
 const Resources = () => {
     const width = useBreakpointValue({ base: "100%", lg: "540" });
@@ -17,6 +18,7 @@ const Resources = () => {
 
     return (
         <>
+            <MetaTags pageUrl={pageUrl} />
             <Navbar />
             <Container maxW="container.xl">
                 <BreadCrumbCom second={"Resource"} secondUrl={"/resources"} />
@@ -228,7 +230,7 @@ const Resources = () => {
                     </Flex>
                 </Flex>
             </Container>
-            <ScrollToTop/>
+            <ScrollToTop />
             <Footer />
         </>
     );

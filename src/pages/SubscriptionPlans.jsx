@@ -1,7 +1,9 @@
- import React,{useState} from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Carousel from "../components/Carousel";
+import MetaTags from "../context/MetaTagsContext";
+
 import {
   SimpleGrid,
   Text,
@@ -64,9 +66,11 @@ function SubscriptionPlans() {
   const searchParams = new URLSearchParams(search);
   const IsMobileView = searchParams.get("mobile") ?? "false";
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const pageUrl = "/subscription-plans";
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       {IsMobileView !== "true" && <Navbar />}
 
       {/* <Image src=""></Image> */}
@@ -429,7 +433,7 @@ function SubscriptionPlans() {
                 <AccordionButton bg={"brand.100"} _hover={{ bg: "brand.100" }}>
                   <AccordionIcon color="white" />
                   <Box flex="1" textAlign="left" fontWeight="600" color="white">
-                  What is the duration of the SOSE Elite membership plan?
+                    What is the duration of the SOSE Elite membership plan?
                   </Box>
                 </AccordionButton>
               </h2>
@@ -446,11 +450,11 @@ function SubscriptionPlans() {
         </Box>
       </Container>
       {!checkLogin().isLoggedIn && (
-          <LoginModal
-            isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
-          />
-        )}
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+        />
+      )}
       <ScrollToTop />
       {IsMobileView !== "true" && <Footer />}
     </>

@@ -22,6 +22,7 @@ import CapitalizeLetter from "../utils/CommanFunction";
 import checkLogin from "../utils/checkLogin";
 import { AsyncSelect, Select } from "chakra-react-select";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
 
 export default function Export() {
   const { handleSubmit, control, formState } = useForm();
@@ -223,8 +224,11 @@ export default function Export() {
 
     return height + "px";
   };
+  const pageUrl = "/exports";
+
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Bussiness"} secondUrl={"/bussiness"} />
@@ -1487,7 +1491,7 @@ export default function Export() {
           </Container>
         </form>
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Footer />
     </>
   );

@@ -40,6 +40,7 @@ import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import checkLogin from "../utils/checkLogin";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import LoginModal from "../components/LoginModal";
+import MetaTags from "../context/MetaTagsContext";
 
 export default function Cart() {
   const messageRef = useRef(null);
@@ -65,12 +66,12 @@ export default function Cart() {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   const loginInfo = checkLogin();
- 
+
 
   async function getCart() {
     const checkOrSetUDIDInfo = await CheckOrSetUDID();
     let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
-  
+
     if (loginInfo.isLoggedIn === true) {
       headers = { Authorization: `token ${loginInfo?.token}` };
     }
@@ -98,11 +99,11 @@ export default function Cart() {
     }
     setLoading(false);
   }
-  
+
   useEffect(() => {
     const loginInfo = checkLogin();
     if (loginInfo.isLoggedIn) {
-      getCart(); 
+      getCart();
     }
   }, [checkLogin().isLoggedIn]);
 
@@ -136,7 +137,7 @@ export default function Cart() {
     setCartRemoveLoading(id);
     const checkOrSetUDIDInfo = await CheckOrSetUDID();
     let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
-  
+
     if (loginInfo.isLoggedIn === true) {
       headers = { Authorization: `token ${loginInfo?.token}` };
     }
@@ -176,8 +177,8 @@ export default function Cart() {
         duration: 4000,
         isClosable: true,
       });
-      setVoucherCode("")
-      setVoucherApplied(false);
+    setVoucherCode("")
+    setVoucherApplied(false);
   };
 
   async function handleQuantityChange(
@@ -187,7 +188,7 @@ export default function Cart() {
   ) {
     const checkOrSetUDIDInfo = await CheckOrSetUDID();
     let headers = { visitor: checkOrSetUDIDInfo?.visitor_id };
-  
+
     if (loginInfo.isLoggedIn === true) {
       headers = { Authorization: `token ${loginInfo?.token}` };
     }
@@ -334,10 +335,13 @@ export default function Cart() {
     // }, 2000);
     // return () => clearTimeout(timer);
   }
+  const pageUrl = "/cart";
+
 
   const AmountTable = () => {
     return (
       <>
+        <MetaTags pageUrl={pageUrl} />
         {cartItems.length > 0 ? (
           <Box
             w={{ md: "25%", base: "320px" }}
@@ -676,12 +680,12 @@ export default function Cart() {
         )}
       </Container>
       {!checkLogin().isLoggedIn && (
-          <LoginModal
-            isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
-          />
-        )}
-      <ScrollToTop/>
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+        />
+      )}
+      <ScrollToTop />
       <Footer />
     </>
   );

@@ -16,6 +16,8 @@ import {
 import checkLogin from "../utils/checkLogin";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import CartEmitter from "../components/EventEmitter";
+import MetaTags from "../context/MetaTagsContext";
+
 export default function Login() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -151,9 +153,12 @@ export default function Login() {
       password,
     });
   };
+  const pageUrl = "/login";
+
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container>
         <form onSubmit={handleSubmit}>

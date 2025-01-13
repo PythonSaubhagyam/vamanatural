@@ -26,6 +26,8 @@ import { AiFillGift } from "react-icons/ai";
 import checkLogin from "../utils/checkLogin";
 import Loader from "../components/Loader";
 import { useLocation } from "react-router-dom";
+import MetaTags from "../context/MetaTagsContext";
+
 export default function GiftVoucher() {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
@@ -160,8 +162,11 @@ export default function GiftVoucher() {
     // setFormData();
     setLoading(false);
   };
+  const pageUrl = "/gift-voucher";
+
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       {IsMobileView !== "true" && <Navbar />}
       <Card m={3}>
         <CardBody>
@@ -193,7 +198,7 @@ export default function GiftVoucher() {
                       "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/giftbanner.jpg"
                     }
                     alt=""
-                    // style={{ width: "100%", height: "auto" }}
+                  // style={{ width: "100%", height: "auto" }}
                   />
                 </Grid>
                 <Flex
@@ -201,20 +206,20 @@ export default function GiftVoucher() {
                   direction="column"
                   width={{ md: "90%", base: "90%" }}
                 >
-                  <Text fontSize={{ md: "3xl",  base: "xl" }} as="b">
+                  <Text fontSize={{ md: "3xl", base: "xl" }} as="b">
                     SOSE Gift Voucher
                   </Text>
                   {/* {width > 600 ? ( */}
                   <FormControl pt={5}>
                     <FormLabel fontSize="sm">Choose an amount</FormLabel>
-                    <SimpleGrid columns={{ base: 2, md: 2, lg:4 }} spacing={3}>
+                    <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} spacing={3}>
                       <Button
                         colorScheme="green"
                         variant={amount === 100 ? "solid" : "outline"}
                         onClick={() => priceHandler(100)}
-                        fontSize={{ base: "14px", md: "18px"}}
+                        fontSize={{ base: "14px", md: "18px" }}
                         leftIcon={<AiFillGift fontSize={24} />}
-                         //w={{ base: 125, md: 120 }}
+                      //w={{ base: 125, md: 120 }}
                       >
                         ₹100
                       </Button>
@@ -224,7 +229,7 @@ export default function GiftVoucher() {
                         onClick={() => priceHandler(500)}
                         fontSize={{ base: "14px", md: "18px" }}
                         leftIcon={<AiFillGift fontSize={24} />}
-                         //w={{ base: 125, md: 120 }}
+                      //w={{ base: 125, md: 120 }}
                       >
                         {/* <AiFillGift
                             fontSize={35}
@@ -238,7 +243,7 @@ export default function GiftVoucher() {
                         onClick={() => priceHandler(1000)}
                         fontSize={{ base: "14px", md: "18px" }}
                         leftIcon={<AiFillGift fontSize={24} />}
-                         //w={{ base: 125, md: 120 }}
+                      //w={{ base: 125, md: 120 }}
                       >
                         {/* <AiFillGift
                             fontSize={35}
@@ -252,8 +257,8 @@ export default function GiftVoucher() {
                         onClick={() => priceHandler(2000)}
                         fontSize={{ base: "14px", md: "18px" }}
                         leftIcon={<AiFillGift fontSize={24} />}
-                         //w={{ base: 125, md: 120 }}
-                      
+                      //w={{ base: 125, md: 120 }}
+
                       >
                         {/* <AiFillGift
                             fontSize={35}
@@ -382,7 +387,7 @@ export default function GiftVoucher() {
               </Box>
 
               <Grid
-                  display={{base:"none",md:"block"}}
+                display={{ base: "none", md: "block" }}
                 // {Width < 400 ? 'start' : 'center'}
                 // width={{ base: "0%", md: "100%" }}
                 // style={{ height:"100%"}}
@@ -396,7 +401,7 @@ export default function GiftVoucher() {
                     "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/giftbanner.jpg"
                   }
                   alt=""
-                  style={{ width: "100%",  objectFit: "cover" }}
+                  style={{ width: "100%", objectFit: "cover" }}
                 />
               </Grid>
             </Flex>

@@ -5,6 +5,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Table from "../components/Table";
 import CustomerAddressRow from "../components/CustomerAddressRow";
+import MetaTags from "../context/MetaTagsContext";
+
 import {
   Container,
   Tabs,
@@ -68,14 +70,14 @@ export default function CustomerProfile() {
       response.data.status
         ? setOrderData(response.data.data)
         : toast({
-            title: `${response.message}`,
-            description:
-              "There was an error loading your order data! Please reload the page..",
-            position: "top-right",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
+          title: `${response.message}`,
+          description:
+            "There was an error loading your order data! Please reload the page..",
+          position: "top-right",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       setLoading(false);
     } catch (err) {
       toast({
@@ -98,14 +100,14 @@ export default function CustomerProfile() {
       response.data.status
         ? setOrderData(response.data.data)
         : toast({
-            title: `${response.message}`,
-            description:
-              "There was an error loading your order data! Please reload the page..",
-            position: "top-right",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
+          title: `${response.message}`,
+          description:
+            "There was an error loading your order data! Please reload the page..",
+          position: "top-right",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       setLoading(false);
     } catch (err) {
       toast({
@@ -206,7 +208,7 @@ export default function CustomerProfile() {
           onClose();
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
 
   function onProfileUpdateClick() {
@@ -215,9 +217,11 @@ export default function CustomerProfile() {
       state: { details: details },
     });
   }
+  const pageUrl = "/profile";
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container maxW={"container.lg"} py={12}>
         <Tabs isLazy>
@@ -421,7 +425,7 @@ export default function CustomerProfile() {
           </TabPanels>
         </Tabs>
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Footer />
     </>
   );

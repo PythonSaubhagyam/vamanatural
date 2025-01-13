@@ -5,10 +5,15 @@ import Navbar from "../components/Navbar";
 import { Box, Container, VStack, Image, Text, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
+
 
 const PrivacyPolicy = () => {
+  const pageUrl = "/privacy-policy";
+
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container maxW={"container.xl"} alignContent={"flex-start"}>
         <BreadCrumbCom
@@ -34,7 +39,7 @@ const PrivacyPolicy = () => {
             also explains how you can object to the processing of your personal
             information or to receiving communications about our products and
             services. This Privacy Policy governs only information provided to{" "}
-             <b>www.vamanatural.com</b>. It does not govern any other information or
+            <b>www.vamanatural.com</b>. It does not govern any other information or
             communications that may have been collected in any other manner like
             promotions, personal contact programmer etc.
             <br />
@@ -315,10 +320,10 @@ const PrivacyPolicy = () => {
       </Box>
       <Container maxW={"container.xl"} mb={5} px={20} centerContent>
         <Image
-           src={
+          src={
             require("../assets/001.jpg")
           }
-         w="100%"
+          w="100%"
           alt=""
           style={{
             opacity: 1,
@@ -326,7 +331,7 @@ const PrivacyPolicy = () => {
           }}
         />
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Footer />
     </>
   );

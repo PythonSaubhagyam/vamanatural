@@ -20,6 +20,8 @@ import { AiFillStar } from "react-icons/ai";
 import ReactStars from "react-stars";
 import client from "../setup/axiosClient";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
+
 export default function Reviews() {
   const initialProductData = Object.freeze({
     id: 0,
@@ -52,9 +54,12 @@ export default function Reviews() {
       setLoading(false);
     }
   }
+  const pageUrl = "/reviews";
+
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container maxW="90vw" my={8}>
         <Flex gap={6} align="center">
@@ -140,7 +145,7 @@ export default function Reviews() {
             ))}
         </Flex>
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Footer />
     </>
   );

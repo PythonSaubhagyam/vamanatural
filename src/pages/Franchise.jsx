@@ -12,10 +12,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
+import MetaTags from "../context/MetaTagsContext";
 
 export default function Franchise() {
+  const pageUrl = "/franchise";
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Franchise"} secondUrl={"/franchise"} />
@@ -34,8 +37,8 @@ export default function Franchise() {
           boxShadow={"0px 0px 0px 0px"}
           height={"550px"}
           mb={10}
-          // filter="brightness(200%)"
-          // style={{ backdropFilter: "blur(10px)" }}
+        // filter="brightness(200%)"
+        // style={{ backdropFilter: "blur(10px)" }}
         >
           <Text
             pb={2}
@@ -402,7 +405,7 @@ export default function Franchise() {
           </Flex>
         </Center>
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Footer />
     </>
   );

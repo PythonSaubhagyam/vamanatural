@@ -21,6 +21,7 @@ import checkLogin from "../../utils/checkLogin";
 import client from "../../setup/axiosClient";
 import { AsyncSelect, Select } from "chakra-react-select";
 import CapitalizeLetter from "../../utils/CommanFunction";
+import MetaTags from "../../context/MetaTagsContext";
 
 export default function CreateAddress() {
   const location = useLocation();
@@ -190,7 +191,7 @@ export default function CreateAddress() {
             isClosable: true,
           });
         }
-      } catch (error) {}
+      } catch (error) { }
     } else {
       try {
         let redBody = formData;
@@ -260,7 +261,7 @@ export default function CreateAddress() {
             });
           }
         }
-      } catch (error) {}
+      } catch (error) { }
     }
   };
 
@@ -275,8 +276,8 @@ export default function CreateAddress() {
       });
       setCallingCode(
         "+" +
-          countries.find((country) => country.id === parseInt(e.value))
-            .calling_code
+        countries.find((country) => country.id === parseInt(e.value))
+          .calling_code
       );
     } else {
       setFormData({
@@ -296,9 +297,11 @@ export default function CreateAddress() {
       setFormData({ ...formData, state: null, city: "" });
     }
   };
+  const pageUrl = "/profile/addresses/add";
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Flex
         as={"form"}

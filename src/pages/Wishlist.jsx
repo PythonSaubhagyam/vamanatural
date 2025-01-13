@@ -18,6 +18,8 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
+import MetaTags from "../context/MetaTagsContext";
+
 import { useState, useEffect } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import client from "../setup/axiosClient";
@@ -35,13 +37,13 @@ export default function Addtocart() {
   const [removeLoading, setRemoveLoading] = useState();
   const [wishlistItems, setWishlistItems] = useState([]);
   const loginInfo = checkLogin();
- 
+
 
   useEffect(() => {
     async function getWishlist() {
       const checkOrSetUDIDInfo = await CheckOrSetUDID();
       let headers = { visitor: checkOrSetUDIDInfo.visitor_id };
-    
+
       if (loginInfo.isLoggedIn === true) {
         headers = { Authorization: `token ${loginInfo.token}` };
       }
@@ -73,8 +75,11 @@ export default function Addtocart() {
       setRemoveLoading();
     }
   };
+  const pageUrl = "/wishlist";
+
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container maxW="container.xl">
         <BreadCrumbCom second={"My WishList"} secondUrl={"/wishlist"} />
@@ -173,7 +178,7 @@ export default function Addtocart() {
           </Flex>
         )}
       </Container>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Footer />
     </>
   );

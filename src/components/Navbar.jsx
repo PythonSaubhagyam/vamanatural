@@ -397,8 +397,39 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  // const Logout = () => {
+  //   localStorage.clear();
+  //   CartEmitter.emit("updateCartCount", 0);
+  //   CartEmitter.emit("updateProductTotal", 0);
+  //   toast({
+  //     title: "Logged out successfully!",
+  //     status: "success",
+  //     position: "top-right",
+  //     duration: 4000,
+  //     isClosable: true,
+  //   });
+
+  //   navigate("/");
+  //   // CheckOrSetUDID();
+  // };
+
+
   const Logout = () => {
-    localStorage.clear();
+    // localStorage.clear();
+    const userKeys = [
+      "token",
+      "first_name",
+      "last_name",
+      "email",
+      "phone_no",
+      "wishlist_counter",
+      "allow_company_list",
+      "is_sose_elite_user",
+      "id",
+      "access",
+    ];
+
+    userKeys.forEach((key) => localStorage.removeItem(key));
     CartEmitter.emit("updateCartCount", 0);
     CartEmitter.emit("updateProductTotal", 0);
     toast({
@@ -412,6 +443,7 @@ export default function Navbar() {
     navigate("/");
     // CheckOrSetUDID();
   };
+
 
   const [Open1, setOpen1] = useState(false);
 

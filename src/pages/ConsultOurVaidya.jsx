@@ -23,6 +23,8 @@ import { useState } from "react";
 import CarouselOurVaidhya from "../components/CarouselOurVaidhya";
 import ScrollToTop from "../components/ScrollToTop";
 import LoginModal from "../components/LoginModal";
+import MetaTags from "../context/MetaTagsContext";
+
 
 export default function ConsultOurVaidya() {
   const toast = useToast();
@@ -119,9 +121,11 @@ export default function ConsultOurVaidya() {
   const [loading, setLoading] = useState(false);
   const [banners, setBanners] = useState(SecondCarousel);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const pageUrl = "/consult-our-vaidya";
 
   return (
     <>
+      <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container maxW="container.xl">
         <BreadCrumbCom
@@ -453,10 +457,10 @@ export default function ConsultOurVaidya() {
       </Container>
       <Box
         w="100%"
-        /*  backgroundImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/HomePage/line.png"}
-          backgroundSize="100%"
-          backgroundPosition="50% 100%"
-          backgroundRepeat={"no-repeat"} */
+      /*  backgroundImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/HomePage/line.png"}
+        backgroundSize="100%"
+        backgroundPosition="50% 100%"
+        backgroundRepeat={"no-repeat"} */
       >
         <Heading
           color="brand.500"
