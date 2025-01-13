@@ -58,7 +58,7 @@ const MetaTags = ({ pageUrl }) => {
 
   return (
     <Helmet>
-      <title>Gir Gauveda</title>
+      <title>Vama</title>
       <meta
         name="description"
         content="Bansi Gir Gauveda is on a mission to serve humanity by offering
