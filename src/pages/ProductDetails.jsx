@@ -305,13 +305,20 @@ export default function ProductDetails() {
   return (
     <>
      {" "}
-      <Helmet>
-        <title>{productData?.name || "My Store"}</title>
-        <meta name="description" content={productData?.description} />
+     <Helmet>
+        <title>{productData?.metatitle || productData?.name}</title>
+        <meta name="description" content={productData?.metadescription} />
+        <meta name="keywords" content={productData?.metakeywords} />
         <meta property="og:title" content={productData?.name} />
-        <meta property="og:description" content={productData?.description} />
+        <meta
+          property="og:description"
+          content={productData?.metadescription}
+        />
         <meta property="og:price" content={productData?.base_price} />
-        <meta property="og:Rating" content={productData?.average_rating?.average_rating}/>
+        <meta
+          property="og:Rating"
+          content={productData?.average_rating?.average_rating}
+        />
         <meta property="og:Stock" content={"In Stock"} />
         <meta property="og:Delivery" content={"4-7 day delivery"} />
         <meta property="og:image" content={productData?.images[0]} />
