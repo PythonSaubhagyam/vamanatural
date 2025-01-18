@@ -38,6 +38,9 @@ import BreadCrumbCom from "../components/BreadCrumbCom";
 import { Select } from "chakra-react-select";
 import CapitalizeLetter from "../utils/CommanFunction";
 
+import { fetchFilters } from "../redux/slices/shopApi";
+import { useDispatch, useSelector } from "react-redux";
+
 // import Paginator from "../components/Paginator";
 
 export default function Shop() {
@@ -48,9 +51,6 @@ export default function Shop() {
   const [filteredData, setFilteredData] = useState([]);
   const [sortKey, setSortKey] = useState(null);
   const [tagWise, setTagWise] = useState(null);
-  const [tagsArray, setTagsArray] = useState();
-  const [productFoamsArray, setProductFoamsArray] = useState();
-  const [brandArray, setBrandArray] = useState();
   const [productFoam, setProductFoam] = useState(null);
 
   const [banners, setBanners] = useState({
@@ -75,6 +75,13 @@ export default function Shop() {
   // console.log("brandWise",brandWise)
   const brand = searchPar.get("brand");
   const brand_name = searchPar.get("brand_name");
+
+  //Selector Redux
+  const dispatch = useDispatch();
+  const { tagsArray, productFoamsArray, brandArray } = useSelector(
+    (state) => state.shop
+  );
+
   const { currentPage, setCurrentPage, pages } = usePagination({
     pagesCount: totalPages,
     limits: {
@@ -96,14 +103,9 @@ export default function Shop() {
   ].join(" ");
 
   useEffect(() => {
-    getFilter();
     CheckOrSetUDID();
     getProducts(); // eslint-disable-next-line
-  }, [categoryId, sortKey, prod_search, brand, tagWise, productFoam]);
-
-  // useEffect(() => {
-  //   getCategories();
-  // }, []);
+  }, [page, categoryId, sortKey, prod_search, brand, tagWise, productFoam]);
 
   async function getProducts(nextPage) {
     setLoading(true);
@@ -193,58 +195,14 @@ export default function Shop() {
     }
   }
 
-  async function getCategories() {
-    setCatLoading(true);
-    const response = await client.get("/categories/?mega_menu=mega_menu", {
-      params: { list: true },
-    });
-    if (response.data.status === true) {
-      setCategories(response.data.categories);
-      setCatLoading(false);
-    }
-  }
-
-  async function getFilter() {
-    try {
-      const [tagsResponse, foamsResponse, brandResponse] = await Promise.all([
-        client.get("/web/product-tags/list/"),
-        client.get("/web/product-foams/list/"),
-        client.get("/web/brand/list/"),
-      ]);
-
-      let TagsArray = [];
-      tagsResponse?.data?.data?.map((data) =>
-        TagsArray.push({
-          label: CapitalizeLetter(data.name),
-          value: data.id,
-        })
-      );
-      setTagsArray(TagsArray);
-      let ProductFoamsArray = [];
-      foamsResponse?.data?.data?.map((data) =>
-        ProductFoamsArray.push({
-          label: CapitalizeLetter(data.name),
-          value: data.id,
-        })
-      );
-      setProductFoamsArray(ProductFoamsArray);
-      let BrandArray = [];
-      brandResponse?.data?.data?.map((data) =>
-        BrandArray.push({
-          label: CapitalizeLetter(data.name),
-          value: data.id,
-        })
-      );
-      setBrandArray(BrandArray);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
+  useEffect(() => {
+    dispatch(fetchFilters());
+  }, [dispatch]);
+  
   useEffect(() => {
     const filtered = categories.filter((item) => item.id === categoryId);
     setFilteredData(filtered);
   }, [data, categoryId]);
-
 
   // useEffect(() => {
   //   setCurrentPage(1);
@@ -348,11 +306,10 @@ export default function Shop() {
     }
 
     setSearchParams(params);
-
-  }
+  };
 
   const handleTagWiseChange = (e) => {
-    setTagWise(e)
+    setTagWise(e);
     setCurrentPage(1);
     const params = {
       page: 1,
@@ -375,12 +332,10 @@ export default function Shop() {
     }
 
     setSearchParams(params);
-
-
-  }
+  };
 
   const handleProductFoamChange = (e) => {
-    setProductFoam(e)
+    setProductFoam(e);
     setCurrentPage(1);
     const params = {
       page: 1,
@@ -388,7 +343,6 @@ export default function Shop() {
 
     if (categoryId) {
       params.category = categoryId;
-
     }
     if (category_name) {
       params.category_name = category_name;
@@ -403,8 +357,7 @@ export default function Shop() {
     }
 
     setSearchParams(params);
-
-  }
+  };
 
   const handleWishlistChange = async (item, index) => {
     const wishlistResponse = await AddOrRemoveInWishlist(item.id);
@@ -413,7 +366,7 @@ export default function Shop() {
       var elementChange = temp[index];
       elementChange.is_wished = !item.is_wished;
       setProducts(temp);
-      getProducts();
+      // getProducts();
     }
   };
   const pageUrl = "/shop";
@@ -492,7 +445,6 @@ export default function Shop() {
                   variant={"outline"}
                   onChange={(e) => {
                     handleSoryKeyChange(e);
-
                   }}
                   placeholder="Select Option"
                   options={[
