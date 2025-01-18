@@ -3,7 +3,6 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import homeReducer from "../redux/slices/homeApi"
 import categoryReducer from "../redux/slices/categoryApi"
 import shopReducer from "../redux/slices/shopApi"
-// import s from "./slices/shopApi";
 
 
 

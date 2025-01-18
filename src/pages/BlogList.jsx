@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { FaFacebookSquare, FaInstagram, FaYoutube } from "react-icons/fa";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link as ReactRouterLink } from "react-router-dom";
 import dompurify from "dompurify";
 import client from "../setup/axiosClient";
 import {
@@ -178,7 +178,7 @@ export default function BlogList() {
               {blogs.map((blog) => (
                 <Box key={blog.id}>
                   <LinkBox my={4}>
-                    <LinkOverlay href={`/blogs/${blog.id}/`}>
+                    <LinkOverlay as={ReactRouterLink} to={`/blogs/${blog.id}/`}>
                       <Heading size="lg" fontWeight={"600"} color="brand.500">
                         {blog.title}
                       </Heading>

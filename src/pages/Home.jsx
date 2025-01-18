@@ -43,16 +43,8 @@ import CategoryProductSlider from "../components/CategoryProductSlider";
 import { useDispatch, useSelector } from "react-redux"
 
 import {
-  fetchBanner,
-  fetchUpperSection,
-  fetchTryOurNewProduct,
-  fetchMustTry,
-  fetchAllTimeBestSeller,
-  fetchLowerSection1,
-  fetchBlogs,
-  fetchStatisticsSection,
-  fetchLowerSection2,
-} from "../redux/slices/homeapi";
+  initializeAppData
+} from "../redux/slices/homeApi";
 
 
 export default function Home() {
@@ -84,7 +76,8 @@ export default function Home() {
     lowerSection1,
     blogs,
     statisticsSection,
-    lowerSection2
+    lowerSection2,
+    hasFetched,
   } = useSelector((state) => state.home);
 
   const {
@@ -110,23 +103,19 @@ export default function Home() {
     const init = async () => {
       await CheckOrSetUDID();
     };
-
     init();
-  
-  
-      dispatch(fetchBanner());
-      dispatch(fetchUpperSection());
-      dispatch(fetchTryOurNewProduct());
-      dispatch(fetchMustTry());
-      dispatch(fetchAllTimeBestSeller());
-      dispatch(fetchLowerSection1());
-      dispatch(fetchBlogs());
-      dispatch(fetchStatisticsSection());
-      dispatch(fetchLowerSection2());
     if (showPopup === null && !loginInfo.isLoggedIn) {
       setIsLoginModalOpen(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (!hasFetched) {
+      dispatch(initializeAppData());
+    }
+  }, [dispatch, hasFetched]);
+
+  
 
 
   return (

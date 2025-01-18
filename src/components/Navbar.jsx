@@ -224,17 +224,22 @@ export default function Navbar() {
 
   const [isMobile] = useMediaQuery("(max-width: 768px)");
   const dispatch = useDispatch()
-  const { categories, mergedCategories } = useSelector(
+  const { categories, mergedCategories,hasFetched  } = useSelector(
    (state) => state.category
  );
 
   useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
-      dispatch(fetchCategories());
+      // dispatch(fetchCategories());
     };  
     init();
   }, []);
+  useEffect(() => {
+    if (!hasFetched) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, hasFetched]);
 
 
   useEffect(() => {
@@ -451,7 +456,7 @@ export default function Navbar() {
                               lg: "75%",
                             }}
                           >
-                            <LinkOverlay href={`/products/${result.id}`}>
+                            <LinkOverlay as={ReactRouterLink} to={`/products/${result.id}`}>
                               {result.name}
                             </LinkOverlay>
                           </Text>
@@ -930,7 +935,7 @@ export default function Navbar() {
                           lg: "75%",
                         }}
                       >
-                        <LinkOverlay href={`/products/${result.id}`}>
+                        <LinkOverlay as={ReactRouterLink} to={`/products/${result.id}`}>
                           {result.name}
                         </LinkOverlay>
                       </Text>

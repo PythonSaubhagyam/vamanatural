@@ -3,6 +3,7 @@ import { Box, Card, Text, Container, Flex, Grid, GridItem, Heading, Image, LinkB
 import React, { useState } from 'react'
 import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
 import Slider from "react-slick";
+import { Link as ReactRouterLink } from "react-router-dom"
 
 
 const BlogSliderHome = ({ blogs }) => {
@@ -119,7 +120,7 @@ const BlogSliderHome = ({ blogs }) => {
                                             />
                                             <LinkOverlay
                                                 _hover={{ color: "brand.500" }}
-                                                href={`/blogs/${blog.id}/`}
+                                                as={ReactRouterLink} to={`/blogs/${blog.id}/`}
                                             >
                                                 <Heading size="sm" fontWeight={500} m={2} noOfLines={2} >
                                                     {blog.title}

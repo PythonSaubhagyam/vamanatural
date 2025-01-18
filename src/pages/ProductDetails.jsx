@@ -31,6 +31,7 @@ import {
   FormControl,
   FormLabel,
   Textarea,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { AiFillHeart, AiFillStar } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
@@ -118,6 +119,7 @@ export default function ProductDetails() {
   if (counter <= 1) {
     decrementCounter = () => setCounter(1);
   }
+  const [isMobile] = useMediaQuery("(max-width: 1024px)");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { productId } = useParams();
@@ -750,7 +752,7 @@ export default function ProductDetails() {
                   loading={loading}
                   justify="center"
                   fontSize={{ base: "sm", lg: "md" }}
-                  type={"carousal"}
+                  type={isMobile && "carousal"}
                 />
               )}
           {otherProducts &&
@@ -761,7 +763,7 @@ export default function ProductDetails() {
                   justify="center"
                   loading={loading}
                   fontSize={{ base: "sm", lg: "md" }}
-                  type={"carousal"}
+                  type={isMobile && "carousal"}
                 />
               )}
           {recentlyViewedProducts &&

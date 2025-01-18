@@ -104,6 +104,7 @@ const categorySlice = createSlice({
     activeCategory: "",
     status: "idle",
     error: null,
+    hasFetched: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -115,6 +116,7 @@ const categorySlice = createSlice({
         state.status = "succeeded";
         state.categories = action.payload;
         state.mergedCategories = mergeArraysById(mainLinks, action.payload);
+        state.hasFetched = true;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.status = "failed";
