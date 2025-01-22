@@ -41,10 +41,12 @@ import CategorySlider from "../components/CategorySlider";
 import BlogSliderHome from "../components/BlogSliderHome";
 import CategoryProductSlider from "../components/CategoryProductSlider";
 import { useDispatch, useSelector } from "react-redux"
+import MetaHome from "../components/MetaHome";
 
 import {
   initializeAppData
 } from "../redux/slices/homeApi";
+import { Helmet } from "react-helmet";
 
 
 export default function Home() {
@@ -92,13 +94,14 @@ export default function Home() {
     skinCareSection,
     nonGMOSection,
   } = lowerSection1;
+  console.log("first", nonGMOSection)
 
   const {
     awardsSection,
     servicesSection,
     availableSection,
   } = lowerSection2;
-  
+
   useEffect(() => {
     const init = async () => {
       await CheckOrSetUDID();
@@ -115,11 +118,20 @@ export default function Home() {
     }
   }, [dispatch, hasFetched]);
 
-  
 
 
+  const pageUrl = "/"
   return (
     <>
+      <MetaHome pageUrl={pageUrl} />
+      {/* <Helmet>
+        <title>VAMA - Home</title>
+        <meta
+          name="description"
+          content="VAMA Herbal & Natural draw inspiration from Bansi Gir Gaushala, 
+          and its work towards reviving Bharat’s ancient “GauSanskriti”."
+        />
+      </Helmet>  */}
       {/* {loader === true ? (
         <Center h="100vh" w="100vw" backgroundColor={"bg.500"}>
           <Loader site={true} />

@@ -58,7 +58,7 @@ const bannerSlice = createSlice({
         allTimeBestSellerSection: [],
         lowerSection1: {
             skinCareSection: [],
-            nonGmoSection: [],
+            nonGMOSection: [],
         },
         blogs: [],
         statisticsSection: {},
@@ -79,7 +79,17 @@ const bannerSlice = createSlice({
             })
             .addCase(initializeAppData.fulfilled, (state, action) => {
                 state.loader = false;
-                const { banners, upperSection, tryOurNewProductSection, mustTrySection, allTimeBestSellerSection, lowerSection1, blogs, statisticsSection, lowerSection2 } = action.payload;
+                const { 
+                    banners, 
+                    upperSection, 
+                    tryOurNewProductSection, 
+                    mustTrySection, 
+                    allTimeBestSellerSection, 
+                    lowerSection1, 
+                    blogs, 
+                    statisticsSection, 
+                    lowerSection2 
+                } = action.payload;
                 state.hasFetched = true;
                 state.banners = banners;
                 state.tryOurNewProductSection = tryOurNewProductSection;
@@ -99,7 +109,7 @@ const bannerSlice = createSlice({
                 
                 state.lowerSection1 = {
                     skinCareSection: lowerSection1.filter((section) => section.id === 6),
-                    nonGmoSection: lowerSection1.filter((section) => section.id === 7),
+                    nonGMOSection: lowerSection1.filter((section) => section.id === 7),
                 }
                 
                 state.lowerSection2 = {

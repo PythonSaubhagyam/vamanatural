@@ -71,7 +71,7 @@ import { fetchCategories } from "../redux/slices/categoryApi";
 
 const Links = [
   {
-    name: "SOSE Elite",
+    name: "Elite Membership",
     location: "/subscription-plans",
   },
   {

@@ -49,7 +49,7 @@ const MetaTags = ({ pageUrl }) => {
   if (metaData) {
     return (
       <Helmet>
-        <title>{metaData.title || "Gir Gauveda"}</title>
+        <title>{metaData.title || "VAMA"}</title>
         <meta name="description" content={metaData.description} />
         <meta name="keywords" content={metaData.keywords} />
       </Helmet>
@@ -61,11 +61,9 @@ const MetaTags = ({ pageUrl }) => {
       <title>Vama</title>
       <meta
         name="description"
-        content="Bansi Gir Gauveda is on a mission to serve humanity by offering
-          highly potent Ayurvedic supplements by exploiting synergies of Cow
-          (“Gau” or “Go”) rearing and Ayurveda."
+        content="Herbal beauty care products 
+        designed to rejuvenate your skin and promote natural, chemical-free skin health and wellness."
       />
-      <meta name="keywords" content="girgauveda,contact us,SOSE Elite" />
     </Helmet>
   );
 };
