@@ -47,6 +47,8 @@ import {
   initializeAppData
 } from "../redux/slices/homeApi";
 import { Helmet } from "react-helmet";
+import CountUp from "react-countup";
+import ScrollTrigger from "react-scroll-trigger";
 
 
 export default function Home() {
@@ -57,14 +59,15 @@ export default function Home() {
   const loginInfo = checkLogin();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const checkOrSetUDIDInfo = CheckOrSetUDID();
+  const [countUp, setCountUp] = useState();
   const [showPopup, setShowPopup] = useState(
     sessionStorage.getItem("hasShownPopup")
   );
   const isMobiles = width <= 768;
   const navigate = useNavigate();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  })
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // })
 
 
   const dispatch = useDispatch();
@@ -411,7 +414,17 @@ export default function Home() {
                       color="text.300"
                       fontSize={{ base: "3xl", md: "3xl" }}
                     >
-                      {data?.value}
+                      <ScrollTrigger onEnter={() => setCountUp(true)}>
+                        {countUp ? (
+                          <CountUp
+                            start={0}
+                            end={Number(data.value.replace(/[^\d]/g, ""))}
+                            duration={4}
+                            delay={0}
+                          />
+                        ) : null}
+                        +
+                      </ScrollTrigger>
                     </StatNumber>
                     <StatHelpText color="gray.600">{data?.name}</StatHelpText>
                   </Stat>
