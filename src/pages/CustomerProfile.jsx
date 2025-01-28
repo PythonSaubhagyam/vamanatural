@@ -6,6 +6,8 @@ import Footer from "../components/Footer";
 import Table from "../components/Table";
 import CustomerAddressRow from "../components/CustomerAddressRow";
 import MetaTags from "../context/MetaTagsContext";
+import { FaCheckCircle } from "react-icons/fa";
+
 
 import {
   Container,
@@ -38,6 +40,7 @@ import axios from "axios";
 import { BsPatchCheckFill } from "react-icons/bs";
 import Loader from "../components/Loader";
 import ScrollToTop from "../components/ScrollToTop";
+import moment from "moment";
 
 export default function CustomerProfile() {
   const [details, setDetails] = useState([]);
@@ -51,6 +54,7 @@ export default function CustomerProfile() {
   const loginInfo = checkLogin();
   let is_sose_elite_user = localStorage.getItem("is_sose_elite_user");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const [eliteData, setEliteData] = useState([]);
 
   // const [hashValue, setHashValue] = useState(0);
   useEffect(() => {
@@ -67,11 +71,11 @@ export default function CustomerProfile() {
   async function getSubscriptionData() {
     setLoading(true);
     try {
-      const response = await client.get("/user/user_subscriptions/", {
+      const response = await client.get("/user/profile_elite_users/", {
         headers: { Authorization: `token ${loginInfo.token}` },
       });
       response.data.status
-        ? setOrderData(response.data.data)
+        ? setEliteData(response.data.data)
         : toast({
           title: `${response.message}`,
           description:
@@ -189,6 +193,43 @@ export default function CustomerProfile() {
       name: "Status",
       selector: (row) => row.sale_status,
       sortable: true,
+    },
+  ];
+
+  const subscriptionColumns = [
+    {
+      name: "Name",
+      selector: (row) => (row.user_data?.name ? row.user_data?.name : "-"),
+      sortable: true,
+    },
+    {
+      name: "Start Date",
+      selector: (row) => moment(row.start_date).format("DD-MM-YYYY"),
+      sortable: true,
+    },
+    {
+      name: "End Date",
+      selector: (row) => moment(row.end_date).format("DD-MM-YYYY"),
+      sortable: true,
+    },
+
+    {
+      name: "Expire",
+      selector: (row) => (row.is_expired ? row.is_expired : "-"),
+      sortable: true,
+      maxWidth: "300px",
+      minWidth: "300px"
+    },
+    {
+      name: "Is Active",
+      selector: (row) => row.is_active,
+      sortable: true,
+      cell: (row) => (
+        <>
+          {row.is_active ? <FaCheckCircle color="#436131" fontSize={16} /> : <RiCloseCircleFill color="#A52A2A" fontSize={18} />}
+
+        </>
+      ),
     },
   ];
 
@@ -423,7 +464,44 @@ export default function CustomerProfile() {
               </>
             </TabPanel>
             <TabPanel>
-              <Heading>Subscription</Heading>
+              <>
+                {loading ? (
+                  <Box textAlign="center">
+                    <Loader />
+                  </Box>
+                ) : (
+                  <>
+                    {(!details?.is_subscribed && eliteData?.length > 0) && (
+                      <Button
+                        bg={"brand.500"}
+                        color={"white"}
+                        //w={"100%"}
+                        ml={4}
+                        size="sm"
+                        _hover={{ bg: "brand.500" }}
+                        onClick={() => navigate("/subscription-plans")}
+                      >
+                        Renew/Buy Subscription
+                      </Button>
+                    )}
+                    {eliteData?.length > 0 ? (
+                      <Table
+                        columns={subscriptionColumns}
+                        data={eliteData}
+                        selectable={false}
+                        // onRowClick={(row, event) =>
+                        //   navigate(`/orders/${row.id}`)
+                        // }
+                        displayExtensions={false}
+                      />
+                    ) : (
+                      <Heading size="md" fontWeight={600} align="center" mt={5}>
+                        Subscription Not Found
+                      </Heading>
+                    )}
+                  </>
+                )}
+              </>
             </TabPanel>
           </TabPanels>
         </Tabs>
