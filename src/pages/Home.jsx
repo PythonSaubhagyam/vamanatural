@@ -419,7 +419,7 @@ export default function Home() {
                           <CountUp
                             start={0}
                             end={Number(data.value.replace(/[^\d]/g, ""))}
-                            duration={4}
+                            duration={1}
                             delay={0}
                           />
                         ) : null}

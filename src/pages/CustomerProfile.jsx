@@ -50,17 +50,20 @@ export default function CustomerProfile() {
   const toast = useToast();
   const loginInfo = checkLogin();
   let is_sose_elite_user = localStorage.getItem("is_sose_elite_user");
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   // const [hashValue, setHashValue] = useState(0);
   useEffect(() => {
     // setHashValue(window.location.hash === "#orders" ? 2 : 0);
-
+    if (location.hash === "#orders") {
+      setActiveTabIndex(2); // Index of the "My Orders" tab
+    }
     getDetails();
     getOrderData();
     if (is_sose_elite_user === "true") {
       getSubscriptionData();
     } // eslint-disable-next-line
-  }, []);
+  }, [location]);
   async function getSubscriptionData() {
     setLoading(true);
     try {
@@ -132,10 +135,10 @@ export default function CustomerProfile() {
         setDetails(response.data.data);
         setAddresses(response.data.data?.addresses);
         setMobile(response.data.data?.mobile_no);
-        console.log(
-          "response.data.data?.mobile_no",
-          response.data.data?.mobile_no
-        );
+        // console.log(
+        //   "response.data.data?.mobile_no",
+        //   response.data.data?.mobile_no
+        // );
       } else {
         toast({
           title: `${response.message}`,
@@ -224,7 +227,7 @@ export default function CustomerProfile() {
       <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container maxW={"container.lg"} py={12}>
-        <Tabs isLazy>
+        <Tabs isLazy index={activeTabIndex} onChange={(index) => setActiveTabIndex(index)}>
           <TabList mb="1em">
             <Tab fontSize={{ base: "sm", md: "md" }} me={4}>
               Details

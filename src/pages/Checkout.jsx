@@ -216,7 +216,8 @@ export default function Checkout({ getDetails }) {
         isClosable: true,
       });
     }
-
+    localStorage.setItem("cart_counter", 0); 
+    setCartCount(0);
     setLoading(false);
     setPayment(false);
   };
