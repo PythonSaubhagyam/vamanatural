@@ -6,7 +6,6 @@ import Footer from "../components/Footer";
 import Table from "../components/Table";
 import CustomerAddressRow from "../components/CustomerAddressRow";
 import MetaTags from "../context/MetaTagsContext";
-import { FaCheckCircle } from "react-icons/fa";
 
 
 import {
@@ -40,6 +39,7 @@ import axios from "axios";
 import { BsPatchCheckFill } from "react-icons/bs";
 import Loader from "../components/Loader";
 import ScrollToTop from "../components/ScrollToTop";
+import { FaCheckCircle } from "react-icons/fa";
 import moment from "moment";
 
 export default function CustomerProfile() {

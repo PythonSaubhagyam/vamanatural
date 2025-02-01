@@ -1221,7 +1221,7 @@ export default function Navbar() {
             justifyContent={"end"}
             alignItems={"center"}
             // style={{ borderBottom: "0.5px solid #b7b7b7" }}
-            gap={10}
+            gap={5}
             fontSize={15}
           >
             <Link
@@ -1240,7 +1240,7 @@ export default function Navbar() {
             >
               <FiInstagram fontSize={20} />
             </Link>
-            {/* <Link
+            <Link
               _hover={{ color: "text.500" }}
               isExternal={true}
               as={ReactRouterLink}
@@ -1249,7 +1249,7 @@ export default function Navbar() {
               }
             >
               <FaWhatsapp fontSize={20} />
-            </Link> */}
+            </Link>
             <Link
               _hover={{ color: "text.500" }}
               isExternal={true}

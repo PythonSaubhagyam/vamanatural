@@ -153,6 +153,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
           position: "top-right",
           status: "success",
           duration: 2000,
+          isClosable: true,
         });
         CartEmitter.emit("updateProductTotal", true);
         localStorage.setItem("token", response.data.data.token);
@@ -259,6 +260,7 @@ const LoginModal = ({ isOpen, onClose, onOpen }) => {
               position: "top-right",
               status: "success",
               duration: 2000,
+              isClosable: true,
             });
             CartEmitter.emit("updateProductTotal", true);
             localStorage.setItem("token", response.data.data.token);
