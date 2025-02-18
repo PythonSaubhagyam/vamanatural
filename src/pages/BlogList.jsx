@@ -16,6 +16,9 @@ import {
   Link,
   Icon,
   Select,
+  Wrap,
+  WrapItem,
+  Center,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { FaFacebookSquare, FaInstagram, FaYoutube } from "react-icons/fa";
@@ -172,55 +175,67 @@ export default function BlogList() {
         gap={{ base: 6, lg: 0 }}
         // maxW={{ base: "100%", lg: "90vw" }}
         minH="container.sm"
-        justifyContent="center"
+        justify="center"
         my={8}
         px={6}
         maxW="container.xl"
       >
+
         <Flex direction="column" w={{ base: "90vw", lg: "60vw" }} gap={10}>
           {blogs.length > 0 ? (
             <>
-              {blogs.map((blog) => (
-                <Box key={blog.id}>
-                  <LinkBox my={4}>
-                    <LinkOverlay as={ReactRouterLink} to={`/blogs/${blog.id}/`}>
-                      <Heading size="lg" fontWeight={"600"} color="brand.500">
-                        {blog.title}
-                      </Heading>
-                    </LinkOverlay>
-                    <Text fontSize={"sm"} color="gray.500">
-                      {new Intl.DateTimeFormat("en-CA", {
-                        dateStyle: "long",
-                        timeZone: "Asia/Kolkata",
-                      }).format(new Date(blog.published_at))}
-                    </Text>
-                    <Image
-                      src={blog.banner_url}
-                      w="100%"
-                      h="250px"
-                      my={3}
-                      objectFit={"cover"}
-                      objectPosition={"center"}
-                    />
-                    <Text
-                      fontSize="lg"
-                      noOfLines={2}
-                      textOverflow={"ellipsis"}
-                      dangerouslySetInnerHTML={{
-                        __html: dompurify.sanitize(blog.content),
-                      }}
-                    />
-                  </LinkBox>
-                  <Button
-                    w={{ base: "100%", md: "25%" }}
-                    colorScheme="brand"
-                    onClick={() => navigate(`/blogs/${blog.id}/`)}
-                  >
-                    Read more
-                    <ChevronRightIcon />
-                  </Button>
-                </Box>
-              ))}
+
+              <Wrap maxW="container.xl" spacing="30px">
+                {blogs.map((blog) => (
+                  <WrapItem key={blog.id} w={['100%', '48%', '45%']} h="400">
+                    <Center w="100%" h="100%" >
+                      <Flex w="100%" h="100%" flexDirection="column"
+                        onClick={() => navigate(`/blogs/${blog.id}/${blog.title.replace(/\s+/g, "-")}`)}>
+                        <Box cursor="pointer" width="100%" height="80%" borderRadius="10px" position="relative" overflow="hidden">
+                          <Image
+                            borderRadius="10px"
+                            objectPosition="center"
+                            objectFit="contaion"
+                            _hover={{ transform: 'scale(1.1)' }}
+                            transition=".2s ease-in-out"
+                            width={"full"}
+                            height={"full"}
+                            src={blog.banner_url}
+                          />
+                        </Box>
+                        <Heading cursor={"pointer"} fontSize={['sm', 'md', 'lg']} mt={2} color="brand.500">
+                          {blog.title}
+                        </Heading>
+                        <Text
+                          fontSize={['xs', 'xm', 'md']} // Responsive font sizes
+                          pb={2}
+                          noOfLines={2} // Limits to 3 lines
+                          textOverflow="ellipsis"
+                          dangerouslySetInnerHTML={{
+                            __html: dompurify.sanitize(blog.content), // Safely sanitize HTML content
+                          }}
+                        />
+
+                        <Flex w="100%" h="10vh" justifyContent="space-between" alignItems="center" mt={2}>
+                          <Button color="white" colorScheme="brand" bgColor="brand.500" w={['45%', '40%', '35%']} h="5vh"
+                            onClick={() => navigate(`/blogs/${blog.id}/${blog.title.replace(/\s+/g, "-")}`)}
+
+                          >
+                            Read more
+                            <ChevronRightIcon />
+                          </Button>
+                          <Text color="gray.500" fontSize={['xs', 'sm', 'md']}>
+                            {new Intl.DateTimeFormat("en-CA", {
+                              dateStyle: "long",
+                              timeZone: "Asia/Kolkata",
+                            }).format(new Date(blog.published_at))}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    </Center>
+                  </WrapItem>
+                ))}
+              </Wrap>
               <Pagination
                 pagesCount={totalPages}
                 currentPage={currentPage}

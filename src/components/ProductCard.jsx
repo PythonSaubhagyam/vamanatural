@@ -88,7 +88,7 @@ export default function ProductCard({ product }) {
         borderColor="brand.100"
         borderRadius={"lg"}
         onClick={() => {
-          navigate(`/products/${product?.id}`);
+          navigate(`/products/${product?.id}/${product?.name.replace(/\s+/g, "-")}`);
         }}
         cursor={"pointer"}
       >
@@ -131,7 +131,7 @@ export default function ProductCard({ product }) {
           </Box>
           <Button
             as={Link}
-            to={`/products/${product?.id}`}
+            to={`/products/${product?.id}/${product?.name.replace(/\s+/g, "-")}`}
             fontSize="sm"
             w={{ base: "100%", lg: "80%" }}
             mx="auto"

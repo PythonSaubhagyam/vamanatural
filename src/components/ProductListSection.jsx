@@ -47,14 +47,14 @@ import { useState } from "react";
 //     </Box>
 //   );
 // };
-export default function ProductListSection({ title, products, loading, type }) {
+export default function ProductListSection({ title, products, type, loading }) {
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
-  const [slider, setSlider] = useState(Slider | null)
+  const [slider, setSlider] = useState(Slider | null);
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: isLargerThan768 ? 4 : 1,
+    slidesToShow: 5,
     slidesToScroll: 1,
     arrows: false,
     // centerMode: true,
@@ -101,7 +101,7 @@ export default function ProductListSection({ title, products, loading, type }) {
         >
           {title}
         </Text>
-        {type === "carousal" && products.length > 3 ? (
+        {type === "carousal" && products.length > 4 ? (
           <>
 
             <IconButton

@@ -142,7 +142,7 @@ export default function CartRow({
       >
         {index}
       </Text> */}
-      <Link to={`/products/${cartItem.product_id}`}>
+      <Link to={`/products/${cartItem.product_id}/${cartItem.product.replace(/\s+/g, "-")}`}>
         <Image
           src={cartItem.product_image}
           boxSize={{ base: "75px", md: "100px" }}
@@ -154,7 +154,7 @@ export default function CartRow({
       <Text
         ml={10}
         as={Link}
-        to={`/products/${cartItem.product_id}`}
+        to={`/products/${cartItem.product_id}/${cartItem.product.replace(/\s+/g, "-")}`}
         noOfLines={{ base: 3, md: 5 }}
       >
         {cartItem.product}

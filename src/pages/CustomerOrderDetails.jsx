@@ -207,7 +207,7 @@ export default function CustomerOrderDetails() {
 
           <Flex gap={2} align="center">
           
-            { orderDetails?.is_paid === false &&(
+            { orderDetails?.is_paid === false && orderDetails?.order_status !== "Delivered" &&(
               <Button size="sm" colorScheme={"brand"} >
                 <Icon as={BsCheck} boxSize={6} />
                 Accept and Pay
@@ -220,7 +220,7 @@ export default function CustomerOrderDetails() {
                 Accept and Pay
               </Button>
             )} */}
-            {orderDetails.order_status !== "Pending" &&
+            {orderDetails.order_status !== "Pending" && 
               orderDetails.is_invoiced && (
                 <>
                   <IconButton
@@ -396,7 +396,7 @@ export default function CustomerOrderDetails() {
                   orderDetails.rated_product_info?.map((item) => (
                     <Tr key={item.id}>
                       <Td>
-                        <Link href={`/products/${item.id}`} fontWeight="bold">
+                        <Link href={`/products/${item.id}/${item.product_name.replace(/\s+/g, "-")}`} fontWeight="bold">
                           {item.product_name}
                         </Link>
                       </Td>

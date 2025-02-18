@@ -43,7 +43,7 @@ export default function ShopProductCard({
       cursor={"pointer"}
     >
       <Link
-        to={`/products/${productDetails.id}`}
+        to={`/products/${productDetails.id}/${productDetails.name.replace(/\s+/g, "-")}`}
       >
         <CardHeader
           as={Flex}

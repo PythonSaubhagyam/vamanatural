@@ -120,7 +120,7 @@ const BlogSliderHome = ({ blogs }) => {
                                             />
                                             <LinkOverlay
                                                 _hover={{ color: "brand.500" }}
-                                                as={ReactRouterLink} to={`/blogs/${blog.id}/`}
+                                                as={ReactRouterLink} to={`/blogs/${blog.id}/${blog.title.replace(/\s+/g, "-")}`}
                                             >
                                                 <Heading size="sm" fontWeight={500} m={2} noOfLines={2} >
                                                     {blog.title}
@@ -138,7 +138,7 @@ const BlogSliderHome = ({ blogs }) => {
                                                 fontSize={"sm"}
                                                 fontWeight={600}
                                                 color={"brand.500"}
-                                                onClick={() => navigate(`/blogs/${blog.id}/`)}
+                                                onClick={() => navigate(`/blogs/${blog.id}/${blog.title.replace(/\s+/g, "-")}`)}
                                                 cursor={"pointer"}
                                             >
                                                 Read more

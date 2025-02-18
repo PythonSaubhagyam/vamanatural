@@ -144,7 +144,7 @@ const CategoryProductSlider = ({ products, title, type }) => {
                                         borderColor="brand.100"
                                         borderRadius={"lg"}
                                         onClick={() => {
-                                            navigate(`/products/${product.product?.id}`);                   
+                                            navigate(`/products/${product.product?.id}/${product.product?.name.replace(/\s+/g, "-")}`);                   
                                         }}
                                         cursor={"pointer"}
                                     >
@@ -187,7 +187,7 @@ const CategoryProductSlider = ({ products, title, type }) => {
                                             </Box>
                                             <Button
                                                 as={Link}
-                                                to={`/products/${product.product?.id}`}
+                                                to={`/products/${product.product?.id}/${product.product?.name.replace(/\s+/g, "-")}`}
                                                 fontSize="sm"
                                                 w={{ base: "100%", lg: "80%" }}
                                                 mx="auto"
@@ -203,53 +203,6 @@ const CategoryProductSlider = ({ products, title, type }) => {
                                 </GridItem>
 
                             ))}
-                            {/* {blogs?.slice(0, 8).map((blog) => (
-                                <GridItem key={blog.id} px={5}>
-                                    <Card>
-                                        <LinkBox>
-                                            <Image
-                                                src={blog.banner}
-                                                w="100%"
-                                                h="300px"
-                                                loading="lazy"
-                                                objectFit={"cover"}
-                                                borderRadius={5}
-                                                style={{
-                                                    opacity: 1,
-                                                    transition: "opacity 0.7s", // Note the corrected syntax here
-                                                }}
-                                            />
-                                            <LinkOverlay
-                                                _hover={{ color: "brand.500" }}
-                                                href={`/blogs/${blog.id}/`}
-                                            >
-                                                <Heading size="sm" fontWeight={500} m={2} noOfLines={3} >
-                                                    {blog.title}
-                                                </Heading>
-                                            </LinkOverlay>
-                                        </LinkBox>
-                                        <Flex m={2} justifyContent={"space-between"}>
-                                            <Text fontSize={"sm"} color="gray.500">
-                                                {new Intl.DateTimeFormat("en-CA", {
-                                                    dateStyle: "long",
-                                                    timeZone: "Asia/Kolkata",
-                                                }).format(new Date(blog.published_at))}
-                                            </Text>
-                                            <Text
-                                                fontSize={"sm"}
-                                                fontWeight={600}
-                                                color={"brand.500"}
-                                                onClick={() => navigate(`/blogs/${blog.id}/`)}
-                                                cursor={"pointer"}
-                                            >
-                                                Read more
-                                                <ChevronRightIcon />
-                                            </Text>
-                                        </Flex>
-                                    </Card>
-                                </GridItem>
-                            ))} */}
-
                         </Slider>
                     </div>
                 </Container>

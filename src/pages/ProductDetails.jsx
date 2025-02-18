@@ -306,8 +306,8 @@ export default function ProductDetails() {
   };
   return (
     <>
-     {" "}
-     <Helmet>
+      {" "}
+      <Helmet>
         <title>{productData?.metatitle || productData?.name}</title>
         <meta name="description" content={productData?.metadescription} />
         <meta name="keywords" content={productData?.metakeywords} />
@@ -344,7 +344,7 @@ export default function ProductDetails() {
                   .split(" ")
                   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                   .join(" ")}`}
-                // thirdUrl={`/shop?category=${categories.categoryId || ''}`}
+              // thirdUrl={`/shop?category=${categories.categoryId || ''}`}
               />
             </Box>
           </Container>
@@ -374,7 +374,7 @@ export default function ProductDetails() {
                   gap={2}
                   align={{ base: "flex-start", md: "flex-start" }}
 
-                  //mt={{md:16}}
+                //mt={{md:16}}
                 >
                   <Heading
                     // mb={2}
@@ -655,15 +655,15 @@ export default function ProductDetails() {
                         _hover={
                           isWished
                             ? {
-                                color: "white",
-                                bg: "red.600",
-                                cursor: "pointer",
-                              }
+                              color: "white",
+                              bg: "red.600",
+                              cursor: "pointer",
+                            }
                             : {
-                                color: "white",
-                                bg: "brand.900",
-                                cursor: "pointer",
-                              }
+                              color: "white",
+                              bg: "brand.900",
+                              cursor: "pointer",
+                            }
                         }
                         onClick={() => handleWishlistChange(productData?.id)}
                       >
@@ -743,7 +743,7 @@ export default function ProductDetails() {
                     mx="auto"
                     mt={4}
                     colorScheme="brand"
-                    onClick={() => navigate(`/products/${productId}/reviews`)}
+                    onClick={() => navigate(`/products/${productId}/reviews/${productData?.name.replace(/\s+/g, "-")}`)}
                   >
                     View all reviews
                   </Button>
@@ -752,38 +752,38 @@ export default function ProductDetails() {
             </Container>
           )}
           {relatedProducts &&
-            relatedProducts?.length >0 &&(
-                <ProductListSection
-                  title="Related Products"
-                  products={relatedProducts}
-                  loading={loading}
-                  justify="center"
-                  fontSize={{ base: "sm", lg: "md" }}
-                  type={isMobile && "carousal"}
-                />
-              )}
+            relatedProducts?.length > 0 && (
+              <ProductListSection
+                title="Related Products"
+                products={relatedProducts}
+                loading={loading}
+                justify="center"
+                fontSize={{ base: "sm", lg: "md" }}
+                type={isMobile && "carousal"}
+              />
+            )}
           {otherProducts &&
-            otherProducts?.length > 0 &&(
-                <ProductListSection
-                  title="Other Products"
-                  products={otherProducts}
-                  justify="center"
-                  loading={loading}
-                  fontSize={{ base: "sm", lg: "md" }}
-                  type={isMobile && "carousal"}
-                />
-              )}
+            otherProducts?.length > 0 && (
+              <ProductListSection
+                title="Other Products"
+                products={otherProducts}
+                justify="center"
+                loading={loading}
+                fontSize={{ base: "sm", lg: "md" }}
+                type={isMobile && "carousal"}
+              />
+            )}
           {recentlyViewedProducts &&
-            recentlyViewedProducts?.length > 0 &&(
-                <ProductListSection
-                  title="Recently Viewed Products"
-                  products={recentlyViewedProducts}
-                  justify="center"
-                  loading={loading}
-                  fontSize={{ base: "sm", lg: "md" }}
-                  type={"carousal"}
-                />
-              )}
+            recentlyViewedProducts?.length > 0 && (
+              <ProductListSection
+                title="Recently Viewed Products"
+                products={recentlyViewedProducts}
+                justify="center"
+                loading={loading}
+                fontSize={{ base: "sm", lg: "md" }}
+                type={"carousal"}
+              />
+            )}
           <Modal
             size={"xl"}
             closeOnOverlayClick={false}

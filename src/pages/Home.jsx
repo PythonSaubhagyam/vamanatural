@@ -49,6 +49,7 @@ import {
 import { Helmet } from "react-helmet";
 import CountUp from "react-countup";
 import ScrollTrigger from "react-scroll-trigger";
+import WhatsUp from "../components/WhatsUp";
 
 
 export default function Home() {
@@ -97,7 +98,7 @@ export default function Home() {
     skinCareSection,
     nonGMOSection,
   } = lowerSection1;
-  console.log("first", nonGMOSection)
+  // console.log("first", nonGMOSection)
 
   const {
     awardsSection,
@@ -248,7 +249,7 @@ export default function Home() {
                     key={product.id}
                     onClick={() => {
                       if (product.product) {
-                        navigate(`/products/${product.product}`);
+                        navigate(`/products/${product.product}/${product.product_name.replace(/\s+/g, "-")}`);
                       }
                     }}
                     cursor={product.product ? "pointer" : "default"}
@@ -408,7 +409,7 @@ export default function Home() {
               spacingY="40px"
             >
               {statisticsSection?.length > 0 &&
-                statisticsSection?.map((data) => (
+                statisticsSection?.map((data, index) => (
                   <Stat>
                     <StatNumber
                       color="text.300"
@@ -423,7 +424,7 @@ export default function Home() {
                             delay={0}
                           />
                         ) : null}
-                        +
+                        {index === 1 ? " %+" : " +"}
                       </ScrollTrigger>
                     </StatNumber>
                     <StatHelpText color="gray.600">{data?.name}</StatHelpText>
