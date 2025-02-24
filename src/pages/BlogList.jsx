@@ -85,21 +85,6 @@ export default function BlogList() {
     }
   }
 
-  // function goToPrevPage() {
-  //   if (parseInt(searchParams.get("page")) > pages) {
-  //     setSearchParams({ page: pages });
-  //   } else {
-  //     setSearchParams({ page: parseInt(searchParams.get("page")) - 1 });
-  //   }
-  // }
-
-  // function goToNextPage() {
-  //   if (parseInt(searchParams.get("page")) < 1) {
-  //     setSearchParams({ page: pages });
-  //   } else {
-  //     setSearchParams({ page: parseInt(searchParams.get("page")) + 1 });
-  //   }
-  // }
 
   async function handlePageChange(nextPage) {
     setCurrentPage(nextPage);

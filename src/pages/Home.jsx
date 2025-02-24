@@ -424,7 +424,7 @@ export default function Home() {
                             delay={0}
                           />
                         ) : null}
-                        {index === 1 ? " %+" : " +"}
+                        {data?.name === "Positive Feedback" ? "+%" : data?.name === "Generation of Farmers" ? "th" : "+"}
                       </ScrollTrigger>
                     </StatNumber>
                     <StatHelpText color="gray.600">{data?.name}</StatHelpText>

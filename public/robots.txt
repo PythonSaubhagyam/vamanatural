@@ -1,0 +1,80 @@
+User-agent: Googlebot
+Disallow: /
+User-agent: googlebot-image
+Disallow: /
+User-agent: googlebot-mobile
+Disallow: /
+User-agent: MSNBot
+Disallow: /
+User-agent: Slurp
+Disallow: /
+User-agent: Teoma
+Disallow: /
+User-agent: Gigabot
+Disallow: /
+User-agent: Robozilla
+Disallow: /
+User-agent: Nutch
+Disallow: /
+User-agent: ia_archiver
+Disallow: /
+User-agent: baiduspider
+Disallow: /
+User-agent: naverbot
+Disallow: /
+User-agent: yeti
+Disallow: /
+User-agent: yahoo-mmcrawler
+Disallow: /
+User-agent: psbot
+Disallow: /
+User-agent: yahoo-blogs/v3.9
+Disallow: /
+User-agent: *
+Disallow: /
+Crawl-delay: 120
+Disallow: /cgi-bin/
+
+
+
+
+User-agent: *
+Disallow:/
+Disallow:/consult-our-vaidya
+Disallow:/subscription-plans
+Disallow:/gift-voucher
+Disallow:/about-us
+Disallow:/inspire-and-support
+Disallow:/organic-living
+Disallow:/store-locator
+Disallow:/contact-us
+Disallow:/Franchise
+Disallow:/signup
+Disallow:/login
+Disallow:/cart
+Disallow:/wishlist
+Disallow:/shop
+Disallow:/blogs
+Disallow:/privacy-policy
+Disallow:/return-and-refund-policy
+Disallow:/shipping-policy
+Disallow:/terms-and-conditions
+Disallow:/faq
+Disallow:/testimonials
+Disallow:/appreciation
+Disallow:/resources
+Disallow:/products
+Disallow:/checkout
+Disallow:/reset-password
+Disallow:/profile
+Disallow:/subscription-payment
+Disallow:/orders
+Disallow:/survey
+Disallow:/our-videos
+Disallow:/update-password
+Disallow:/profile/edit
+Disallow:/reset-password
+Disallow:/login-system
+
+
+
