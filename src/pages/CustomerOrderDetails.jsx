@@ -134,54 +134,61 @@ export default function CustomerOrderDetails() {
         console.error("Error downloading PDF:", error);
       });
   };
-  
-  // async function handleOnlinePayment() {
-  //   setPayment(true); // Set the payment loading state
 
-  //   const data = {
-  //     txnid: new Date().getTime().toString(), // Generate a unique transaction ID
-  //     amount: orderDetails.final_total?.toString() || "0", // Use the total amount from the order details
-  //     productinfo: orderDetails.is_gift ? "Gift" : "SOSE", // Check if it's a gift
-  //     billing_address: orderDetails.billing_address?.id, // Billing address
-  //     shipping_amount: orderDetails.shipping_amt, // Shipping amount
-  //     tax_amount: orderDetails.tax_amt, // Tax amount
-  //     is_a_gift: orderDetails.is_gift, // If it's a gift
-  //     giftMessage: orderDetails.gift_message || "", // Gift message (if any)
-  //     voucherCode: orderDetails.applied_voucher_code || "", // Voucher code (if any)
-  //   };
+  async function handleOnlinePayment() {
+    setPayment(true); // Set the payment loading state
 
-  //   // Send request to backend for payment link
-  //   try {
-  //     const res = await client.post("/get-order-payment-link/", data, {
-  //       headers: {
-  //         Authorization: `token ${checkLogin().token}`,
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     });
+    const data = {
+      order_id: orderDetails.order_id,
+      txnid: new Date().getTime().toString(), // Generate a unique transaction ID
+      amount: orderDetails.final_total?.toString() || "0", // Use the total amount from the order details
+      productinfo: orderDetails.is_gift ? "Gift" : "SOSE", // Check if it's a gift
+      billing_address: orderDetails.billing_address?.id, // Billing address
+      shipping_amount: orderDetails.shipping_amt, // Shipping amount
+      tax_amount: orderDetails.tax_amt, // Tax amount
+      is_a_gift: orderDetails.is_gift, // If it's a gift
+      giftMessage: orderDetails.gift_message || "", // Gift message (if any)
+      voucherCode: orderDetails.applied_voucher_code || "", // Voucher code (if any)
+    };
 
-  //     if (res.data.status === true) {
-  //       setTxt_new_id(res.data.txn_id);
-  //       localStorage.setItem("cart_counter", 0);
-  //       setCartCount(0);
-  //       const options = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
-  //       window.open(res.data.payment_url, "_top", options);
-  //       setTimeout(() => {
-  //         window.open(res.data.payment_url, "_top", options);
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Payment Error:", error); 
-  //     toast({
-  //       title: "Payment failed! Please try again.",
-  //       status: "error",
-  //       position: "top-right",
-  //       duration: 4000,
-  //       isClosable: true,
-  //     });
-  //   } finally {
-  //     setPayment(false);
-  //   }
-  // }
+    // Send request to backend for payment link
+    try {
+
+      const res = await client.patch(
+        `edit-order-payment-link/`,
+        data,
+        {
+          // params: {order_id : orderDetails.order_id},
+          headers: {
+            Authorization: `token ${checkLogin().token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (res.data.status === true) {
+        setTxt_new_id(res.data.txn_id);
+        localStorage.setItem("cart_counter", 0);
+        setCartCount(0);
+        const options = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+        window.open(res.data.payment_url, "_top", options);
+        setTimeout(() => {
+          window.open(res.data.payment_url, "_top", options);
+        });
+      }
+    } catch (error) {
+      console.error("Payment Error:", error);
+      toast({
+        title: "Payment failed! Please try again.",
+        status: "error",
+        position: "top-right",
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
+      setPayment(false);
+    }
+  }
 
   return (
     <>
@@ -206,37 +213,31 @@ export default function CustomerOrderDetails() {
           <Heading fontWeight={500}>{orderDetails?.order_id}</Heading>
 
           <Flex gap={2} align="center">
-          
-            { orderDetails?.is_paid === false && orderDetails?.order_status !== "Delivered" &&(
-              <Button size="sm" colorScheme={"brand"} >
-                <Icon as={BsCheck} boxSize={6} />
-                Accept and Pay
-              </Button>
-            )}
-          {/*  { orderDetails.order_status !== "Cancelled" && orderDetails?.is_paid === false &&(
-              <Button size="sm" colorScheme={"brand"} isLoading={isPayment}
-                loadingText="Processing..." onClick={handleOnlinePayment}  >
-                <Icon as={BsCheck} boxSize={6} />
-                Accept and Pay
-              </Button>
-            )} */}
-            {orderDetails.order_status !== "Pending" && 
+            {
+              orderDetails.order_status !== "Cancelled" &&
+              orderDetails?.is_paid === false &&
+              orderDetails.order_status !== "Delivered" &&
+              (
+                <Button size="sm" colorScheme={"brand"} isLoading={isPayment}
+                  loadingText="Processing..." onClick={handleOnlinePayment}  >
+                  <Icon as={BsCheck} boxSize={6} />
+                  Accept and Pay
+                </Button>
+              )}
+            {orderDetails.order_status !== "Pending" &&
               orderDetails.is_invoiced && (
                 <>
-                  <IconButton
-                    icon={<BsPrinter fontSize={"1.25rem"} />}
-                    size="md"
-                    bg={"transparent"}
-                    color={"brand"}
-                    onClick={() => printFun()}
-                  />
-                  <IconButton
-                    icon={<BsDownload fontSize={"1.25rem"} />}
-                    size="md"
-                    bg={"transparent"}
-                    color={"brand"}
-                    onClick={() => downloadPdf()}
-                  />
+                  <Button
+                    size="sm" 
+                    colorScheme={"brand"} 
+                    isLoading={isPayment}
+                    loadingText="Processing..."
+                    onClick={downloadPdf} 
+                    rightIcon={<BsDownload fontSize="1.1rem" />}
+                  >
+                    Invoice
+                  </Button>
+
                 </>
               )}
           </Flex>

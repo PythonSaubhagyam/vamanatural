@@ -6,40 +6,39 @@ Allow: /
 
 # Block only specific sections
 Disallow: /cgi-bin/
-Disallow:/consult-our-vaidya
-Disallow:/subscription-plans
-Disallow:/gift-voucher
-Disallow:/about-us
-Disallow:/inspire-and-support
-Disallow:/organic-living
-Disallow:/store-locator
-Disallow:/contact-us
-Disallow:/Franchise
-Disallow:/signup
-Disallow:/login
+Disallow:/shop
 Disallow:/cart
 Disallow:/wishlist
-Disallow:/shop
+Disallow:/checkout
+Disallow:/store-locator
+Disallow:/inspire-and-support
+Disallow:/gift-voucher
+Disallow:/franchise
+Disallow:/organic-living
+Disallow:/about-us
 Disallow:/blogs
+Disallow:/contact-us
 Disallow:/privacy-policy
+Disallow:/exports
+Disallow:/bussiness
+Disallow:/subscription-plans
+Disallow:/subscription-payment
+Disallow:/consult-our-vaidya
+Disallow:/consult-our-vaidya/schedule-appointment
+Disallow:/appreciation
+Disallow:/resources
 Disallow:/return-and-refund-policy
 Disallow:/shipping-policy
 Disallow:/terms-and-conditions
-Disallow:/faq
 Disallow:/testimonials
-Disallow:/appreciation
-Disallow:/resources
-Disallow:/products
-Disallow:/checkout
+Disallow:/faq
+Disallow:/signup
 Disallow:/reset-password
-Disallow:/profile
-Disallow:/subscription-payment
-Disallow:/orders
-Disallow:/survey
-Disallow:/our-videos
+Disallow:/login
 Disallow:/update-password
+Disallow:/profile
 Disallow:/profile/edit
-Disallow:/reset-password
+Disallow:/profile/addresses/add
 Disallow:/login-system
 
 # Allow Googlebot to crawl everything except restricted pages
