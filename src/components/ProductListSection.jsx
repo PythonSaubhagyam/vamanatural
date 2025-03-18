@@ -18,35 +18,6 @@ import ProductCard from "./ProductCard";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import { useState } from "react";
 
-// // Custom arrow component for previous button
-// const PrevArrow = (props) => {
-//   const { onClick } = props;
-//   return (
-//     <Box
-//       className="slick-arrow slick-prev"
-//       onClick={onClick}
-//       style={{ left: "40px" }}
-//       zIndex={1}
-//     >
-//       <FaChevronLeft />
-//     </Box>
-//   );
-// };
-
-// // Custom arrow component for next button
-// const NextArrow = (props) => {
-//   const { onClick } = props;
-//   return (
-//     <Box
-//       className="slick-arrow slick-next"
-//       onClick={onClick}
-//       style={{ right: "40px" }}
-//       zIndex={1}
-//     >
-//       <FaChevronRight />
-//     </Box>
-//   );
-// };
 export default function ProductListSection({ title, products, type, loading }) {
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
   const [slider, setSlider] = useState(Slider | null);
@@ -175,7 +146,7 @@ export default function ProductListSection({ title, products, type, loading }) {
         }
         <Container maxW={"container.xl"} px={10}>
 
-          {type === "carousal" && products.length > 3 ? (
+          {type === "carousal" && products.length > 4 ? (
             <Slider {...settings} ref={(slider) => setSlider(slider)}>
               {loading === true
                 ? [0, 1, 2, 3, 4].map((index) => (
