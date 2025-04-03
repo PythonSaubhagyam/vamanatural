@@ -27,11 +27,13 @@ import checkLogin from "../utils/checkLogin";
 import Loader from "../components/Loader";
 import { useLocation } from "react-router-dom";
 import MetaTags from "../context/MetaTagsContext";
+import Captcha from "../components/Captcha";
 
 export default function GiftVoucher() {
   let { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const IsMobileView = searchParams.get("mobile") ?? "false";
+  const [verified, setVerified] = useState(false);
   const txnId = useRef(new Date().getTime().toString());
   const defaultValue = {
     amount: null,
@@ -369,6 +371,7 @@ export default function GiftVoucher() {
                         }
                       />
                     </FormControl>
+                    <Captcha onVerify={setVerified} />
                   </FormControl>
                 </Flex>
                 <Text as="sup">
@@ -380,6 +383,7 @@ export default function GiftVoucher() {
                     colorScheme={"brand"}
                     width={"100px"}
                     isLoading={loading}
+                    isDisabled={!verified}
                   >
                     Checkout
                   </Button>

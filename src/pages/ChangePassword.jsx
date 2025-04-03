@@ -16,6 +16,7 @@ import checkOrSetUDID from "../utils/checkOrSetUDID";
 import client from "../setup/axiosClient";
 import LoginModal from "../components/LoginModal";
 import MetaTags from "../context/MetaTagsContext";
+import Captcha from "../components/Captcha";
 
 
 export default function ChangePassword() {
@@ -23,6 +24,8 @@ export default function ChangePassword() {
   const [newPassword, setNewPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [verified, setVerified] = useState(false);
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
   const loginInfo = checkLogin();
   const navigate = useNavigate();
@@ -43,6 +46,7 @@ export default function ChangePassword() {
         }
       );
       if (response.data.status === true) {
+        setLoading(true);
         toast({
           title: response.data.message,
           position: "top-right",
@@ -50,10 +54,12 @@ export default function ChangePassword() {
           duration: 4000,
           isClosable: true,
         });
+        navigate("/")
         localStorage.clear();
         setIsLoginModalOpen(true)
         await checkOrSetUDID();
       } else {
+        setLoading(false);
         toast({
           title: `${response.data.message}`,
           position: "top-right",
@@ -63,6 +69,7 @@ export default function ChangePassword() {
         });
       }
     } catch (error) {
+      setLoading(false);
       toast({
         title: `${error}`,
         position: "top-right",
@@ -126,7 +133,13 @@ export default function ChangePassword() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </FormControl>
-            <Button w={"100%"} colorScheme="brand" type="submit">
+            <Captcha onVerify={setVerified} />
+
+            <Button w={"100%"}
+              isDisabled={!verified}
+              isLoading={loading}
+              loadingText="Changing..."
+              colorScheme="brand" type="submit">
               Change Password
             </Button>
           </Stack>

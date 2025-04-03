@@ -34,6 +34,7 @@ import formatTime from "../utils/formatTime";
 import { AsyncSelect } from "chakra-react-select";
 import ScrollToTop from "../components/ScrollToTop";
 import MetaTags from "../context/MetaTagsContext";
+import Captcha from "../components/Captcha";
 
 
 export default function BookAppointment() {
@@ -54,8 +55,9 @@ export default function BookAppointment() {
     is_taking_medicine: false,
     type_of_medicine_list: [],
   });
-
+  const [verified, setVerified] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
+  const [loading, setLoading] = useState(false);
   const [countries, setCountries] = useState([]);
   const [callingCode, setCallingCode] = useState("");
   const [allAppointmentSlots, setAllAppointmentSlots] = useState([]);
@@ -99,6 +101,7 @@ export default function BookAppointment() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     let data = { ...formData };
     data.start_datetime = data.start_date + "T" + data.start_time;
     data.country_id = data.country_id?.value
@@ -113,6 +116,8 @@ export default function BookAppointment() {
       }
     );
     if (response.data.status === true) {
+      setLoading(false);
+
       toast({
         title: response.data.message,
         position: "top-right",
@@ -122,6 +127,7 @@ export default function BookAppointment() {
       });
       setFormData(initialFormData);
     } else {
+      setLoading(false);
       toast({
         title: response.data.message,
         position: "top-right",
@@ -442,6 +448,10 @@ export default function BookAppointment() {
                   <option value="60+">60+</option>
                 </Select>
               </FormControl>
+
+              <Captcha onVerify={setVerified} />
+
+
             </GridItem>
             <GridItem ml={5}>
               <FormControl
@@ -604,13 +614,11 @@ export default function BookAppointment() {
               type="submit"
               bg="brand.900"
               color="white"
-              _hover={{
-                bg: "brand.900",
-                boxShadow: "0px 3px 2.5px #0007",
-              }}
-              _active={{
-                bg: "brand.500",
-              }}
+              _hover={{ bg: "brand.900", boxShadow: "0px 3px 2.5px #0007" }}
+              _active={{ bg: "brand.500" }}
+              isDisabled={!verified}
+              isLoading={loading}
+              loadingText="Sending"
             >
               Book Appointment
               <ArrowForwardIcon ps={1} boxSize={6} />
