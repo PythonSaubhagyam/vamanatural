@@ -147,7 +147,7 @@ export default function SignUp() {
             </FormControl>
             <FormControl id="phone" autoComplete="off">
               <FormLabel size={"sm"}>Your phone number</FormLabel>
-              <InputGroup>
+              <InputGroup as={"flex"} gap={"2"} alignItems={"center"} >
                 <InputLeftAddon
                   children="+91"
                   p={1}

@@ -449,7 +449,6 @@ export default function BookAppointment() {
                 </Select>
               </FormControl>
 
-              <Captcha onVerify={setVerified} />
 
 
             </GridItem>
@@ -607,6 +606,9 @@ export default function BookAppointment() {
                   </CheckboxGroup>
                 </FormControl>
               )}
+
+              <Captcha onVerify={setVerified} />
+
             </GridItem>
           </Grid>
           <Flex justify="center" mt={4}>
