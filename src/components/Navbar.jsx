@@ -412,9 +412,10 @@ export default function Navbar() {
           <Image
             // width="100px"
             // height="50px"
+            p={"1"}
             boxSize="130px"
             objectFit="contain"
-            src="/vama_logo.jpeg"
+            src="/vama_logo.png"
             alt="SOSE Logo"
           />
         </Link>
@@ -589,7 +590,7 @@ export default function Navbar() {
                 <Image
                   boxSize="105px"
                   objectFit="contain"
-                  src="/vama_logo.jpeg"
+                  src="/vama_logo.png"
                   alt="SOSE Logo"
                 />
               </Link>
@@ -879,9 +880,10 @@ export default function Navbar() {
           >
             <Link  onClick={logoClickHandler} >
               <Image
+                p={"1"}
                 boxSize="100px"
                 objectFit="contain"
-                src="/vama_logo.jpeg"
+                src="/vama_logo.png"
                 alt="SOSE Logo"
               />
             </Link>
