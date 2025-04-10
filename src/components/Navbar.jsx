@@ -413,7 +413,7 @@ export default function Navbar() {
             // width="100px"
             // height="50px"
             p={"1"}
-            boxSize="130px"
+            boxSize="120px"
             objectFit="contain"
             src="/vama_logo.png"
             alt="SOSE Logo"
@@ -588,7 +588,7 @@ export default function Navbar() {
             <DrawerHeader as={Flex} justify="center">
               <Link onClick={logoClickHandler}>
                 <Image
-                  boxSize="105px"
+                  boxSize="120px"
                   objectFit="contain"
                   src="/vama_logo.png"
                   alt="SOSE Logo"
@@ -881,7 +881,7 @@ export default function Navbar() {
             <Link  onClick={logoClickHandler} >
               <Image
                 p={"1"}
-                boxSize="100px"
+                boxSize="120px"
                 objectFit="contain"
                 src="/vama_logo.png"
                 alt="SOSE Logo"
