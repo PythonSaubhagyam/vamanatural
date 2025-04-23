@@ -190,7 +190,7 @@ export default function ShopProductCard({
       <Divider />
       <CardFooter justify={"center"} gap={8} alignItems="center" py={2}>
         <Text color="brand.900" fontSize="md">
-          ₹{parseFloat(productDetails.base_price).toFixed(2)}
+          ₹{parseFloat(productDetails.product_price || productDetails.base_price).toFixed(2)}
         </Text>
         <ButtonGroup spacing="2">
           <IconButton

@@ -26,7 +26,7 @@ import client from "../setup/axiosClient";
 import checkLogin from "../utils/checkLogin";
 import AddOrRemoveInWishlist from "../utils/addOrRemoveInWishlist";
 import AddToCart from "../utils/addToCart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import Loader from "../components/Loader";
@@ -37,7 +37,7 @@ export default function Addtocart() {
   const [removeLoading, setRemoveLoading] = useState();
   const [wishlistItems, setWishlistItems] = useState([]);
   const loginInfo = checkLogin();
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getWishlist() {
@@ -47,7 +47,7 @@ export default function Addtocart() {
       if (loginInfo.isLoggedIn === true) {
         headers = { Authorization: `token ${loginInfo.token}` };
       }
-      const response = await client.get("/wishlist/", {
+      const response = await client.get("listwish/", {
         headers: headers,
       });
       if (response.data.status) {
@@ -131,7 +131,7 @@ export default function Addtocart() {
                       alignItems={"center"}
                       flexDirection={"row"}
                     >
-                      <Text>₹{product.base_price}</Text>
+                      <Text>₹{Number(product.product_price || product.base_price).toFixed(2)}</Text>
                       <Button
                         isLoading={removeLoading === product.id}
                         bg={"red.500"}
@@ -161,7 +161,7 @@ export default function Addtocart() {
                           color="white"
                           _hover={{ bg: "brand.100" }}
                           size={"sm"}
-                          onClick={() => AddToCart(product.id)}
+                          onClick={() => { navigate("/cart"); AddToCart(product.id) }}
                         >
                           Add to cart
                         </Button>

@@ -214,9 +214,10 @@ export default function CartRow({
             </>
           )}
         </Popover>
-        <Text>₹{cartItem.selling_price?.toFixed(2)}</Text>
+        <Text>₹{Number(cartItem.product_price || cartItem.selling_price).toFixed(2)}</Text>
 
-        <Text>₹{cartItem.total?.toFixed(2)}</Text>
+        <Text>₹{Number(cartItem.product_price || cartItem.total).toFixed(2)}</Text>
+
       </Flex>
 
       <Button

@@ -48,7 +48,7 @@ export default function ConfigProductCard({ productDetails }) {
           {productDetails.name}
         </LinkOverlay>
         <Text color="gray.500">
-          Price: ₹{parseFloat(productDetails.base_price).toFixed()}
+          Price: ₹{parseFloat(productDetails?.product_price || productDetails?.base_price).toFixed(2)}
         </Text>
       </CardFooter>
     </LinkBox>
