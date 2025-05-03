@@ -161,7 +161,12 @@ export default function Addtocart() {
                           color="white"
                           _hover={{ bg: "brand.100" }}
                           size={"sm"}
-                          onClick={() => { navigate("/cart"); AddToCart(product.id) }}
+                          onClick={async () => {
+                            await AddToCart(product.id);     
+                            await handleWishlistChange(product, index);       
+                            navigate("/cart");               
+                          }}
+
                         >
                           Add to cart
                         </Button>

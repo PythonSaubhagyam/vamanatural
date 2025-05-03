@@ -56,6 +56,7 @@ const BlogSliderHome = ({ blogs }) => {
                     backgroundRepeat={"no-repeat"}
                 >
                     <Heading
+                    as={"h1"}
                         color="brand.500"
                         fontSize={{ md: 33, base: 24 }}
                         mx="auto"

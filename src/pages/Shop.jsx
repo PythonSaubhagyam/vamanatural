@@ -8,7 +8,8 @@ import CategoryTree from "../components/CategoryTree";
 import ScrollToTop from "../components/ScrollToTop";
 import ShopProductCard from "../components/ShopProductCard";
 import MetaTags from "../context/MetaTagsContext";
-
+import { Helmet } from "react-helmet";
+import { fetchCategories } from "../redux/slices/categoryApi";
 import {
   Center,
   Container,
@@ -45,7 +46,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function Shop() {
   const [totalPages, setTotalPages] = useState();
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState([]);
+
   const [products, setProducts] = useState([]);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -81,6 +84,8 @@ export default function Shop() {
   const { tagsArray, productFoamsArray, brandArray } = useSelector(
     (state) => state.shop
   );
+  const { categories } = useSelector((state) => state.category);
+
 
   const { currentPage, setCurrentPage, pages } = usePagination({
     pagesCount: totalPages,
@@ -196,9 +201,19 @@ export default function Shop() {
   }
 
   useEffect(() => {
+
     dispatch(fetchFilters());
+    dispatch(fetchCategories());
+
   }, [dispatch]);
-  
+
+  useEffect(() => {
+    if (categories?.length > 0 && categoryId) {
+      const selectedCategory = categories.find(cat => cat.id === parseInt(categoryId));
+      setCategory(selectedCategory);
+    }
+  }, [categories, categoryId]);
+
   useEffect(() => {
     const filtered = categories.filter((item) => item.id === categoryId);
     setFilteredData(filtered);
@@ -373,7 +388,25 @@ export default function Shop() {
 
   return (
     <>
-      <MetaTags pageUrl={pageUrl} />
+      {(brand_name || category_name || category?.metatitle) ? (
+        <Helmet>
+          <title>{category?.metatitle || brand_name || category_name || "Shop – Discover Amazing Products at Great Prices"}</title>
+          <meta name="description" content={category?.metadescription || "Explore our online shop for premium products at unbeatable prices. Shop now and enjoy fast shipping and easy returns on all your favorite items!"} />
+          <meta name="keywords" content={category?.metakeywords || "shop, online shop, shopping, buy online, e-commerce, Ethical & Natural Products, Organic Products,shopping website,beauty products,Gift shop"} />
+
+          <meta property="og:title" content={category?.metatitle} />
+          <meta property="og:description" content={category?.metadescription} />
+          <meta property="product:price:currency" content="INR" />
+          <meta property="product:rating:average" content={"⭐⭐⭐⭐"} />
+          <meta property="product:availability" content="in stock" />
+          <meta property="og:Delivery" content="4-7 day delivery" />
+          <meta property="og:image" content={category?.web_image} />
+          <meta property="og:url" content={window.location.href} />
+
+        </Helmet>
+      ) : (
+        <MetaTags pageUrl={pageUrl} />
+      )}
       <Navbar />
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Shop"} secondUrl={"/shop"} />
@@ -625,10 +658,12 @@ export default function Shop() {
               ) : (
                 <>
                   <Image
-                    w="100%"
-                    h="100%"
-                    display={displayBanners ? "block" : "none"}
-                    src={banners?.bannerWeb}
+                    w={isMobile ? "100%" : "88%"}
+                    maxH="220px"
+                    borderRadius="md"
+                    objectFit="cover"
+                    display={category?.web_image ? "block" : "none"}
+                    src={category?.web_image}
                   />
                   {products !== null &&
                     products.map(

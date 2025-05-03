@@ -414,7 +414,7 @@ export default function ProductDetails() {
                 >
                   <Heading
                     // mb={2}
-                    as={"header"}
+                    as={"h1"}
                     lineHeight={1.1}
                     fontWeight={"normal"}
                     fontSize={{

@@ -64,6 +64,7 @@ const CategorySlider = ({ ourProductSection }) => {
                             textAlign={{ base: "center", md: "start" }}
                         >
                             <Text
+                            as={"h1"}
                                 fontSize={{ base: "xl", sm: "2xl", xl: "3xl" }}
                                 fontWeight={500}
                             >
