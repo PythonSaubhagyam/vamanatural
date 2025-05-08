@@ -38,11 +38,6 @@ export default function Checkout({ getDetails }) {
       state: { address: address },
     });
   }
-
-  // const [showPremiunDeliveryOption, setShowPremiunDeliveryOption] = useState(
-  //   localStorage.getItem("is_sose_elite_user") === "true" ? true : false
-  // );
-  // const [showAllDeliveryOptions, setShowAllDeliveryOptions] = useState();
   const initialFormData = Object.freeze({
     billingAddress: null,
     full_name: "",
@@ -68,12 +63,6 @@ export default function Checkout({ getDetails }) {
   const [CartCount, setCartCount] = useState(
     localStorage.getItem("cart_counter") ?? 0
   );
-  // const [total, setTotal] = useState(
-  //   localStorage.getItem("product_total") === null ||
-  //     localStorage.getItem("product_total") === undefined
-  //     ? 0
-  //     : localStorage.getItem("product_total")
-  // );
   const [paymentInProgress, setPaymentInProgress] = useState(false);
 
   const location = useLocation();
@@ -88,7 +77,7 @@ export default function Checkout({ getDetails }) {
   const [Txt_new_id, setTxt_new_id] = useState("");
 
   useEffect(() => {
-    getAddresses(); // eslint-disable-next-line
+    getAddresses(); 
     getEliteUser();
   }, []);
 
@@ -251,77 +240,6 @@ export default function Checkout({ getDetails }) {
     }
   }
 
-  // async function handleOnlinePayment() {
-  //   setPayment(true);
-  //   if (formData.billingAddress === null) {
-  //     toast({
-  //       title: "Please select billing address!",
-  //       status: "error",
-  //       position: "top-right",
-  //       duration: 4000,
-  //       isClosable: true,
-  //     });
-  //   } else {
-  //     let data = {};
-  //     data.txnid = new Date().getTime().toString();
-  //     data.amount = `${location.state.grandTotal + formData.shipping_amt}`;
-  //     data.productinfo = location.state.isAGift ? "Gift" : "SOSE";
-  //     data.billing_address = formData.billingAddress;
-  //     data.shipping_amount = formData.shipping_amt;
-  //     data.tax_amount = location.state.taxes;
-  //     data.is_a_gift = location.state.isAGift;
-  //     data.giftMessage = location.state.giftMessage;
-  //     data.voucherCode = location.state?.voucherCode;
-  //     const res = await client.post(
-  //       "/get-order-payment-link/",
-  //       {
-  //         ...data,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `token ${checkLogin().token}`,
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  //     var txt_new = res.data.txn_id;
-  //     if (res.data.status === true) {
-  //       setTxt_new_id(res.data.txn_id);
-  //       // setPaymentInProgress(true);
-  //       // window.open(, "_top");
-  //       const options =
-  //         "location=yes,height=570,width=520,scrollbars=yes,status=yes";
-  //       // openInNewTab(res.data.payment_url);
-  //       setTimeout(() => {
-  //         window.open(res.data.payment_url, "_top", options);
-  //       });
-  //       // const checkPayment = setInterval(async function () {
-  //       //   const res = await getPaymentDetails(txt_new);
-  //       //   if (res.data.status === true) {
-  //       //     setPaymentInProgress(false);
-  //       //     localStorage.removeItem("isAGift");
-  //       //     localStorage.removeItem("giftMessage");
-  //       //     // toast({
-  //       //     //   title: "Your order has been placed!",
-  //       //     //   status: "success",
-  //       //     //   position: "top-right",
-  //       //     //   duration: 5000,
-  //       //     //   isClosable: true,
-  //       //     // });
-  //       //     navigate("/profile#orders");
-  //       //     clearInterval(checkPayment);
-  //       //     localStorage.setItem("cart_counter", 0);
-  //       //   } else {
-  //       //     // setPaymentInProgress(false);
-  //       //     // navigate("/");
-  //       //   }
-  //       // }, 3000);
-  //     } else {
-  //     }
-
-  //     setPayment(false);
-  //   }
-  // }
   async function handleOnlinePayment() {
     setPayment(true);
     if (!formData.billingAddress) {
@@ -357,9 +275,8 @@ export default function Checkout({ getDetails }) {
 
       if (res.data.status === true) {
         setTxt_new_id(res.data.txn_id);
-        localStorage.setItem("cart_counter", 0); // Clear cart count
+        localStorage.setItem("cart_counter", 0); 
         setCartCount(0);
-        // setTotal(0);
         const options =
           "location=yes,height=570,width=520,scrollbars=yes,status=yes";
         window.open(res.data.payment_url, "_top", options);
@@ -557,12 +474,6 @@ export default function Checkout({ getDetails }) {
                 <RadioGroup
                   name="delivery-options"
                   value={parseInt(formData.shipping_amt)}
-                // onChange={(shippingCost) => {
-                //   setFormData({
-                //     ...formData,
-                //     shipping_amt: parseInt(shippingCost),
-                //   });
-                // }}
                 >
                   <Flex gap={5} direction="column">
                     {formData.shipping_amt === 0 ? (

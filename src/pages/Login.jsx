@@ -12,6 +12,8 @@ import {
   Button,
   Link,
   useToast,
+  Box,
+  Heading,
 } from "@chakra-ui/react";
 import checkLogin from "../utils/checkLogin";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
@@ -161,64 +163,78 @@ export default function Login() {
     <>
       <MetaTags pageUrl={pageUrl} />
       <Navbar />
-      <Container>
-        <form onSubmit={handleSubmit}>
-          <Stack spacing={6} p={{ base: 8, sm: 20 }}>
-            <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input
-                isRequired
-                type="email"
-                variant={"solid"}
-                border="1px"
-                borderColor={"brand.900"}
-                placeholder="Email"
-                autoComplete="username"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input
-                isRequired
-                type="password"
-                variant={"solid"}
-                border="1px"
-                borderColor={"brand.900"}
-                placeholder="Password"
-                autoComplete="current-password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </FormControl>
-            <Button
-              isLoading={loading}
-              loadingText="Logging..."
-              type="submit"
-              colorScheme="brand"
-            >
-              Login
-            </Button>
-            <Stack spacing={10}>
+      <Container maxW="md" py={10}>
+        <Box
+          p={8}
+          boxShadow="lg"
+          borderRadius="xl"
+          bg="white"
+          border="1px solid"
+          borderColor="gray.100"
+        >
+          <Box textAlign="center" mb={6} color="#5b5b5b">
+            <Heading size="lg" >Welcome Back</Heading>
+          </Box>
+          <form onSubmit={handleSubmit}>
+            <Stack spacing={5}>
+              <FormControl id="email" isRequired>
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  variant="filled"
+                  borderRadius="md"
+                  focusBorderColor="green.500"
+                  placeholder="you@example.com"
+                  autoComplete="username"
+                  value={email || ""}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </FormControl>
+
+              <FormControl id="password" isRequired>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  variant="filled"
+                  borderRadius="md"
+                  focusBorderColor="green.500"
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  value={password || ""}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </FormControl>
+              
+
+              <Button
+                colorScheme="brand"
+                type="submit"
+                size="lg"
+                isLoading={loading}
+                loadingText="Logging in..."
+                borderRadius="full"
+              >
+                Login
+              </Button>
+
               <Stack
                 direction={{ base: "column", sm: "row" }}
-                align={"start"}
-                justify={"space-between"}
+                justify="space-between"
+                pt={2}
+                color="#5b5b5b"
               >
-                <Link href="/signup" fontSize={"sm"} color={"brand.500"}>
+                <Link href="/signup" fontSize="sm" >
                   Don't have an account?
                 </Link>
-                <Link
-                  href="/reset-password"
-                  fontSize={"sm"}
-                  color={"brand.500"}
-                >
+                <Link href="/reset-password" fontSize="sm" >
                   Forgot password?
                 </Link>
               </Stack>
             </Stack>
-          </Stack>
-        </form>
+          </form>
+        </Box>
       </Container>
+
       <Footer />
     </>
   );

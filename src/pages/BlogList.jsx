@@ -1,28 +1,23 @@
+// Optimized BlogList.jsx
 import { useState, useEffect } from "react";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import {
   Flex,
   Box,
   Heading,
   Text,
   Container,
-  LinkBox,
-  LinkOverlay,
   Image,
   Button,
-  ButtonGroup,
   IconButton,
-  Link,
-  Icon,
   Select,
   Wrap,
   WrapItem,
   Center,
+  Icon,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { FaFacebookSquare, FaInstagram, FaYoutube } from "react-icons/fa";
-import { useNavigate, useSearchParams, Link as ReactRouterLink } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import dompurify from "dompurify";
 import client from "../setup/axiosClient";
 import {
@@ -34,114 +29,64 @@ import {
   PaginationContainer,
   PaginationPageGroup,
 } from "@ajna/pagination";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
 import MetaTags from "../context/MetaTagsContext";
 
-
 export default function BlogList() {
   const [blogs, setBlogs] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
-  const [archiveFilterOptions, setArchiveFilterOptions] = useState(null);
+  const [archiveFilterOptions, setArchiveFilterOptions] = useState([]);
   const navigate = useNavigate();
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { currentPage, setCurrentPage, pages } = usePagination({
     pagesCount: totalPages,
-    limits: {
-      outer: 3,
-      inner: 3,
-    },
+    limits: { outer: 3, inner: 3 },
     initialState: { currentPage: 1 },
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }, 0);
-    getBlogs(); // eslint-disable-next-line
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    getBlogs();
   }, [searchParams]);
 
-  async function getBlogs() {
-    const params =
-      searchParams.get("archive") !== null
-        ? {
-          page: 1,
-          publish_filter: searchParams.get("archive"),
-        }
-        : {
-          page: searchParams.get("page") ?? 1,
-        };
+  const getBlogs = async () => {
+    const archive = searchParams.get("archive");
+    const page = searchParams.get("page") || 1;
     const response = await client.get("/blogs/", {
-      params: params,
+      params: archive ? { page: 1, publish_filter: archive } : { page },
     });
-    if (response.data.status === true) {
+
+    if (response.data.status) {
       setBlogs(response.data.blogs);
       setTotalPages(response.data.total_pages);
       setArchiveFilterOptions(response.data.filters);
     }
-  }
+  };
 
-
-  async function handlePageChange(nextPage) {
+  const handlePageChange = (nextPage) => {
     setCurrentPage(nextPage);
-    setSearchParams({ ...searchParams, page: nextPage });
-  }
+    setSearchParams({ ...Object.fromEntries(searchParams.entries()), page: nextPage });
+  };
 
-  function getMonthName(monthNumber) {
-    const date = new Date();
-    date.setMonth(monthNumber - 1);
-
-    return date.toLocaleString("en-US", {
-      month: "long",
-    });
-  }
-
-  function MonthOptions({ months, year }) {
-    return months.map((month) => (
-      <option value={`${month}-${year}`}>
-        {getMonthName(month) + " " + year}
-      </option>
-    ));
-  }
-  const pageUrl = "/blogs";
-
+  const getMonthName = (month) => new Date(0, month - 1).toLocaleString("en-US", { month: "long" });
 
   return (
     <>
-      <MetaTags pageUrl={pageUrl} />
+      <MetaTags pageUrl="/blogs" />
       <Navbar />
-
       <Container maxW="container.xl">
-        <BreadCrumbCom second={"Blog"} secondUrl={"/blogs"} />
-        {/* <Flex
-          direction="column"
-          w="100%"
-          h="200px"
-          justify={"center"}
-          mt={2}
-          ps={{ base: 4, lg: 20 }}
-          color="white"
-          bgGradient={["linear(to-b, brand.900, brand.100)"]}
-        >
-          <Heading color={"white"} fontWeight={"light"}>
-            News & Articles
-          </Heading>
-          <Text color={"white"} fontWeight={"light"}>
-            Get the latest updates & insights from SOSE
-          </Text>
-        </Flex> */}
+        <BreadCrumbCom second="Blog" secondUrl="/blogs" />
       </Container>
-      <Container maxW={"container.xl"} py={1} px={0} position="relative">
-        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/news and event.jpg" />
 
+      <Container maxW="container.xl" py={1} px={0} position="relative">
+        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/news and event.jpg" />
         <Text
-          pb={2}
-          color={"brand.100"}
-          textAlign={"center"}
+          color="brand.100"
+          textAlign="center"
           fontSize={{ lg: "7xl", md: "4xl", base: "2xl" }}
           fontWeight="600"
           position="absolute"
@@ -149,100 +94,88 @@ export default function BlogList() {
           left="50%"
           transform="translate(-50%, -50%)"
           zIndex="1"
-        // Optional: Add background to improve text readability
         >
           News & Articles
         </Text>
       </Container>
-      <Container
-        as={Flex}
-        direction={{ base: "column", lg: "row" }}
-        gap={{ base: 6, lg: 0 }}
-        // maxW={{ base: "100%", lg: "90vw" }}
-        minH="container.sm"
-        justify="center"
-        my={8}
-        px={6}
-        maxW="container.xl"
-      >
 
+      <Container as={Flex} direction={{ base: "column", lg: "row" }} gap={6} justify="center" my={8} px={6} maxW="container.xl">
         <Flex direction="column" w={{ base: "90vw", lg: "60vw" }} gap={10}>
-          {blogs.length > 0 ? (
+          {blogs.length ? (
             <>
+              <Wrap spacing="30px" justify="center">
+                {blogs.map(({ id, title, content, banner_url, published_at }) => (
+                  <WrapItem key={id} w={["100%", "48%", "45%"]}>
+                    <Box
+                      w="100%"
+                      borderRadius="xl"
+                      overflow="hidden"
+                      boxShadow="sm"
+                      borderWidth="1px"
+                      borderColor="gray.200"
+                      transition="all 0.3s ease"
+                      _hover={{ boxShadow: "xl", transform: "translateY(-4px)" }}
+                    >
+                      <Image
+                        src={banner_url}
+                        objectFit="center"
+                        w="100%"
+                        h="300px"
+                        transition="transform 0.3s ease"
+                        _hover={{ transform: "scale(1.05)" }}
+                        cursor="pointer"
+                        onClick={() => navigate(`/blogs/${id}/${title.replace(/\s+/g, "-")}`)}
+                      />
 
-              <Wrap maxW="container.xl" spacing="30px">
-                {blogs.map((blog) => (
-                  <WrapItem key={blog.id} w={['100%', '48%', '45%']} h="400">
-                    <Center w="100%" h="100%" >
-                      <Flex w="100%" h="100%" flexDirection="column"
-                        onClick={() => navigate(`/blogs/${blog.id}/${blog.title.replace(/\s+/g, "-")}`)}>
-                        <Box cursor="pointer" width="100%" height="80%" borderRadius="10px" position="relative" overflow="hidden">
-                          <Image
-                            borderRadius="10px"
-                            objectPosition="center"
-                            objectFit="contaion"
-                            _hover={{ transform: 'scale(1.1)' }}
-                            transition=".2s ease-in-out"
-                            width={"full"}
-                            height={"full"}
-                            src={blog.banner_url}
-                          />
-                        </Box>
-                        <Heading cursor={"pointer"} fontSize={['sm', 'md', 'lg']} mt={2} color="brand.500">
-                          {blog.title}
+                      <Box p={4}>
+                        <Heading
+                          fontSize={{ base: "md", md: "lg" }}
+                          mb={2}
+                          color="brand.600"
+                          noOfLines={2}
+                          cursor="pointer"
+                          _hover={{ textDecoration: "underline" }}
+                          onClick={() => navigate(`/blogs/${id}/${title.replace(/\s+/g, "-")}`)}
+                        >
+                          {title}
                         </Heading>
+
                         <Text
-                          fontSize={['xs', 'xm', 'md']} // Responsive font sizes
-                          pb={2}
-                          noOfLines={2} // Limits to 3 lines
-                          textOverflow="ellipsis"
-                          dangerouslySetInnerHTML={{
-                            __html: dompurify.sanitize(blog.content), // Safely sanitize HTML content
-                          }}
+                          fontSize={{ base: "sm", md: "sm" }}
+                          noOfLines={3}
+                          color="gray.600"
+                          dangerouslySetInnerHTML={{ __html: dompurify.sanitize(content) }}
                         />
 
-                        <Flex w="100%" h="10vh" justifyContent="space-between" alignItems="center" mt={2}>
-                          <Button color="white" colorScheme="brand" bgColor="brand.500" w={['45%', '40%', '35%']} h="5vh"
-                            onClick={() => navigate(`/blogs/${blog.id}/${blog.title.replace(/\s+/g, "-")}`)}
-
+                        <Flex justifyContent="space-between" alignItems="center" mt={4}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            colorScheme="brand"
+                            _hover={{ bg: "brand.500", color: "white" }}
+                            onClick={() => navigate(`/blogs/${id}/${title.replace(/\s+/g, "-")}`)}
                           >
-                            Read more
-                            <ChevronRightIcon />
+                            Read more <ChevronRightIcon ml={1} />
                           </Button>
-                          <Text color="gray.500" fontSize={['xs', 'sm', 'md']}>
-                            {new Intl.DateTimeFormat("en-CA", {
-                              dateStyle: "long",
-                              timeZone: "Asia/Kolkata",
-                            }).format(new Date(blog.published_at))}
+                          <Text fontSize="xs" color="gray.500">
+                            {new Date(published_at).toLocaleDateString("en-CA", { dateStyle: "long" })}
                           </Text>
                         </Flex>
-                      </Flex>
-                    </Center>
+                      </Box>
+                    </Box>
                   </WrapItem>
                 ))}
               </Wrap>
-              <Pagination
-                pagesCount={totalPages}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              >
-                <PaginationContainer
-                  gap={2}
-                  justifyContent="center"
-                  width="100%"
-                >
+
+              <Pagination pagesCount={totalPages} currentPage={currentPage} onPageChange={handlePageChange}>
+                <PaginationContainer justify="center">
                   <PaginationPrevious>Previous</PaginationPrevious>
-                  <PaginationPageGroup gap={1}>
+                  <PaginationPageGroup>
                     {pages.map((page) => (
                       <PaginationPage
-                        key={`page_${page}`}
+                        key={page}
                         page={page}
-                        p={2}
-                        _current={{
-                          bg: "brand.500",
-                          color: "white",
-                          _hover: { bg: "brand.500", color: "white" },
-                        }}
+                        _current={{ bg: "brand.500", color: "white" }}
                       />
                     ))}
                   </PaginationPageGroup>
@@ -251,139 +184,52 @@ export default function BlogList() {
               </Pagination>
             </>
           ) : (
-            <Flex justifyContent="center" mt={10}>
-              <Text color="gray.400">No blogs added!</Text>
-            </Flex>
+            <Text color="gray.400" textAlign="center">No blogs added!</Text>
           )}
-
-          {/* <ButtonGroup
-            mx="auto"
-            display={searchParams.get("page") ? "block" : "none"}
-          >
-            <Button
-              border="1px"
-              borderColor={"gray.500"}
-              colorScheme="brand"
-              onClick={goToPrevPage}
-              disabled={parseInt(searchParams.get("page")) <= 1}
-            >
-              Previous
-            </Button>
-            {Array.from({ length: pages }, (_, i) => i + 1).map((pageNo) => (
-              <Button
-                border="1px"
-                borderColor={"gray.500"}
-                colorScheme="brand"
-                key={pageNo}
-                onClick={() => setSearchParams({ page: pageNo })}
-              >
-                {pageNo}
-              </Button>
-            ))}
-            <Button
-              border="1px"
-              borderColor={"gray.500"}
-              colorScheme="brand"
-              onClick={goToNextPage}
-              disabled={parseInt(searchParams.get("page")) >= pages}
-            >
-              Next
-            </Button>
-          </ButtonGroup> */}
         </Flex>
-        <Flex
-          direction={"column"}
-          gap={10}
-          my={8}
-          ms={{ base: 0, lg: 8 }}
-          w={{ base: "80vw", lg: "25vw" }}
-          ps={{ base: 0, lg: 6 }}
-          borderLeft={{ base: "none", lg: "1px" }}
-          borderColor={"gray.300"}
-        >
+
+        <Flex direction="column" gap={10} my={8} w={{ base: "80vw", lg: "25vw" }} ps={{ base: 0, lg: 6 }} borderLeft={{ base: "none", lg: "1px" }} borderColor="gray.300">
           <Box>
-            <Heading size="xs" pb={2} borderBottom="1px" borderColor="gray.300">
-              ABOUT US
-            </Heading>
-            <Text textAlign="justify" mt={4}>
-              We are an organic foods, natural home care and handmade personal
-              care brand from the house of <b> Suryan Organic </b>. We were born
-              out of the need to start at the beginning, to go to the roots of
-              our problems. As an enterprise that is inspired by the mission of{" "}
-              <b>Bansi Gir Gaushala </b>, our aim is to contribute to the
-              revival of <b>“ Gau Sanskriti ”</b>, an ancient culture which
-              placed the Gaumata (Cow as the Divine Mother) at the center of all
-              economic, cultural and social activity.
+            <Heading size="xs" pb={2} borderBottom="1px" borderColor="gray.300">ABOUT US</Heading>
+            <Text mt={4} textAlign="justify">
+              We are an organic foods, natural home care and handmade personal care brand from the house of <b>Suryan Organic</b>. Inspired by <b>Bansi Gir Gaushala</b>, our aim is to revive <b>Gau Sanskriti</b>, an ancient culture centered on the divine cow.
             </Text>
           </Box>
+
           <Box>
-            <Heading size="xs" pb={2} borderBottom="1px" borderColor="gray.300">
-              FOLLOW US
-            </Heading>
-            <ButtonGroup mt={6} gap={2}>
-              <IconButton
-                as={Link}
-                href="https://www.facebook.com/SoseOrganicAndNaturalStore/"
-                isRound
-                boxSize="12"
-                border="1px"
-                borderColor={"gray.300"}
-                icon={<Icon as={FaFacebookSquare} color="facebook.600" />}
-              />
-              <IconButton
-                as={Link}
-                href="https://www.youtube.com/channel/UC9OoW-ceIDeJLBVX37gBCww"
-                isRound
-                boxSize="12"
-                border="1px"
-                borderColor={"gray.300"}
-                icon={<Icon as={FaYoutube} color="red.500" />}
-              />
-              <IconButton
-                as={Link}
-                href="https://www.instagram.com/sose_organic/"
-                isRound
-                boxSize="12"
-                border="1px"
-                borderColor={"gray.300"}
-                icon={<Icon as={FaInstagram} color="pink.600" />}
-              />
-            </ButtonGroup>
+            <Heading size="xs" pb={2} borderBottom="1px" borderColor="gray.300">FOLLOW US</Heading>
+            <Flex mt={6} gap={2}>
+              <IconButton as="a" href="https://www.facebook.com/SoseOrganicAndNaturalStore/" isRound icon={<FaFacebookSquare color="#1877F2" />} />
+              <IconButton as="a" href="https://www.youtube.com/channel/UC9OoW-ceIDeJLBVX37gBCww" isRound icon={<FaYoutube color="#FF0000" />} />
+              <IconButton as="a" href="https://www.instagram.com/sose_organic/" isRound icon={<FaInstagram color="#E4405F" />} />
+            </Flex>
           </Box>
+
           <Box>
-            <Heading size="xs" pb={2} borderBottom="1px" borderColor="gray.300">
-              ARCHIVE
-            </Heading>
+            <Heading size="xs" pb={2} borderBottom="1px" borderColor="gray.300">ARCHIVE</Heading>
             <Select
               mt={4}
-              value={searchParams.get("archive")}
+              value={searchParams.get("archive") || 0}
               onChange={(e) => {
-                if (parseInt(e.target.value) !== 0) {
-                  setSearchParams({
-                    ...searchParams,
-                    archive: e.target.value,
-                  });
-                } else {
-                  setSearchParams({
-                    page: 1,
-                  });
-                }
+                const value = e.target.value;
+                setSearchParams(value !== "0" ? { archive: value } : { page: 1 });
               }}
             >
-              <option value={0}>-- All dates</option>
-              {archiveFilterOptions?.map((filterOption) => (
-                <>
-                  <optgroup label={filterOption.year}></optgroup>
-                  <MonthOptions
-                    months={filterOption.months}
-                    year={filterOption.year}
-                  />
-                </>
+              <option value="0">-- All dates</option>
+              {archiveFilterOptions.map(({ year, months }) => (
+                <optgroup key={year} label={year}>
+                  {months.map((month) => (
+                    <option key={`${month}-${year}`} value={`${month}-${year}`}>
+                      {getMonthName(month)} {year}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </Select>
           </Box>
         </Flex>
       </Container>
+
       <ScrollToTop />
       <Footer />
     </>

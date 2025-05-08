@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-// import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Carousel from "../components/Carousel";
-import CarouselWithLinks from "../components/CarouselWithLinks";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import ScrollToTop from "../components/ScrollToTop";
-// import ProductListSectionHome from "../components/ProductListSectionHome";
 import {
   Container,
   Flex,
@@ -33,8 +30,6 @@ import {
 } from "@chakra-ui/react";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import { useNavigate, NavLink as RouterLink } from "react-router-dom";
-// import { ChevronRightIcon } from "@chakra-ui/icons";
-// import Testimonials from "../components/testimonials";
 import LoginModal from "../components/LoginModal";
 import checkLogin from "../utils/checkLogin";
 import CategorySlider from "../components/CategorySlider";
@@ -46,32 +41,24 @@ import MetaHome from "../components/MetaHome";
 import {
   initializeAppData
 } from "../redux/slices/homeApi";
-import { Helmet } from "react-helmet";
 import CountUp from "react-countup";
 import ScrollTrigger from "react-scroll-trigger";
-import WhatsUp from "../components/WhatsUp";
 
 
 export default function Home() {
-  const [isFullScreen] = useMediaQuery("(min-width: 768px)");
   const width = useBreakpointValue({ base: "100%", lg: "100%" });
   const height = useBreakpointValue({ base: "300", lg: "400" });
   const [isMobile] = useMediaQuery("(max-width: 1024px)");
   const loginInfo = checkLogin();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const checkOrSetUDIDInfo = CheckOrSetUDID();
   const [countUp, setCountUp] = useState();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(
     sessionStorage.getItem("hasShownPopup")
   );
-  const isMobiles = width <= 768;
-  const navigate = useNavigate();
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // })
 
 
-  const dispatch = useDispatch();
   const {
     banners,
     upperSection,
@@ -98,7 +85,6 @@ export default function Home() {
     skinCareSection,
     nonGMOSection,
   } = lowerSection1;
-  // console.log("first", nonGMOSection)
 
   const {
     awardsSection,
@@ -128,20 +114,7 @@ export default function Home() {
   return (
     <>
       <MetaHome pageUrl={pageUrl} />
-      {/* <Helmet>
-        <title>VAMA - Home</title>
-        <meta
-          name="description"
-          content="VAMA Herbal & Natural draw inspiration from Bansi Gir Gaushala, 
-          and its work towards reviving Bharat’s ancient “GauSanskriti”."
-        />
-      </Helmet>  */}
-      {/* {loader === true ? (
-        <Center h="100vh" w="100vw" backgroundColor={"bg.500"}>
-          <Loader site={true} />
-        </Center>
-      ) : (
-        <> */}
+      
       <Navbar />
       {/* Upper Banner --------------------------*/}
       <Container maxW={"container.xl"} px={0}>
@@ -165,7 +138,6 @@ export default function Home() {
               fontWeight={"600"}
               color="brand.500"
               fontSize={{ md: 30, base: 24 }}
-            // alignContent={"flex-start"}
             >
               {ourMissionSection[0]?.label}
             </Box>
@@ -305,26 +277,6 @@ export default function Home() {
         type={"carousal"}
       />
 
-      {/* {tryOurNewProductSection?.length > 0 && (
-        <ProductListSectionHome
-          title="Try Our New Products"
-          loader={loader}
-          products={tryOurNewProductSection}
-          type={"carousal"}
-        />
-      )} */}
-      {/* <ProductListSectionHome
-        title="Must Try: Vama Products"
-        loader={loader}
-        products={mustTrySection}
-        type={isMobile  && "carousal"}
-      />
-     <ProductListSectionHome
-        title="All Time Best Sellers"
-        loader={loader}
-        products={allTimeBestSellerSection}
-        type={"carousal"}
-      /> */}
       {skinCareSection?.length > 0 &&
         skinCareSection[0]?.is_visible_on_website === true && (
           <Container mb={5} px={0} maxW={"container.xl"} centerContent>
@@ -337,7 +289,6 @@ export default function Home() {
         )}
 
       {/* Blog-Slider-Home */}
-
       <BlogSliderHome blogs={blogs} />
 
 
@@ -376,7 +327,7 @@ export default function Home() {
                 alt="global-certificate"
                 style={{
                   opacity: 1,
-                  transition: "opacity 0.7s", // Note the corrected syntax here
+                  transition: "opacity 0.7s", 
                 }}
               />
               <LazyLoadImage
@@ -387,7 +338,7 @@ export default function Home() {
                 alt="ciolook-certificate"
                 style={{
                   opacity: 1,
-                  transition: "opacity 0.7s", // Note the corrected syntax here
+                  transition: "opacity 0.7s",
                 }}
               />
             </Flex>
@@ -446,7 +397,7 @@ export default function Home() {
               mx="auto"
               style={{
                 opacity: 1,
-                transition: "opacity 0.7s", // Note the corrected syntax here
+                transition: "opacity 0.7s", 
               }}
             />
           </Container>
@@ -478,7 +429,7 @@ export default function Home() {
                 py={4}
                 style={{
                   opacity: 1,
-                  transition: "opacity 0.7s", // Note the corrected syntax here
+                  transition: "opacity 0.7s", 
                 }}
               />
             </Box>
@@ -508,7 +459,7 @@ export default function Home() {
               alt=""
               style={{
                 opacity: 1,
-                transition: "opacity 0.7s", // Note the corrected syntax here
+                transition: "opacity 0.7s", 
               }}
             />
           </Container>

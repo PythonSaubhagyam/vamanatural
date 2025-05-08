@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import checkLogin from "../utils/checkLogin";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -34,7 +34,7 @@ import formatTime from "../utils/formatTime";
 import { AsyncSelect } from "chakra-react-select";
 import ScrollToTop from "../components/ScrollToTop";
 import MetaTags from "../context/MetaTagsContext";
-import Captcha from "../components/Captcha";
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 export default function BookAppointment() {
@@ -60,6 +60,8 @@ export default function BookAppointment() {
   const [loading, setLoading] = useState(false);
   const [countries, setCountries] = useState([]);
   const [callingCode, setCallingCode] = useState("");
+  const recaptchaRef = useRef(null);
+
   const [allAppointmentSlots, setAllAppointmentSlots] = useState([]);
   const [availableAppointmentSlots, setAvailableAppointmentSlots] = useState(
     []
@@ -607,7 +609,14 @@ export default function BookAppointment() {
                 </FormControl>
               )}
 
-              <Captcha onVerify={setVerified} />
+              <Box align="center">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                  onChange={() => setVerified(true)}
+                  onExpired={() => setVerified(false)}
+                />
+              </Box>
 
             </GridItem>
           </Grid>

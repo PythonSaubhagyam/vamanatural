@@ -1,80 +1,67 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import {
   Container,
-  Table,
-  Button,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Flex,
   Image,
-  TableContainer,
   Heading,
   Center,
-  Card,
   Box,
   Text,
+  Button,
 } from "@chakra-ui/react";
-import MetaTags from "../context/MetaTagsContext";
-
 import { useState, useEffect } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import client from "../setup/axiosClient";
-import checkLogin from "../utils/checkLogin";
-import AddOrRemoveInWishlist from "../utils/addOrRemoveInWishlist";
-import AddToCart from "../utils/addToCart";
 import { Link, useNavigate } from "react-router-dom";
-import CheckOrSetUDID from "../utils/checkOrSetUDID";
+
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import MetaTags from "../context/MetaTagsContext";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import Loader from "../components/Loader";
 import ScrollToTop from "../components/ScrollToTop";
 
+import client from "../setup/axiosClient";
+import checkLogin from "../utils/checkLogin";
+import AddOrRemoveInWishlist from "../utils/addOrRemoveInWishlist";
+import AddToCart from "../utils/addToCart";
+import CheckOrSetUDID from "../utils/checkOrSetUDID";
+
 export default function Addtocart() {
   const [loading, setLoading] = useState(true);
-  const [removeLoading, setRemoveLoading] = useState();
+  const [removeLoading, setRemoveLoading] = useState(null);
   const [wishlistItems, setWishlistItems] = useState([]);
   const loginInfo = checkLogin();
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function getWishlist() {
-      const checkOrSetUDIDInfo = await CheckOrSetUDID();
-      let headers = { visitor: checkOrSetUDIDInfo.visitor_id };
+    const fetchWishlist = async () => {
+      const { visitor_id } = await CheckOrSetUDID();
+      const headers = loginInfo.isLoggedIn
+        ? { Authorization: `token ${loginInfo.token}` }
+        : { visitor: visitor_id };
 
-      if (loginInfo.isLoggedIn === true) {
-        headers = { Authorization: `token ${loginInfo.token}` };
-      }
-      const response = await client.get("listwish/", {
-        headers: headers,
-      });
-      if (response.data.status) {
-        if (response.data.data.length > 0) {
-          setWishlistItems(response.data.data);
-        } else {
-          setWishlistItems("Your wishlist is empty");
-        }
-        localStorage.setItem(
-          "wishlist_counter",
-          response.data.wishlist_counter
-        );
-      }
+      const { data } = await client.get("listwish/", { headers });
+      setWishlistItems(data.data.length ? data.data : "Your wishlist is empty");
+      localStorage.setItem("wishlist_counter", data.wishlist_counter);
       setLoading(false);
-    }
-    getWishlist(); // eslint-disable-next-line
+    };
+    fetchWishlist();
   }, []);
 
-  const handleWishlistChange = async (item, pos) => {
-    setRemoveLoading(item.id);
-    const wishlistResponse = await AddOrRemoveInWishlist(item.id);
-    if (wishlistResponse.status === true) {
-      const temp = wishlistItems.filter((item, index) => index !== pos);
-      setWishlistItems(temp);
-      setRemoveLoading();
+  const handleRemove = async (product, index) => {
+    setRemoveLoading(product.id);
+    const res = await AddOrRemoveInWishlist(product.id);
+    if (res.status) {
+      setWishlistItems((prev) => prev.filter((_, i) => i !== index));
     }
+    setRemoveLoading(null);
   };
+
+  const handleAddToCart = async (product, index) => {
+    await AddToCart(product.id);
+    await handleRemove(product, index);
+    navigate("/cart");
+  };
+
   const pageUrl = "/wishlist";
 
   return (
@@ -82,107 +69,112 @@ export default function Addtocart() {
       <MetaTags pageUrl={pageUrl} />
       <Navbar />
       <Container maxW="container.xl">
-        <BreadCrumbCom second={"My WishList"} secondUrl={"/wishlist"} />
+        <BreadCrumbCom second="My WishList" secondUrl="/wishlist" />
       </Container>
 
       <Container maxW="container.xl" my={5}>
-        <Heading size="lg" textAlign={"center"} mb={6} fontWeight={500}>
+        <Heading size="lg" textAlign="center" mb={6} fontWeight={500}>
           My Wishlist
         </Heading>
+
         {loading ? (
-          <Center h="100%" w="100%">
-            <Loader site={true} />
+          <Center w="100%">
+            <Loader site />
+          </Center>
+        ) : typeof wishlistItems === "string" ? (
+          <Center p={6} fontWeight="700">
+            {wishlistItems}
           </Center>
         ) : (
-          <Flex justify={"space-between"} gap={"2.5vw"}>
-            {typeof wishlistItems === "string" ? (
-              <Center p={6} w={"100%"} fontWeight="700">
-                {wishlistItems}
-              </Center>
-            ) : wishlistItems.length > 0 ? (
-              <Box mx={"auto"}>
-                {wishlistItems?.map((product, index) => (
-                  <Flex
-                    alignItems={"center"}
-                    flexDirection={{ base: "column", md: "row" }}
-                    m={5}
-                    p={5}
-                    boxShadow={"md"}
-                    borderRadius={"8px"}
-                  >
+          <Flex direction="column" align="center">
+            {wishlistItems.map((product, index) => (
+              <Box
+                key={product.id}
+                w={{ base: "100%", md: "60%" }}
+                p={4}
+                mb={6}
+                borderWidth="1px"
+                borderRadius="lg"
+                boxShadow="sm"
+                bg="white"
+                transition="all 0.3s ease"
+                _hover={{ transform: "scale(1.02)", boxShadow: "lg" }}
+              >
+                <Flex
+                  direction={{ base: "column", md: "row" }}
+                  align={{ base: "start", md: "center" }}
+                  gap={5}
+                >
+                  {/* Product Image */}
+                  <Link to={`/products/${product.id}/${product.name.replace(/\s+/g, "-")}`}>
+                    <Image
+                      src={product.images[0]}
+                      alt={product.name}
+                      boxSize={{ base: "100%", md: "100px" }}
+                      objectFit="cover"
+                      borderRadius="md"
+                    />
+                  </Link>
+
+                  {/* Product Details */}
+                  <Box flex="1">
                     <Link to={`/products/${product.id}/${product.name.replace(/\s+/g, "-")}`}>
-                      <Image
-                        src={product.images[0]}
-                        boxSize={"100px"}
-                        align={"center"}
-                      />
-                    </Link>
-
-                    <Link
-                      style={{ marginLeft: 20, marginRight: 20 }}
-                      to={`/products/${product.id}/${product.name.replace(/\s+/g, "-")}`}
-                    >
-                      {product.name}
-                    </Link>
-
-                    <Flex
-                      ml="auto"
-                      mt={{ base: 4 }}
-                      alignItems={"center"}
-                      flexDirection={"row"}
-                    >
-                      <Text>₹{Number(product.product_price || product.base_price).toFixed(2)}</Text>
-                      <Button
-                        isLoading={removeLoading === product.id}
-                        bg={"red.500"}
-                        leftIcon={<RiDeleteBin5Line />}
-                        color="white"
-                        _hover={{ bg: "red.500" }}
-                        size={"sm"}
-                        mx={6}
-                        onClick={() => handleWishlistChange(product, index)}
+                      <Text
+                        fontSize="lg"
+                        fontWeight="semibold"
+                        noOfLines={2}
+                        _hover={{ textDecoration: "underline" }}
                       >
-                        Remove
-                      </Button>
-                      {product.available_stock_quantity === null ? (
-                        <Button
-                          id="addToCartButton"
-                          gap={2}
-                          colorScheme="gray"
-                          size="sm"
-                          title="Add product to cart"
-                          me={3}
-                        >
-                          OUT OF STOCK
-                        </Button>
-                      ) : (
-                        <Button
-                          bg={"brand.100"}
-                          color="white"
-                          _hover={{ bg: "brand.100" }}
-                          size={"sm"}
-                          onClick={async () => {
-                            await AddToCart(product.id);     
-                            await handleWishlistChange(product, index);       
-                            navigate("/cart");               
-                          }}
+                        {product.name}
+                      </Text>
+                    </Link>
+                    <Text fontSize="md" mt={1} color="gray.700">
+                      ₹{Number(product.product_price || product.base_price).toFixed(2)}
+                    </Text>
+                  </Box>
 
-                        >
-                          Add to cart
-                        </Button>
-                      )}
-                    </Flex>
+                  {/* Actions */}
+                  <Flex
+                    direction={{ base: "column", sm: "row" }}
+                    align="center"
+                    justify="center"
+                    gap={3}
+                  >
+                    <Button
+                      isLoading={removeLoading === product.id}
+                      colorScheme="red"
+                      size="sm"
+                      leftIcon={<RiDeleteBin5Line />}
+                      onClick={() => handleRemove(product, index)}
+                      _hover={{ opacity: 0.9 }}
+                    >
+                      Remove
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      color="white"
+                      backgroundColor={
+                        product.available_stock_quantity === null ? "gray.400" : "brand.500"
+                      }
+                      disabled={product.available_stock_quantity === null}
+                      onClick={
+                        product.available_stock_quantity !== null
+                          ? () => handleAddToCart(product, index)
+                          : undefined
+                      }
+                      _hover={{ opacity: 0.9 }}
+                    >
+                      {product.available_stock_quantity === null ? "OUT OF STOCK" : "Add to cart"}
+                    </Button>
                   </Flex>
-                ))}
+                </Flex>
               </Box>
-            ) : (
-              <Center p={6} w={"100%"} fontWeight="700">
-                Your wishlist is empty
-              </Center>
-            )}
+            ))}
           </Flex>
         )}
       </Container>
+
       <ScrollToTop />
       <Footer />
     </>

@@ -14,11 +14,11 @@ import Wishlist from "../pages/Wishlist";
 import Checkout from "../pages/Checkout";
 import SubscriptionPlans from "../pages/SubscriptionPlans";
 import SubscriptionPayment from "../pages/SubscriptionPayment";
-import SurveyForm from "../pages/SurveyForm";
+// import SurveyForm from "../pages/SurveyForm";
 import StoreLocator from "../pages/StoreLocator";
 import InspireSupport from "../pages/InspireSupport";
 import FAQS from "../pages/FAQS";
-import Franchise from "../pages/Franchise";
+// import Franchise from "../pages/Franchise";
 import BlogList from "../pages/BlogList";
 import Blog from "../pages/Blog";
 import TermsAndConditions from "../pages/TermsAndConditions";
@@ -27,20 +27,20 @@ import ReturnRefundPolicy from "../pages/ReturnRefundPolicy";
 import Testimonials from "../pages/Testimonials";
 import ContactUs from "../pages/ContactUs";
 import ConsultOurVaidya from "../pages/ConsultOurVaidya";
-import OrganicLiving from "../pages/OrganicLiving";
+// import OrganicLiving from "../pages/OrganicLiving";
 import CustomerProfile from "../pages/CustomerProfile";
 import AboutUs from "../pages/AboutUs";
-import Appreciation from "../pages/Appreciation";
-import Resources from "../pages/Resources";
+// import Appreciation from "../pages/Appreciation";
+// import Resources from "../pages/Resources";
 import UpdateProfileForm from "../pages/forms/UpdateProfileForm";
 import CreateAddress from "../pages/forms/CreateAddress";
 import CustomerOrderDetails from "../pages/CustomerOrderDetails";
 import BookAppointment from "../pages/BookAppointment";
 import Reviews from "../pages/Reviews";
 import GiftVoucher from "../pages/GiftVoucher";
-import LoginSystem from "../pages/LoginSystem";
-import Bussiness from "../pages/Bussiness";
-import Export from "../pages/Export";
+// import LoginSystem from "../pages/LoginSystem";
+// import Bussiness from "../pages/Bussiness";
+// import Export from "../pages/Export";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 
 const Router = createBrowserRouter([
@@ -79,11 +79,11 @@ const Router = createBrowserRouter([
     element: <Checkout />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/survey/:surveyId",
-    element: <SurveyForm />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/survey/:surveyId",
+  //   element: <SurveyForm />,
+  //   errorElement: <ErrorPage />,
+  // },
   {
     path: "/store-locator",
     element: <StoreLocator />,
@@ -99,16 +99,16 @@ const Router = createBrowserRouter([
     element: <GiftVoucher />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/franchise",
-    element: <Franchise />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/organic-living",
-    element: <OrganicLiving />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/franchise",
+  //   element: <Franchise />,
+  //   errorElement: <ErrorPage />,
+  // },
+  // {
+  //   path: "/organic-living",
+  //   element: <OrganicLiving />,
+  //   errorElement: <ErrorPage />,
+  // },
   {
     path: "/about-us",
     element: <AboutUs />,
@@ -134,16 +134,16 @@ const Router = createBrowserRouter([
     element: <PrivacyPolicy />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/exports",
-    element: <Export />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/bussiness",
-    element: <Bussiness />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/exports",
+  //   element: <Export />,
+  //   errorElement: <ErrorPage />,
+  // },
+  // {
+  //   path: "/bussiness",
+  //   element: <Bussiness />,
+  //   errorElement: <ErrorPage />,
+  // },
 
   {
     path: "/subscription-plans",
@@ -165,16 +165,16 @@ const Router = createBrowserRouter([
     element: <BookAppointment />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/appreciation",
-    element: <Appreciation />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/resources",
-    element: <Resources />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/appreciation",
+  //   element: <Appreciation />,
+  //   errorElement: <ErrorPage />,
+  // },
+  // {
+  //   path: "/resources",
+  //   element: <Resources />,
+  //   errorElement: <ErrorPage />,
+  // },
   {
     path: "/return-and-refund-policy",
     element: <ReturnRefundPolicy />,
@@ -245,11 +245,11 @@ const Router = createBrowserRouter([
     element: <CustomerOrderDetails />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/login-system",
-    element: <LoginSystem />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/login-system",
+  //   element: <LoginSystem />,
+  //   errorElement: <ErrorPage />,
+  // },
 
   {
     path: "/shop",
@@ -281,11 +281,11 @@ const Router = createBrowserRouter([
     element: <Checkout />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/survey/:surveyId",
-    element: <SurveyForm />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/survey/:surveyId",
+  //   element: <SurveyForm />,
+  //   errorElement: <ErrorPage />,
+  // },
   {
     path: "/store-locator",
     element: <StoreLocator />,
@@ -301,16 +301,16 @@ const Router = createBrowserRouter([
     element: <GiftVoucher />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/franchise",
-    element: <Franchise />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/organic-living",
-    element: <OrganicLiving />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/franchise",
+  //   element: <Franchise />,
+  //   errorElement: <ErrorPage />,
+  // },
+  // {
+  //   path: "/organic-living",
+  //   element: <OrganicLiving />,
+  //   errorElement: <ErrorPage />,
+  // },
   {
     path: "/about-us",
     element: <AboutUs />,
@@ -351,16 +351,16 @@ const Router = createBrowserRouter([
     element: <BookAppointment />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/appreciation",
-    element: <Appreciation />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/resources",
-    element: <Resources />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/appreciation",
+  //   element: <Appreciation />,
+  //   errorElement: <ErrorPage />,
+  // },
+  // {
+  //   path: "/resources",
+  //   element: <Resources />,
+  //   errorElement: <ErrorPage />,
+  // },
   {
     path: "/return-and-refund-policy",
     element: <ReturnRefundPolicy />,
@@ -436,11 +436,11 @@ const Router = createBrowserRouter([
     element: <CustomerOrderDetails />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/login-system",
-    element: <LoginSystem />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/login-system",
+  //   element: <LoginSystem />,
+  //   errorElement: <ErrorPage />,
+  // },
 
   {
     path: "page-not-found",

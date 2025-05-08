@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import { useState, useEffect, useRef } from "react";
 import {
   Text,
   FormControl,
@@ -14,459 +12,322 @@ import {
   Button,
   useToast,
   Box,
-  Image, useBreakpointValue
+  Image,
+  useBreakpointValue,
+  Heading,
+  Stack,
 } from "@chakra-ui/react";
-import client from "../setup/axiosClient";
 import { AsyncSelect } from "chakra-react-select";
-import checkLogin from "../utils/checkLogin";
-import BreadCrumbCom from "../components/BreadCrumbCom";
 import { useLocation } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
+
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import BreadCrumbCom from "../components/BreadCrumbCom";
+import client from "../setup/axiosClient";
 import MetaTags from "../context/MetaTagsContext";
-import Captcha from "../components/Captcha";
+
+// ✅ Initial form values outside component to reuse
+const initialFormData = {
+  company: "",
+  name: "",
+  country: "",
+  phone: "",
+  email: "",
+  subject: "",
+  inquiry_description: "",
+  age_group: "00 to 06",
+};
 
 export default function ContactUs() {
-  let { search } = useLocation();
+  const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const IsMobileView = searchParams.get("mobile") ?? "false";
-  const initialFormData = Object.freeze({
-    company: "",
-    name: "",
-    country: "",
-    phone: "",
-    email: "",
-    subject: "",
-    inquiry_description: "",
-    age_group: "00 to 06",
-  });
-  const [verified, setVerified] = useState(false);
+
+  const width = useBreakpointValue({ md: "340px", base: "300px" });
+  const toast = useToast();
+  const recaptchaRef = useRef(null);
+
   const [formData, setFormData] = useState(initialFormData);
-  const [loading, setLoading] = useState(false)
   const [countries, setCountries] = useState([]);
   const [callingCode, setCallingCode] = useState("");
-  const toast = useToast();
-  const loginInfo = checkLogin();
-  const width = useBreakpointValue({ md: "340px", base: "300px" })
+  const [verified, setVerified] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    getCountries(); // eslint-disable-next-line
+    (async () => {
+      try {
+        const res = await client.get("/countries/");
+        if (res.data.status) setCountries(res.data.data);
+      } catch {
+        toast({
+          title: "Something went wrong",
+          description: "Unable to load countries",
+          status: "error",
+          position: "top-right",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    })();
   }, []);
 
-  async function getCountries() {
-    try {
-      const res = await client.get("/countries/");
-      if (res.data.status === true) {
-        setCountries(res.data.data);
-      }
-    } catch (err) {
-      toast({
-        title: "Something went wrong",
-        description: "Please try again later!",
-        position: "top-right",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  }
+  const countryOptions = async (inputValue) => {
+    if (inputValue.length <= 2) return [];
+    const res = await client.get(`/countries/?filter_search=${inputValue}`);
+    const options = res.data.data?.map((c) => ({
+      label: c.country_name,
+      value: c.id,
+      ...c,
+    }));
+    setCountries(options);
+    return options;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
-    try {
-      formData.country = formData.country.value;
-      const response = await client.post("/inquiries/", {
-        ...formData,
-        phone: "+" + callingCode + formData.phone,
-      });
-      if (response.data.status === true) {
-        setLoading(false)
-        toast({
-          title: response.data.message,
-          status: "success",
-          position: "top-right",
-          duration: 4000,
-          isClosable: true,
-        });
-        setFormData(initialFormData);
-      } else {
-        setLoading(false)
-        toast({
-          title: response.data.message,
-          status: "error",
-          position: "top-right",
-          duration: 4000,
-          isClosable: true,
-        });
-      }
-    } catch (error) {
-      setLoading(false)
+
+    if (!verified) {
       toast({
-        title: error.response.data.message,
+        title: "reCAPTCHA verification failed",
         status: "error",
+        position: "top",
+        duration: 3000,
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const payload = {
+        ...formData,
+        country: formData.country?.value,
+        phone: "+" + callingCode + formData.phone,
+      };
+
+      const res = await client.post("/inquiries/", payload);
+      toast({
+        title: res.data.message,
+        status: res.data.status ? "success" : "error",
         position: "top-right",
         duration: 4000,
         isClosable: true,
       });
-    }
-  };
-  const countryOptions = async (inputValue) => {
-    let Options = [];
-    if (inputValue.length > 2) {
-      const countryRes = await client.get(
-        `/countries/?filter_search=${inputValue}`,
-        // {
-        //   headers: { Authorization: `token ${loginInfo.token}` },
-        // }
-      );
-      if (countryRes.status) {
-        countryRes.data.data?.map((data) =>
-          Options.push({
-            label: data.country_name,
-            value: data.id,
-            ...data,
-          })
-        );
-        setCountries(Options);
+
+      if (res.data.status) {
+        setFormData(initialFormData);
+        recaptchaRef.current.reset();
+        setVerified(false);
       }
+    } catch (err) {
+      toast({
+        title: err.response?.data?.message || "Failed to send inquiry",
+        status: "error",
+        position: "top-right",
+        duration: 4000,
+      });
+    } finally {
+      setLoading(false);
     }
-    return Options;
   };
+
   const pageUrl = "/contact-us";
 
   return (
     <>
       <MetaTags pageUrl={pageUrl} />
-      {IsMobileView !== "true" && <Navbar />}
+      {!IsMobileView && <Navbar />}
+      <Navbar />
       <Container maxW="container.xl">
-        <BreadCrumbCom second={"Contact Us"} secondUrl={"/contact-us"} />
+        <BreadCrumbCom second="Contact Us" secondUrl="/contact-us" />
       </Container>
-      {/* <Container maxW={"container.xl"} mb={4} px={0} >
-      <Box
-        w={"100%"}
-        bgImage={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/contact.jpg"}
-        bgSize="cover"
-        bgPosition="center"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        mt={"-10px"}
-        py={20}
-        boxShadow={"0px 0px 0px 0px"}
-        backdropFilter="blur(10px)"
-        height={"550px"}
-        // mb={10}
-      >
-        <Text
-          pb={2}
-          color={"brand.100"}
-          textAlign={"center"}
-          textShadow={"lightgreen"}
-          fontSize="6xl"
-          fontWeight="700"
-        >
-          Contact  Us
-        </Text>
-      </Box>
-      </Container> */}
-      <Container maxW={"container.xl"} py={1} px={0} position="relative">
-        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/contact.jpg" />
 
+      {/* Banner */}
+      <Container maxW="container.xl" py={1} px={0} position="relative">
+        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/contact.jpg" />
         <Text
-          pb={2}
-          color={"brand.100"}
-          textAlign={"center"}
-          fontSize={{ lg: "7xl", md: "4xl", base: "2xl" }}
+          color="brand.100"
           fontWeight="600"
+          fontSize={{ lg: "7xl", md: "4xl", base: "2xl" }}
+          textAlign="center"
           position="absolute"
           top="50%"
           left="50%"
           transform="translate(-50%, -50%)"
           zIndex="1"
-        // Optional: Add background to improve text readability
-        >
-          Contact  Us
-        </Text>
-      </Container>
-      <Container maxW="container.lg" pb={10} display={"flex"} flexDirection={"column"} alignItems={"center"}>
-        {/* <Text
-          pb={2}
-          size="xl"
-          fontSize="4xl"
-          fontWeight="medium"
-          color="brand.500"
         >
           Contact Us
-        </Text> */}
-        <Text pb={2} pt={2}>
-          Contact us about anything related to our company or services.
         </Text>
-        <Text pb={8}>
-          We'll do our best to get back to you as soon as possible.
-        </Text>
+      </Container>
 
-        <form onSubmit={handleSubmit}>
-          <FormControl
-            as={Flex}
-            direction={{ base: "column", md: "row" }}
-            align={{ md: "center", base: "start" }}
-            isRequired
-          >
-            <FormLabel
-              fontSize="sm"
-              mb={0}
-              width={{ base: "auto", md: "170px" }}
-            >
-              Your Company
-            </FormLabel>
-            <Input
-              type="text"
-              maxW={"md"}
-              size="sm"
-              border={"1px"}
-              borderColor="gray.300"
-              variant="filled"
-              _focus={{ borderColor: "brand.500" }}
-              value={formData.company}
-              onChange={(e) =>
-                setFormData({ ...formData, company: e.target.value })
-              }
-            />
-          </FormControl>
+      <Container maxW="container.md" py={10} px={{ base: 4, md: 10 }}>
+        <Box
+          p={{ base: 6, md: 10 }}
+          bg="white"
+          borderRadius="xl"
+          boxShadow="lg"
+          border="1px solid"
+          borderColor="gray.200"
+        >
+          <Heading fontSize="2xl" textAlign="center" color="#5b5b5b" mb={6}>
+            Contact Us
+          </Heading>
 
-          <FormControl
-            as={Flex}
-            direction={{ base: "column", md: "row" }}
-            align={{ md: "center", base: "start" }}
-            isRequired
-            mt="5"
-          >
-            <FormLabel
-              fontSize="sm"
-              mb={0}
-              width={{ base: "auto", md: "170px" }}
-            >
-              Your Name
-            </FormLabel>
-            <Input
-              type="text"
-              maxW={"md"}
-              size="sm"
-              border={"1px"}
-              borderColor="gray.300"
-              variant="filled"
-              _focus={{ borderColor: "brand.500" }}
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
-          </FormControl>
+          <Text fontSize="sm" textAlign="center" mb={4}>
+            Contact us about anything related to our company or services.
+            <br />
+            We'll do our best to get back to you as soon as possible.
+          </Text>
 
-          <FormControl
-            as={Flex}
-            direction={{ base: "column", md: "row" }}
-            align={{ md: "center", base: "start" }}
-            isRequired
-            mt="5"
-          >
-            <FormLabel
-              fontSize="sm"
-              mb={0}
-              width={{ base: "auto", md: "125px" }}
-            >
-              Your country
-            </FormLabel>
-            {/* <Select
-              maxW={"md"}
-              size="sm"
-              border={"1px"}
-              borderColor="gray.300"
-              variant="filled"
-              placeholder="Select country"
-              _focus={{ borderColor: "brand.500" }}
-              value={formData.country}
-              onChange={(e) => {
-                setFormData({ ...formData, country: e.target.value });
-                const callCode = countries.find(
-                  (country) => country.id === parseInt(e.target.value)
-                )?.calling_code;
-                setCallingCode(callCode ?? "");
-              }}
-            >
-              {countries.map((country) => (
-                <option key={country.id} value={country.id}>
-                  {country.country_name}
-                </option>
-              ))}
-            </Select> */}
-            <AsyncSelect
-              isClearable
-              size="sm"
-              chakraStyles={{
-                inputContainer: (provided) => ({
-                  ...provided,
-                  maxWidth: width,
-                  minWidth: width,
-                }),
-              }}
-              variant={"outline"}
-              name="Countries"
-              sx={{ padding: "0 10px" }}
-              placeholder="Select Country"
-              value={formData?.country}
-              onChange={(e) => {
-                setFormData({ ...formData, country: e });
-                const callCode = countries.find(
-                  (country) => country.id === parseInt(e?.value)
-                )?.calling_code;
-                setCallingCode(callCode ?? "");
-              }}
-              loadOptions={countryOptions}
-            ></AsyncSelect>
-          </FormControl>
-
-          {formData.country !== "" && (
-            <FormControl
-              as={Flex}
-              direction={{ base: "column", md: "row" }}
-              align={{ md: "center", base: "start" }}
-              isRequired
-              mt="5"
-            >
-              <FormLabel
-                fontSize="sm"
-                mb={0}
-                width={{ base: "auto", md: "170px" }}
-              >
-                Phone Number
-              </FormLabel>
-              <InputGroup maxW={"md"} size="sm">
-                <InputLeftAddon
-                  border={"1px"}
-                  borderColor="gray.300"
-                  px={1}
-                  children={"+" + callingCode}
-                />
+          <form onSubmit={handleSubmit}>
+            <Stack spacing={5}>
+              {/* Company */}
+              <FormControl isRequired>
+                <FormLabel>Your Company</FormLabel>
                 <Input
-                  type="tel"
-                  border={"1px"}
-                  borderColor="gray.300"
                   variant="filled"
-                  _focus={{ borderColor: "brand.500" }}
-                  value={formData.phone}
+                  borderRadius="md"
+                  name="company"
+                  value={formData.company}
                   onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
+                    setFormData({ ...formData, company: e.target.value })
                   }
                 />
-              </InputGroup>
-            </FormControl>
-          )}
+              </FormControl>
 
-          <FormControl
-            as={Flex}
-            direction={{ base: "column", md: "row" }}
-            align={{ md: "center", base: "start" }}
-            isRequired
-            mt="5"
-          >
-            <FormLabel
-              fontSize="sm"
-              mb={0}
-              width={{ base: "auto", md: "170px" }}
-            >
-              Email
-            </FormLabel>
-            <Input
-              type="email"
-              maxW={"md"}
-              size="sm"
-              border={"1px"}
-              borderColor="gray.300"
-              variant="filled"
-              _focus={{ borderColor: "brand.500" }}
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
-          </FormControl>
+              {/* Name */}
+              <FormControl isRequired>
+                <FormLabel>Your Name</FormLabel>
+                <Input
+                  variant="filled"
+                  borderRadius="md"
+                  name="name"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                />
+              </FormControl>
 
-          <FormControl
-            as={Flex}
-            direction={{ base: "column", md: "row" }}
-            align={{ md: "center", base: "start" }}
-            isRequired
-            mt="5"
-          >
-            <FormLabel
-              fontSize="sm"
-              mb={0}
-              width={{ base: "auto", md: "170px" }}
-            >
-              Subject
-            </FormLabel>
-            <Input
-              type="text"
-              maxW={"md"}
-              size="sm"
-              border={"1px"}
-              borderColor="gray.300"
-              variant="filled"
-              _focus={{ borderColor: "brand.500" }}
-              value={formData.subject}
-              onChange={(e) =>
-                setFormData({ ...formData, subject: e.target.value })
-              }
-            />
-          </FormControl>
+              {/* Email */}
+              <FormControl isRequired>
+                <FormLabel>Email Address</FormLabel>
+                <Input
+                  type="email"
+                  variant="filled"
+                  borderRadius="md"
+                  name="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
+              </FormControl>
 
-          <FormControl
-            as={Flex}
-            direction={{ base: "column", md: "row" }}
-            align={{ md: "center", base: "start" }}
-            isRequired
-            mt="5"
-            mb={"5"}
-          >
-            <FormLabel
-              fontSize="sm"
-              mb={0}
-              width={{ base: "auto", md: "170px" }}
-            >
-              Your Queries
-            </FormLabel>
-            <Textarea
-              maxW={"md"}
-              size="sm"
-              border={"1px"}
-              borderColor="gray.300"
-              variant="filled"
-              _focus={{ borderColor: "brand.500" }}
-              value={formData.inquiry_description}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  inquiry_description: e.target.value,
-                })
-              }
-            />
-          </FormControl>
-          <Captcha onVerify={setVerified} />
-          <Container maxW="lg" p="0" display="flex" justifyContent="center" alignItems="center">
-            <Button
-              type="submit"
-              isDisabled={!verified}
-              isLoading={loading}
-              loadingText="Sending"
-              colorScheme="brand"
-            >
-              Send
-            </Button>
-          </Container>
+              {/* Subject */}
+              <FormControl isRequired>
+                <FormLabel>Subject</FormLabel>
+                <Input
+                  variant="filled"
+                  borderRadius="md"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={(e) =>
+                    setFormData({ ...formData, subject: e.target.value })
+                  }
+                />
+              </FormControl>
 
-        </form>
+              {/* Country Selector */}
+              <FormControl isRequired>
+                <FormLabel>Country</FormLabel>
+                <AsyncSelect
+                  isClearable
+                  size="sm"
+                  chakraStyles={{
+                    inputContainer: (base) => ({
+                      ...base,
+                      borderRadius: "md",
+                      borderColor: "gray.300",
+                    }),
+                  }}
+                  value={formData.country}
+                  onChange={(e) => {
+                    setFormData({ ...formData, country: e });
+                    const callCode = countries.find(
+                      (c) => c.id === parseInt(e?.value)
+                    )?.calling_code;
+                    setCallingCode(callCode ?? "");
+                  }}
+                  loadOptions={countryOptions}
+                  placeholder="Select country..."
+                />
+              </FormControl>
 
+              {/* Phone */}
+              {formData.country && (
+                <FormControl isRequired>
+                  <FormLabel>Phone Number</FormLabel>
+                  <InputGroup>
+                    <InputLeftAddon children={`+${callingCode}`} />
+                    <Input
+                      variant="filled"
+                      borderRadius="md"
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={(e) =>
+                        /^\d*$/.test(e.target.value) &&
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
+                    />
+                  </InputGroup>
+                </FormControl>
+              )}
+
+              {/* Description */}
+              <FormControl isRequired>
+                <FormLabel>Your Queries</FormLabel>
+                <Textarea
+                  variant="filled"
+                  borderRadius="md"
+                  name="inquiry_description"
+                  rows={5}
+                  value={formData.inquiry_description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, inquiry_description: e.target.value })
+                  }
+                />
+              </FormControl>
+
+              {/* reCAPTCHA */}
+              <Box align="center">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                  onChange={() => setVerified(true)}
+                  onExpired={() => setVerified(false)}
+                />
+              </Box>
+
+              {/* Submit */}
+              <Button
+                type="submit"
+                colorScheme="brand"
+                size="lg"
+                borderRadius="full"
+                isDisabled={!verified}
+                isLoading={loading}
+              >
+                Submit Inquiry
+              </Button>
+            </Stack>
+          </form>
+        </Box>
       </Container>
-      {IsMobileView !== "true" && <Footer />}
+
+
+      {IsMobileView && <Footer />}
     </>
   );
 }

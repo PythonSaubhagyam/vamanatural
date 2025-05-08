@@ -285,19 +285,7 @@ export default function CustomerOrderDetails() {
                   <Text mt={1} w="25vw">
                     {orderDetails?.billing_address?.full_address}
                   </Text>
-                  {/* <Text mt={1}>
-                    {orderDetails?.billing_address?.address_line_1}
-                  </Text>
-                  <Text>{orderDetails?.billing_address?.address_line_2}</Text>
-                  <Text>{orderDetails?.billing_address?.landmark}</Text>
-                  <Text>
-                    {[
-                      orderDetails?.billing_address?.city_name,
-                      orderDetails?.billing_address?.state_name,
-                      orderDetails?.billing_address?.country_name,
-                    ].join(", ")}{" "}
-                    - {orderDetails?.billing_address?.postal_code}
-                  </Text> */}
+          
                 </Box>
               </Box>
             ) : (
@@ -319,19 +307,7 @@ export default function CustomerOrderDetails() {
                     <Text mt={1} w="20vw">
                       {orderDetails?.billing_address?.full_address}
                     </Text>
-                    {/* <Text mt={1}>
-                      {orderDetails?.billing_address?.address_line_1}
-                    </Text>
-                    <Text>{orderDetails?.billing_address?.address_line_2}</Text>
-                    <Text>{orderDetails?.billing_address?.landmark}</Text>
-                    <Text>
-                      {[
-                        orderDetails?.billing_address?.city_name,
-                        orderDetails?.billing_address?.state_name,
-                        orderDetails?.billing_address?.country_name,
-                      ].join(", ")}{" "}
-                      - {orderDetails?.billing_address?.postal_code}
-                    </Text> */}
+                    
                   </Box>
                 </Box>
                 <Box>
@@ -352,21 +328,7 @@ export default function CustomerOrderDetails() {
                     <Text mt={1} w="20vw">
                       {orderDetails?.shipping_address?.full_address}
                     </Text>
-                    {/* <Text mt={1}>
-                      {orderDetails?.shipping_address?.address_line_1}
-                    </Text>
-                    <Text>
-                      {orderDetails?.shipping_address?.address_line_2}
-                    </Text>
-                    <Text>{orderDetails?.shipping_address?.landmark}</Text>
-                    <Text>
-                      {[
-                        orderDetails?.shipping_address?.city_name,
-                        orderDetails?.shipping_address?.state_name,
-                        orderDetails?.shipping_address?.country_name,
-                      ].join(", ")}{" "}
-                      - {orderDetails?.shipping_address?.postal_code}
-                    </Text> */}
+                  
                   </Box>
                 </Box>
               </>

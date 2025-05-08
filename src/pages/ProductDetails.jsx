@@ -48,7 +48,6 @@ import AddToCart from "../utils/addToCart";
 import AddOrRemoveInWishlist from "../utils/addOrRemoveInWishlist";
 import CheckOrSetUDID from "../utils/checkOrSetUDID";
 import checkLogin from "../utils/checkLogin";
-import ProductCarousel from "../components/ProductCarousel";
 import ProductListSection from "../components/ProductListSection";
 import dompurify from "dompurify";
 import Loader from "../components/Loader";
@@ -132,57 +131,6 @@ export default function ProductDetails() {
   useEffect(() => {
     getProductDetails(); // eslint-disable-next-line
   }, [productId]);
-
-  // useEffect(() => {
-  //   getProductsList(productId); // eslint-disable-next-line
-  // }, [productId]);
-
-  // async function getProductsList(productId) {
-  //   const checkOrSetUDIDInfo = await CheckOrSetUDID();
-  //   let headers = { visitor: checkOrSetUDIDInfo.visitor_id };
-  //   if (loginInfo.isLoggedIn === true) {
-  //     headers = {
-  //       Authorization: `token ${loginInfo.token}`,
-  //     };
-  //   }
-  //   const promise1 = await client.get(
-  //     `/web/single/product/related/${productId}/`,
-  //     {
-  //       headers: headers,
-  //     }
-  //   );
-  //   const promise2 = await client.get(
-  //     `/web/single/product/other/${productId}/`,
-  //     {
-  //       headers: headers,
-  //     }
-  //   );
-  //   const promise3 = await client.get(
-  //     `/web/single/product/recently-viewed/${productId}/`,
-  //     {
-  //       headers: headers,
-  //     }
-  //   );
-
-  //   Promise.all([promise1, promise2, promise3])
-  //     .then(function (responses) {
-  //       if (responses[0].data.status === true) {
-  //         setRelatedProducts(responses[0].data?.data);
-  //       }
-  //       if (responses[1].data.status === true) {
-  //         setOtherProducts(responses[1].data?.data);
-  //       }
-  //       if (responses[2].data.status === true) {
-  //         setRecentlyViewedProducts(responses[2].data?.data);
-  //       }
-
-  //       //setLoading(false);
-  //     })
-  //     .catch(function (error) {
-  //       //setLoading(false);
-  //       console.error("Error fetching data:", error);
-  //     });
-  // }
 
   async function getProductDetails() {
     const checkOrSetUDIDInfo = await CheckOrSetUDID();
@@ -283,11 +231,7 @@ export default function ProductDetails() {
     if (loginInfo.isLoggedIn) {
       onOpen();
     } else {
-      // window.alert(
-      //   "Sorry! You are not allowed to review this product since you haven't login"
-      // );
       setIsLoginModalOpen(true);
-      //navigate("/login");
       toast({
         title: "Please login to write a review!",
         status: "info",
@@ -314,15 +258,13 @@ export default function ProductDetails() {
   const handleCopy = async () => {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        // Use the Clipboard API (works on most modern browsers)
         await navigator.clipboard.writeText(url);
       } else {
-        // Fallback: Create an input element, copy manually
         const textArea = document.createElement("textarea");
         textArea.value = url;
         document.body.appendChild(textArea);
         textArea.select();
-        document.execCommand("copy"); // Deprecated but works on older mobile browsers
+        document.execCommand("copy");
         document.body.removeChild(textArea);
       }
 
@@ -437,20 +379,6 @@ export default function ProductDetails() {
                       .join(" ")}
                   </Heading>
                   <Flex>
-                    {/* <Badge
-                      as={Flex}
-                      w="fit-content"
-                      gap={1}
-                      size={"sm"}
-                      colorScheme="brand"
-                      px={2}
-                      py={0.9}
-                      color="white"
-                      display={avgRating ? "inline-flex" : "none"}
-                    >
-                      <Text fontSize={16}>{avgRating}</Text>
-                      <Icon as={AiFillStar} marginTop={1} boxSize={4} />
-                    </Badge> */}
                     {productData.brand_name &&
                       productData.brand_name.length > 0 && (
                         <Text
@@ -472,27 +400,9 @@ export default function ProductDetails() {
                           {productData.brand_name}
                         </Text>
                       )}
-                    {/* <Box
-                      // as="ul"
-                      whiteSpace={"pre-line"}
-                      marginLeft={2}
-                      fontSize={{
-                        base: "14px",
-                        lg: "18px",
-                      }}
-                      fontWeight={"380"}
-                      textAlign="justify"
-                      color={"black"}
-                    >
-                      {Array.isArray(productData.brand_name) &&
-                        productData.brand_name.map((brand, index) => (
-                          <li key={index}>{brand}</li>
-                        ))}
-                    </Box> */}
                     {avgRating && <StarRating avgRating={avgRating} />}
                   </Flex>
                   <Flex>
-                    {/* {loginInfo.isLoggedIn &&( */}
                     <Link
                       pt={0.5}
                       //pl={2}
@@ -501,16 +411,7 @@ export default function ProductDetails() {
                       color={"#A05D26"}
                       textDecoration="none"
                       _hover={{ color: "text.500" }}
-                      //as={RouterLink}
                       to={"/products"}
-                      // onClick={() => {
-                      //   // setFormData({
-                      //   //   ...formData,
-                      //   //   id: item.id,
-                      //   //   name: item.product_name,
-                      //   // });
-                      //   onOpen();
-                      // }}
                       onClick={handleWriteReview}
                     >
                       Write a review
@@ -526,42 +427,13 @@ export default function ProductDetails() {
                         onClick={scrollToElement}
                         cursor={"pointer"}
                       >
-                        {/* {noOfReviews} customer review */}({noOfReviews}{" "}
+                        ({noOfReviews}{" "}
                         Review
                         {noOfReviews > 1 ? "s" : null})
                       </Text>
                     )}
 
-                    {/* {productData.brand_name &&
-                      productData.brand_name.length > 0 && (
-                        <Text
-                          fontSize={{
-                            base: "14px",
-                            lg: "18px",
-                          }}
-                          color={"black"}
-                          fontWeight={"500"}
-                        >
-                          {productData.brand_name}
-                        </Text>
-                      )} 
-                    <Box
-                      // as="ul"
-                      whiteSpace={"pre-line"}
-                      marginLeft={5}
-                      fontSize={{
-                        base: "14px",
-                        lg: "18px",
-                      }}
-                      fontWeight={"380"}
-                      textAlign="justify"
-                      color={"black"}
-                    >
-                      {Array.isArray(productData.brand_name) &&
-                        productData.brand_name.map((brand, index) => (
-                          <li key={index}>{brand}</li>
-                        ))}
-                    </Box> */}
+
                   </Flex>
 
                   <>
@@ -570,7 +442,6 @@ export default function ProductDetails() {
                         base: "20px",
                         lg: "18px",
                       }}
-                      // color={"brand.500"}
                       color={"#A05D26"}
                       fontWeight={"600"}
                     >
@@ -584,11 +455,8 @@ export default function ProductDetails() {
                         base: "16px",
                         lg: "16px",
                       }}
-                      // height={130}
-                      // lineHeight={1.5}
                       fontWeight={"400"}
                       textAlign="justify"
-                      // color={"brand.500"}
                       color={"black"}
                     >
                       {productData?.benefits.map((benefit, index) => (
@@ -662,8 +530,6 @@ export default function ProductDetails() {
                         <Button
                           id="addToCartButton"
                           as={Flex}
-                          //textAlign={"center"}
-
                           gap={2}
                           colorScheme="brand"
                           size="sm"
@@ -673,8 +539,6 @@ export default function ProductDetails() {
                             bg: "brand.500",
                             cursor: "pointer",
                           }}
-                          //pt={2}
-                          //me={3}
                           onClick={() => AddToCart(productData?.id, counter)}
                         >
                           <FaShoppingCart />
@@ -745,7 +609,6 @@ export default function ProductDetails() {
                             href={`fb-messenger://share?link=${encodeURIComponent(url)}&app_id=YOUR_APP_ID`}
                             target="_blank"
                             onClick={(e) => {
-                              // Open Messenger Web if on desktop
                               if (!navigator.userAgent.match(/Android|iPhone|iPad/i)) {
                                 window.open(`https://www.messenger.com/t/?link=${encodeURIComponent(url)}`, "_blank");
                                 e.preventDefault();
@@ -775,7 +638,6 @@ export default function ProductDetails() {
                   textAlign="justify"
                   mt={1}
                   dangerouslySetInnerHTML={{
-                    // __html: dompurify.sanitize(productData?.description),
                     __html: modifiedDescription,
                   }}
                 />
@@ -839,42 +701,7 @@ export default function ProductDetails() {
               </Flex>
             </Container>
           )}
-          {/* {relatedProducts &&
-            relatedProducts?.length > 0 && (
-              <ProductListSection
-                title="Related Products"
-                products={relatedProducts}
-                loading={loading}
-                justify="center"
-                fontSize={{ base: "sm", lg: "md" }}
-                type={isMobile && "carousal"}
-              />
-            )}
-          {otherProducts &&
-            otherProducts?.length > 0 && (
-              <ProductListSection
-                title="Other Products"
-                products={otherProducts}
-                justify="center"
-                loading={loading}
-                fontSize={{ base: "sm", lg: "md" }}
-                type={isMobile && "carousal"}
-              />
-            )}
-          {recentlyViewedProducts &&
-            recentlyViewedProducts?.length > 0 && (
-              <ProductListSection
-                title="Recently Viewed Products"
-                products={recentlyViewedProducts}
-                justify="center"
-                loading={loading}
-                fontSize={{ base: "sm", lg: "md" }}
-                type={"carousal"}
-              />
-            )} */}
-
           <RelatedOther />
-
           <Modal
             size={"xl"}
             closeOnOverlayClick={false}

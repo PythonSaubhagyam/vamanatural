@@ -4,41 +4,36 @@ import {
   UnorderedList,
   ListItem,
   Link,
-  Box,
   Text,
-  Image
+  Image,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import BreadCrumbCom from "../components/BreadCrumbCom";
-// import { useLocation } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
 import MetaTags from "../context/MetaTagsContext";
 
 export default function TermsAndConditions() {
-  // let { search } = useLocation();
-  // const searchParams = new URLSearchParams(search);
-  // const IsMobileView = searchParams.get("mobile") ?? "false";
   const pageUrl = "/terms-and-conditions";
 
   return (
     <>
       <MetaTags pageUrl={pageUrl} />
       <Navbar />
+
       <Container maxW="container.xl">
-        <BreadCrumbCom
-          second={"Terms And Conditions"}
-          secondUrl={"/terms-and-conditions"}
-        />
+        <BreadCrumbCom second="Terms And Conditions" secondUrl="/terms-and-conditions" />
       </Container>
 
-      <Container maxW={"container.xl"} py={1} px={0} position="relative">
-        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/terms.jpg" />
-
+      <Container maxW="container.xl" py={1} px={0} position="relative">
+        <Image
+          src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/organic-living/terms.jpg"
+          alt="Terms and Conditions Banner"
+        />
         <Text
           pb={2}
-          color={"brand.100"}
-          textAlign={"center"}
+          color="brand.100"
+          textAlign="center"
           fontSize={{ lg: "7xl", md: "4xl", base: "xl" }}
           fontWeight="600"
           position="absolute"
@@ -46,89 +41,61 @@ export default function TermsAndConditions() {
           left="50%"
           transform="translate(-50%, -50%)"
           zIndex="1"
-        // Optional: Add background to improve text readability
         >
           Terms & Condition
         </Text>
       </Container>
-      <Container maxW="container.lg" pt={8}>
-        <Heading size="md" fontWeight={500} color={"brand.900"}>
+
+      <Container maxW="container.lg" pt={8} pb={10}>
+        <Heading size="md" fontWeight={500} color="brand.900">
           Shipping Policy
         </Heading>
-        <UnorderedList>
-          <ListItem py={4} textAlign={"justify"}>
-            It is our sincere endeavor to process and dispatch your orders as
-            quickly as possible.
+        <UnorderedList spacing={4} textAlign="justify">
+          <ListItem>
+            We aim to process and dispatch your orders as quickly as possible.
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            For all orders we normally charge a flat shipping rate of Rs. 100
-            for all delivery locations within Bharat (India). However, customers
-            also have the option of choosing FedEx as their delivery agent in
-            which case delivery charges may be higher based on weight of the
-            shipment and the delivery location .
+          <ListItem>
+            For all orders, we normally charge a flat shipping rate of Rs. 100 within Bharat (India). FedEx delivery charges may vary based on weight and location.
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            For deliveries in Bharat: order is normally dispatched on the same
-            day or on the subsequent working day, and normally delivered to you
-            within 7 working days. In rare cases where an order has taken longer
-            to deliver, we request you to check the order tracking details sent
-            to you by email or get in touch with us at{" "}
-            <Link href="mailto:care@suryanorganic.com">
-              care@suryanorganic.com.
-            </Link>
+          <ListItem>
+            Orders within Bharat are usually dispatched same day or next working day, with delivery expected within 7 working days. For delays, check tracking email or contact: <Link href="mailto:care@suryanorganic.com">care@suryanorganic.com</Link>
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            For deliveries in the rest of the world: At this moment, we don’t
-            accept orders for delivery outside Bharat.
+          <ListItem>
+            International delivery is not currently available.
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            Suryan Organic reserves the right to refuse confirmed orders that
-            are approved by the customer but where payment status is still
-            pending.
+          <ListItem>
+            Suryan Organic reserves the right to refuse orders with pending payments.
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            Delivery will be made at the address specified by you while placing
-            the order. For multiple delivery destinations, you will need to
-            submit separate orders for each delivery destination.
+          <ListItem>
+            Delivery is made to the address provided in your order. Multiple destinations require separate orders.
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            If you are not personally available to accept delivery, you may
-            appoint a representative to do so in your place.
+          <ListItem>
+            A representative may accept delivery on your behalf if you're unavailable.
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            While affecting delivery, the delivery agent may require you or your
-            nominated representative to produce a proof of identity, such as a
-            valid Aadhar Card, Passport, Driving License, Election Card or PAN
-            Card.
+          <ListItem>
+            Delivery agents may request proof of identity (Aadhar, Passport, Driving License, Election Card, PAN).
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            You or your nominated representative may be required to sign a
-            delivery manifest to confirm that the delivery has taken place. If
-            you refuse to sign the delivery document, this will be taken as a
-            refusal to accept the delivery.
+          <ListItem>
+            A signed delivery manifest may be required. Refusal to sign is considered a delivery refusal.
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            You agree to give us as much detail as possible about particular
-            features of the Delivery Address to ensure smooth and timely
-            delivery.
+          <ListItem>
+            Please provide detailed delivery address information for timely delivery.
           </ListItem>
-          <ListItem py={4} textAlign={"justify"}>
-            Eligible shipping speeds and their charges are displayed based on
-            the item(s) in your cart and the delivery address.
+          <ListItem>
+            Shipping options and charges depend on items in your cart and delivery location.
           </ListItem>
         </UnorderedList>
-        <Heading size="md" fontWeight={500} color={"brand.900"} pt={12}>
+
+        <Heading size="md" fontWeight={500} color="brand.900" pt={12}>
           Tracking your order
         </Heading>
-        <UnorderedList>
-          <ListItem py={4} pb={8} textAlign={"justify"}>
-            We shall send you an email containing tracking details when we
-            dispatch your order. In this email, you will see a link to track
-            your order via our courier partner’s website. You can then track
-            your order in real time.
+        <UnorderedList spacing={4} textAlign="justify">
+          <ListItem pb={8}>
+            You'll receive a tracking email once your order is dispatched, containing a link to track it in real time via our courier partner.
           </ListItem>
         </UnorderedList>
       </Container>
+
       <ScrollToTop />
       <Footer />
     </>

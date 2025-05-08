@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import {
   Container,
   Flex,
@@ -24,9 +22,11 @@ import client from "../setup/axiosClient";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { AiFillMail } from "react-icons/ai";
 import { FiMapPin } from "react-icons/fi";
-import Loader from "../components/Loader";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { FaStreetView } from "react-icons/fa";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import Loader from "../components/Loader";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import ScrollToTop from "../components/ScrollToTop";
 import MetaTags from "../context/MetaTagsContext";
@@ -38,43 +38,139 @@ export default function StoreLocator() {
   const [loading, setLoading] = useState(true);
   const { isOpen, onToggle } = useDisclosure();
 
+  const pageUrl = "/store-locator";
+
   useEffect(() => {
-    fetchData();
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
+    (async () => {
+      const res = await client.get("/stores/");
+      setStoreData(res.data.store_section_data);
+      setCities(res.data.cities);
+      setSelectedCities(res.data.cities);
+      setTimeout(() => setLoading(false), 1000);
+    })();
   }, []);
 
-  async function fetchData() {
-    const res = await client.get("/stores/");
-    setStoreData(res.data.store_section_data);
-    setCities(res.data.cities);
-    setSelectedCities(res.data.cities);
-  }
+  const formatTime = (timeStr) => {
+    const [hourStr, minute] = timeStr.split(":");
+    const hour = parseInt(hourStr, 10);
+    const period = hour < 12 ? "AM" : "PM";
+    const formattedHour = hour % 12 || 12;
+    return `${formattedHour}:${minute} ${period}`;
+  };
 
-  function formatTime(timeString) {
-    const [hourString, minute] = timeString.split(":");
-    const hour = +hourString % 24;
-    return (hour % 12 || 12) + ":" + minute + (hour < 12 ? " AM" : " PM");
-  }
-  const pageUrl = "/store-locator";
+  const renderStoreCard = (item) => (
+    <Card
+      key={item.id}
+      direction={{ base: "column", lg: "row" }}
+      overflow="hidden"
+      variant="outline"
+      p={0}
+      boxShadow="md"
+      w="100%"
+    >
+      <Image
+        minW={{ sm: "300px", lg: "360px" }}
+        height="auto"
+        src={item.image}
+        fallbackSrc="https://via.placeholder.com/360x240?text=No+Image"
+        alt={item.store_name}
+      />
+      <Stack>
+        <CardBody pb={0} fontSize="sm">
+          <Text fontWeight="500" fontSize="md">
+            {item.store_name
+              .split(" ")
+              .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+              .join(" ")}
+          </Text>
+          <Box mt={5}>
+            <Text fontWeight="bold" textTransform="capitalize">
+              {item.landmark}
+            </Text>
+            <Text fontSize="sm">
+              {[item.address_line_1, item.landmark]
+                .filter(Boolean)
+                .join(", ")}
+              <br />
+              {[item.address_line_2, item?.state_obj?.name]
+                .filter(Boolean)
+                .join(", ")}
+              {item.postal_code && ` - ${item.postal_code}`}
+            </Text>
+          </Box>
+        </CardBody>
+
+        <CardFooter pt={0} flexDir="column" fontSize="sm" gap={4}>
+          {item.work_start_time && (
+            <Text>
+              Working: {formatTime(item.work_start_time)} to{" "}
+              {formatTime(item.work_end_time)}
+            </Text>
+          )}
+          <Flex
+            direction={{ base: "column", lg: "row" }}
+            gap={{ base: 2, lg: 10 }}
+            flexWrap="wrap"
+          >
+            <ContactIcon
+              icon={BsFillTelephoneFill}
+              label={item.mobile_no}
+              link={`tel:${item.mobile_no}`}
+            />
+            <ContactIcon
+              icon={AiFillMail}
+              label={item.email}
+              link={`mailto:${item.email}`}
+            />
+            <ContactIcon
+              icon={FiMapPin}
+              label="Google Location"
+              link={item.location_url}
+            />
+            {item.virtual_location_url && (
+              <ContactIcon
+                icon={FaStreetView}
+                label="Virtual Location"
+                link={item.virtual_location_url}
+              />
+            )}
+          </Flex>
+        </CardFooter>
+      </Stack>
+    </Card>
+  );
+
+  const ContactIcon = ({ icon, label, link }) => (
+    <Flex
+      align="center"
+      gap={2}
+      cursor="pointer"
+      onClick={() => window.open(link, "_blank", "noreferrer")}
+    >
+      <Icon as={icon} />
+      <Text>{label}</Text>
+    </Flex>
+  );
 
   return (
     <>
       <MetaTags pageUrl={pageUrl} />
       <Navbar />
 
-      <Container maxW="container.xl" alignContent={"flex-start"}>
-        <BreadCrumbCom second={"Store Locator"} secondUrl={"/store-locator"} />
+      <Container maxW="container.xl">
+        <BreadCrumbCom second="Store Locator" secondUrl={pageUrl} />
       </Container>
 
-      <Container maxW={"container.xl"} py={1} px={0} position="relative">
-        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/store-locator.webp" />
-
+      {/* Banner */}
+      <Container maxW="container.xl" py={1} px={0} position="relative">
+        <Image
+          src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/store-locator.webp"
+          width="100%"
+          alt="Store Locator"
+        />
         <Text
-          pb={2}
-          color={"brand.400"}
-          textAlign={"center"}
+          color="brand.400"
+          textAlign="center"
           fontSize={{ lg: "7xl", md: "5xl", base: "2xl" }}
           fontWeight="600"
           position="absolute"
@@ -82,309 +178,82 @@ export default function StoreLocator() {
           left="50%"
           transform="translate(-50%, -50%)"
           zIndex="1"
-          textShadow={"0px 0px 100px lightgreen"}
-        // Optional: Add background to improve text readability
+          textShadow="0px 0px 100px lightgreen"
         >
           Store Locator
         </Text>
       </Container>
-      <Container maxW={"6xl"} px={0} mb={10}>
-        <Flex direction={"column"}>
-          {/* <Center maxW={"6xl"}>
-                        <Image
-                            src={"https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/store locator main banner.jpg"}
-                            alt="store locator main banner"
-                            maxH="350px"
-                            w="100vw"
-                            pb="10px"
-                            objectFit="cover"
-                            filter="auto"
-                            contrast={"50%"}
-                        />
-                        <Heading
-                            fontSize={{ base: "xl", lg: "4xl" }}
-                            textAlign="center"
-                            position="absolute"
-                            color="white"
-                        >
-                            AYURVEDIC, ORGANIC & NATURAL STORES <br />
-                            We'd love to welcome you!
-                        </Heading>
-                    </Center>{" "} */}
-          <Center></Center>
-          {loading ? (
-            <Center w="100%" h="70vh">
-              <Loader site={true} />
-            </Center>
-          ) : (
-            <>
-              <Container
-                maxW={"6xl"}
-                // as={Flex}
-                direction="column"
-                // direction={{ base: "column-reverse", lg: "row" }}
-                justify="space-between"
-                align="flex-start"
-              // gap={{ base: 4, lg: 0 }}
-              // centerContent={{ base: true, lg: false }}
-              >
-                <Box
-                  maxW={"6xl"}
-                  // w={{ base: "50vw", lg: "20vw" }}
-                  justify={{
-                    base: "flex-start",
-                    lg: "flex-end",
-                  }}
-                  h="fit-content"
-                  position="sticky"
-                  bg="white"
-                  py={4}
-                  top={0}
-                // zIndex={999}
-                >
-                  <Box border="1px" borderRadius={"md"} maxW={"6xl"} mx="auto">
-                    <Button onClick={onToggle} maxW={"6xl"}>
-                      <Text me={0.5}>Select Cities</Text>
-                      {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                    </Button>
-                    <Collapse in={isOpen} animateOpacity>
-                      <CheckboxGroup
-                        defaultValue={selectedCities}
-                        onChange={(newCityList) => {
-                          setSelectedCities(newCityList);
-                        }}
-                        w="100%"
-                      >
-                        <Flex
-                          direction="column"
-                          gap={{ base: 1, md: 2 }}
-                          px={{ base: 4, lg: 24 }}
-                          py={4}
-                        >
-                          {cities.map((citiesname) => (
-                            <Checkbox
-                              defaultValue={citiesname}
-                              key={citiesname}
-                              value={citiesname}
-                              colorScheme="green"
-                            >
-                              {citiesname}
-                            </Checkbox>
-                          ))}
-                        </Flex>
-                      </CheckboxGroup>
-                    </Collapse>
-                  </Box>
-                </Box>
-              </Container>
 
-              {/* <Box w={{ base: "100%", lg: "75vw" }}> */}
-              <Box>
-                {storeData && selectedCities.length > 0 ? (
-                  storeData.map((citySection, index) => (
-                    <Box key={citySection.city} my={index === 0 ? 0 : 6}>
-                      {selectedCities?.includes(citySection.city) && (
-                        <Container maxW="container.xl">
-                          <Heading
-                            bg={"brand.500"}
-                            color={"white"}
-                            size="md"
-                            borderRadius={8}
-                            mb={6}
-                            p={4}
-                            textTransform={"uppercase"}
-                          >
-                            {citySection.city}
-                          </Heading>
-                          <>
-                            <Flex
-                              direction="column"
-                              gap={5}
-                              align={{
-                                base: "center",
-                                lg: "flex-start",
-                              }}
-                            >
-                              {citySection.stores.map((item) => (
-                                <Card
-                                  key={item.id}
-                                  direction={{
-                                    base: "column",
-                                    lg: "row",
-                                  }}
-                                  overflow="hidden"
-                                  variant="outline"
-                                  p={0}
-                                  // border={"1px solid"}
-                                  boxShadow={
-                                    "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px"
-                                  }
-                                  w={{
-                                    base: "100%",
-                                    lg: "100%",
-                                  }}
-                                >
-                                  <Image
-                                    minW={{
-                                      sm: "300px",
-                                      lg: "360px",
-                                    }}
-                                    height={"auto"}
-                                    src={item.image}
-                                  />
-                                  <Stack>
-                                    <CardBody pb={0} fontSize="sm">
-                                      <Text size="md" fontWeight={500}>
-                                        {item?.store_name
-                                          .split(" ")
-                                          .map(
-                                            (word) =>
-                                              word?.charAt(0).toUpperCase() +
-                                              word?.slice(1).toLowerCase()
-                                          )
-                                          .join(" ")}
-                                      </Text>
-                                      <Flex gap={2} mt={7} direction="column">
-                                        <Box>
-                                          <Text
-                                            textTransform="capitalize"
-                                            fontWeight={"bold"}
-                                          >
-                                            {item.landmark}
-                                          </Text>
-                                          <Text fontSize={"sm"}>
-                                            {`${item.address_line_1
-                                                ? item.address_line_1 + ", "
-                                                : ""
-                                              }
-                                
-                                ${item.landmark ? item.landmark + ", " : ""}
-                                `}
-                                            <br />
-                                            {`${item.address_line_2
-                                                ? item.address_line_2 + ", "
-                                                : ""
-                                              } 
-                                ${item.state_obj ? item.state_obj.name : ""}
-                                ${item.postal_code
-                                                ? " - " + item.postal_code
-                                                : ""
-                                              }`}
-                                          </Text>
-                                        </Box>
-                                      </Flex>
-                                    </CardBody>
-                                    <CardFooter
-                                      pt={0}
-                                      flexDir="column"
-                                      fontSize="sm"
-                                      gap={4}
-                                    >
-                                      {item.work_start_time && (
-                                        <Text>
-                                          Working:{" "}
-                                          {formatTime(item.work_start_time)} to{" "}
-                                          {formatTime(item.work_end_time)}
-                                        </Text>
-                                      )}
-                                      <Flex
-                                        direction={{
-                                          base: "column",
-                                          lg: "row",
-                                        }}
-                                        gap={{
-                                          base: 2,
-                                          lg: 10,
-                                        }}
-                                      >
-                                        <Flex
-                                          align="center"
-                                          gap={2}
-                                          cursor={"pointer"}
-                                          onClick={() =>
-                                            window.open(
-                                              `tel:${item.mobile_no}`,
-                                              "_blank",
-                                              "noreferrer"
-                                            )
-                                          }
-                                        >
-                                          <Icon
-                                            as={BsFillTelephoneFill}
-                                          // color="brand.500"
-                                          />
-                                          {item.mobile_no}
-                                        </Flex>
-                                        <Flex
-                                          align="center"
-                                          gap={2}
-                                          cursor={"pointer"}
-                                          onClick={() =>
-                                            window.open(
-                                              `mailto:${item.email}`,
-                                              "_blank",
-                                              "noreferrer"
-                                            )
-                                          }
-                                        >
-                                          <Icon
-                                            as={AiFillMail}
-                                          // color="brand.500"
-                                          />
-                                          {item.email}
-                                        </Flex>
-                                        <Flex
-                                          align="center"
-                                          gap={2}
-                                          cursor={"pointer"}
-                                          onClick={() =>
-                                            window.open(
-                                              item.location_url,
-                                              "_blank",
-                                              "noreferrer"
-                                            )
-                                          }
-                                        >
-                                          <FiMapPin />
-                                          Google Location
-                                        </Flex>
-                                        {item.virtual_location_url && (
-                                          <Flex
-                                            align="center"
-                                            gap={2}
-                                            cursor={"pointer"}
-                                            onClick={() =>
-                                              window.open(
-                                                item.virtual_location_url,
-                                                "_blank",
-                                                "noreferrer"
-                                              )
-                                            }
-                                          >
-                                            <FaStreetView />
-                                            Virtual Location
-                                          </Flex>
-                                        )}
-                                      </Flex>
-                                    </CardFooter>
-                                  </Stack>
-                                </Card>
-                              ))}
-                            </Flex>
-                          </>
-                        </Container>
-                      )}
+      <Container maxW="6xl" mb={10}>
+        {loading ? (
+          <Center h="70vh">
+            <Loader site={true} />
+          </Center>
+        ) : (
+          <>
+            {/* Filter */}
+            <Box bg="white" py={4} position="sticky" top="12%" zIndex={99}>
+              <Box border="1px" borderRadius="md" maxW="6xl" mx="auto">
+                <Button onClick={onToggle} w="100%">
+                  <Text me={2}>Select Cities</Text>
+                  {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                </Button>
+                <Collapse in={isOpen} animateOpacity>
+                  <CheckboxGroup
+                    defaultValue={selectedCities}
+                    onChange={setSelectedCities}
+                    w="100%"
+                  >
+                    <Flex
+                      direction="column"
+                      gap={2}
+                      px={{ base: 4, lg: 24 }}
+                      py={4}
+                    >
+                      {cities.map((city) => (
+                        <Checkbox key={city} value={city} colorScheme="green">
+                          {city}
+                        </Checkbox>
+                      ))}
+                    </Flex>
+                  </CheckboxGroup>
+                </Collapse>
+              </Box>
+            </Box>
+
+            {/* Stores by City */}
+            <Box mt={8}>
+              {storeData && selectedCities.length > 0 ? (
+                storeData
+                  .filter((sec) => selectedCities.includes(sec.city))
+                  .map((sec, idx) => (
+                    <Box key={sec.city} my={idx === 0 ? 0 : 10}>
+                      <Container maxW="container.xl">
+                        <Heading
+                          bg="brand.500"
+                          color="white"
+                          size="md"
+                          borderRadius={8}
+                          mb={6}
+                          p={4}
+                          textTransform="uppercase"
+                        >
+                          {sec.city}
+                        </Heading>
+                        <Flex direction="column" gap={6}>
+                          {sec.stores.map((store) => renderStoreCard(store))}
+                        </Flex>
+                      </Container>
                     </Box>
                   ))
-                ) : (
-                  <Text>No stores found</Text>
-                )}
-              </Box>
-            </>
-          )}
-          {/* </Container> */}
-        </Flex>
+              ) : (
+                <Text>No stores found</Text>
+              )}
+            </Box>
+          </>
+        )}
       </Container>
+
       <ScrollToTop />
       <Footer />
     </>

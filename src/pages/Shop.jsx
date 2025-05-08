@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import client from "../setup/axiosClient";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Loader from "../components/Loader";
-import CategoryTree from "../components/CategoryTree";
-// import CategoryAccessTree from "../components/CategoryAccessTree";
 import ScrollToTop from "../components/ScrollToTop";
 import ShopProductCard from "../components/ShopProductCard";
 import MetaTags from "../context/MetaTagsContext";
@@ -37,16 +34,13 @@ import {
 } from "@ajna/pagination";
 import BreadCrumbCom from "../components/BreadCrumbCom";
 import { Select } from "chakra-react-select";
-import CapitalizeLetter from "../utils/CommanFunction";
 
 import { fetchFilters } from "../redux/slices/shopApi";
 import { useDispatch, useSelector } from "react-redux";
 
-// import Paginator from "../components/Paginator";
 
 export default function Shop() {
   const [totalPages, setTotalPages] = useState();
-  // const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState([]);
 
   const [products, setProducts] = useState([]);
@@ -66,7 +60,6 @@ export default function Shop() {
   const [catLoading, setCatLoading] = useState(true);
   const toast = useToast();
   let [searchParams, setSearchParams] = useSearchParams();
-  // let [searchParams, setSearchParams] = useSearchParams();
   let { search } = useLocation();
   const searchPar = new URLSearchParams(search);
   const categoryId = searchPar.get("category");
@@ -74,12 +67,9 @@ export default function Shop() {
   const page = searchPar.get("page") ? searchPar.get("page") : 1;
 
   const [isMobile] = useMediaQuery("(max-width: 768px)");
-  // const [brandWise, setBrandWise] = useState({value:searchPar.get("brand"),label:searchPar.get("brand_name")});
-  // console.log("brandWise",brandWise)
   const brand = searchPar.get("brand");
   const brand_name = searchPar.get("brand_name");
 
-  //Selector Redux
   const dispatch = useDispatch();
   const { tagsArray, productFoamsArray, brandArray } = useSelector(
     (state) => state.shop
@@ -201,7 +191,6 @@ export default function Shop() {
   }
 
   useEffect(() => {
-
     dispatch(fetchFilters());
     dispatch(fetchCategories());
 
@@ -219,54 +208,6 @@ export default function Shop() {
     setFilteredData(filtered);
   }, [data, categoryId]);
 
-  // useEffect(() => {
-  //   setCurrentPage(1);
-  //   const params = {
-  //     page: 1,
-  //   };
-
-  //   if (categoryId) {
-  //     params.category = categoryId;
-
-  //   }
-  //   if(category_name){
-  //     params.category_name = category_name;
-  //   }
-  //   if (searchPar.get("brand")) {
-  //     params.brand = brand;
-  //     params.brand_name = brand_name;
-  //   }
-
-  //   if (prod_search !== null) {
-  //     params.search = prod_search;
-  //   }
-
-  //   setSearchParams(params);
-
-  // }, [sortKey,tagWise, productFoam]);
-
-  // async function handlePageChange(nextPage) {
-  //   setCurrentPage(nextPage);
-  //   getProducts(nextPage);
-  //   if (categoryId) {
-  //     setSearchParams({
-  //       page: nextPage,
-  //       category: categoryId,
-  //       category_name: category_name,
-
-  //     });
-  //   } else {
-  //     setSearchParams({
-  //       page: nextPage,
-
-  //     });
-  //   }
-  //   window.scrollTo({
-  //     top: 0,
-  //     left: 0,
-  //     behavior: "smooth",
-  //   });
-  // }
   async function handlePageChange(nextPage) {
     setCurrentPage(nextPage);
     getProducts(nextPage);
@@ -381,7 +322,6 @@ export default function Shop() {
       var elementChange = temp[index];
       elementChange.is_wished = !item.is_wished;
       setProducts(temp);
-      // getProducts();
     }
   };
   const pageUrl = "/shop";
@@ -411,7 +351,6 @@ export default function Shop() {
       <Container maxW="container.xl">
         <BreadCrumbCom second={"Shop"} secondUrl={"/shop"} />
       </Container>
-
       <Container maxW="container.xl" py={4}>
         <Heading
           size="lg"
@@ -426,29 +365,14 @@ export default function Shop() {
               ? category_name
               : `All Products`}
         </Heading>
-
         <Flex
           gap={"2.5vw"}
           justify="space-between"
           direction={{ base: "column", lg: "row" }}
         >
           <Flex direction="column" gap={6}>
-            {/* {catLoading && !isMobile ? (
-              <Flex padding="2" flexDirection={"column"} bg="white" gap={3}>
-                <SkeletonText
-                  noOfLines={1}
-                  spacing="4"
-                  width={20}
-                  skeletonHeight="4"
-                />
-                {[0, 1, 2, 3, 4, 5, 6, 7].map(() => (
-                  <Skeleton height={8} w={235} />
-                ))}
-              </Flex>
-            ) : ( */}
             <>
               <Box
-                // borderBottom={{ base: "none", lg: "1px" }}
                 borderColor="gray.300"
               >
                 <Heading size="sm" my={2} fontFamily={"inter"}>
@@ -491,39 +415,6 @@ export default function Shop() {
                     },
                   ]}
                 ></Select>
-
-                {/* <Heading size="sm" my={2} fontFamily={"inter"}>
-                  Brand Wise
-                </Heading>
-                <Select
-                  chakraStyles={{
-                    inputContainer: (provided) => ({
-                      ...provided,
-                      width: "200px",
-                    }),
-                    option: (provided, state) => ({
-                      backgroundColor: state.isSelected
-                        ? "brand.500"
-                        : "inherit",
-                      cursor: "pointer",
-                      padding: "8px 8px 5px 8px",
-                      fontSize: 14,
-                      color: state.isSelected ? "white" : "black",
-                    }),
-                  }}
-                  useBasicStyles
-                  bg="bg.900"
-                  w={{ base: "100%" }}
-                  mb={2}
-                  size="sm"
-                  borderRadius={"lg"}
-                  isClearable
-                  value={brandWise}
-                  sx={{ padding: "0 10px" }}
-                  variant={"outline"}
-                  onChange={(e) => setBrandWise(e)}
-                  options={brandArray}
-                ></Select> */}
                 <Heading size="sm" my={2} fontFamily={"inter"}>
                   Tag wise
                 </Heading>
@@ -589,9 +480,7 @@ export default function Shop() {
                   options={productFoamsArray}
                 ></Select>
               </Box>
-              {/* {!isMobile && <CategoryTree categories={categories} />} */}
             </>
-            {/* )} */}
           </Flex>
           {loading ? (
             <Flex
@@ -668,7 +557,6 @@ export default function Shop() {
                   {products !== null &&
                     products.map(
                       (product, index) => (
-                        // return product.available_stock_quantity <= 0 ? null : (
                         <ShopProductCard
                           key={product.id}
                           productDetails={product}
@@ -716,35 +604,6 @@ export default function Shop() {
             </Flex>
           )}
         </Flex>
-        {/* )} */}
-        {/* <div itemScope itemType="http://schema.org/Product">
-          <meta itemProp="brand" content="facebook" />
-          <meta itemProp="name" content="Facebook T-Shirt" />
-          <meta
-            itemProp="description"
-            content="Unisex Facebook T-shirt, Small"
-          />
-          <meta itemProp="productID" content="facebook_tshirt_001" />
-          <meta itemProp="url" content="https://example.org/facebook" />
-          <meta itemProp="image" content="https://example.org/facebook.jpg" />
-          <div
-            itemProp="value"
-            itemScope
-            itemType="http://schema.org/PropertyValue"
-          >
-            <span itemProp="propertyID" content="item_group_id" />
-            <meta itemProp="value" content="fb_tshirts" />
-          </div>
-          <div itemProp="offers" itemScope itemType="http://schema.org/Offer">
-            <link itemProp="availability" href="http://schema.org/InStock" />
-            <link
-              itemProp="itemCondition"
-              href="http://schema.org/NewCondition"
-            />
-            <meta itemProp="price" content="7.99" />
-            <meta itemProp="priceCurrency" content="USD" />
-          </div>
-        </div> */}
       </Container>
       <ScrollToTop />
       <Footer />

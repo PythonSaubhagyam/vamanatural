@@ -7,116 +7,93 @@ import ScrollToTop from "../components/ScrollToTop";
 import MetaTags from "../context/MetaTagsContext";
 
 const AboutUs = () => {
-  let { search } = useLocation();
+  const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const IsMobileView = searchParams.get("mobile") ?? "false";
   const pageUrl = "/about-us";
+
+  const SECTION_ICON = "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/aboutus/section_icon+(1).png";
 
   return (
     <>
       <MetaTags pageUrl={pageUrl} />
       {IsMobileView !== "true" && <Navbar />}
-      <Container maxW={"container.xl"} alignContent={"flex-start"}>
-        <BreadCrumbCom second={"About Us"} secondUrl={"/about-us"} />{" "}
-      </Container>
-      <Container maxW={"container.xl"} py={1} px={0} position="relative">
-        <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/aboutUs.jpg" />
 
+      <Container maxW="container.xl" alignContent="flex-start">
+        <BreadCrumbCom second="About Us" secondUrl={pageUrl} />
+      </Container>
+
+      {/* Banner */}
+      <Container maxW="container.xl" px={0} py={1} position="relative">
+        <Image
+          src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/aboutUs.jpg"
+          alt="About Us Banner"
+        />
         <Text
-          pb={2}
-          color={"brand.100"}
-          textAlign={"center"}
-          fontSize={{ lg: "7xl", md: "5xl", base: "xl" }}
+          color="brand.100"
+          textAlign="center"
+          fontSize={{ lg: "7xl", md: "5xl", base: "2xl" }}
           fontWeight="600"
           position="absolute"
           top="50%"
           left="50%"
           transform="translate(-50%, -50%)"
           zIndex="1"
-        // Optional: Add background to improve text readability
+          bg="rgba(255,255,255,0.1)"
+          px={4}
+          borderRadius="md"
         >
           About Us
         </Text>
       </Container>
-      <Container maxW={"container.xl"} mb={4} px={0} centerContent>
-        <VStack>
-          <Image
-            src={
-              "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/aboutus/section_icon+(1).png"
-            }
-          />
-          <Box
-            fontWeight={"600"}
-            color="brand.500"
-            fontSize={"30px"}
-            alignContent={"flex-start"}
-          >
+
+      {/* Main Content */}
+      <Container maxW="container.xl" mb={4} px={0} centerContent>
+        <VStack spacing={10} px={4}>
+
+          {/* Mission */}
+          <Image src={SECTION_ICON} alt="Mission Icon" />
+          <Box fontWeight="600" color="brand.500" fontSize="30px">
             Our Mission
           </Box>
-
-          <Box maxW={"6xl"} textAlign={"center"}>
-            VAMA Herbal & Natural draw inspiration from Bansi Gir Gaushala, and
-            its work towards reviving Bharat’s ancient “GauSanskriti”.
-            <br />
-            <br />
-            Ancient Bharat holds the solution to many of the challenges facing
-            humanity today.
-            <br />
-            <br />
-            Our mission is to change the way people think about beauty care
-            products, bringing simple Ayurvedic wisdom back into people’s lives.
+          <Box maxW="6xl" textAlign="center" fontSize="lg">
+            VAMA Herbal & Natural draws inspiration from Bansi Gir Gaushala and its work towards reviving Bharat’s ancient “GauSanskriti”.
+            <br /><br />
+            Ancient Bharat holds the solution to many of the challenges facing humanity today.
+            <br /><br />
+            Our mission is to change the way people think about beauty care products, bringing simple Ayurvedic wisdom back into people’s lives.
           </Box>
 
-          <br />
-          <Image
-            src={
-              "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/aboutus/section_icon+(1).png"
-            }
-          />
-          <Box fontWeight={"600"} color="brand.500" fontSize={"30px"}>
+          {/* Vision */}
+          <Image src={SECTION_ICON} alt="Vision Icon" />
+          <Box fontWeight="600" color="brand.500" fontSize="30px">
             Our Vision
           </Box>
-
-          <Box maxW={"6xl"} textAlign={"center"}>
-            Our brand aims to recreate the same purity and authenticity that is
-            characteristic of the VAMA Herbal & Natural and ancient Bharat.
-            <br />
-            <br />
-            While doing so, we help people empower farmers who are the
-            cornerstone of Bharatiya Gau Sanskriti.
+          <Box maxW="6xl" textAlign="center" fontSize="lg">
+            Our brand aims to recreate the same purity and authenticity that is characteristic of VAMA Herbal & Natural and ancient Bharat.
+            <br /><br />
+            While doing so, we help people empower farmers who are the cornerstone of Bharatiya Gau Sanskriti.
           </Box>
-          <Image
-            src={
-              "https://forntend-bucket.s3.ap-south-1.amazonaws.com/vama_website/aboutus/section_icon+(1).png"
-            }
-          />
 
-          <Heading
-            color="brand.500"
-            size="lg"
-            mx="auto"
-            align={"center"}
-            my={"5"}
-            pb={"10px"}
-          >
+          {/* Available At */}
+          <Image src={SECTION_ICON} alt="Available Icon" />
+          <Heading color="brand.500" size="lg" textAlign="center" my={5}>
             AVAILABLE AT
           </Heading>
-
-          <Container maxW={"container.xl"} mb={5} px={0} centerContent>
+          <Container maxW="container.xl" px={0} centerContent>
             <Image
-              src={
-                require("../assets/001.jpg")
-              }
-              w={"container.xl"}
-              alt=""
+              src={require("../assets/001.jpg")}
+              w="100%"
+              alt="Available Locations"
               style={{
                 opacity: 1,
-                transition: "opacity 0.7s", // Note the corrected syntax here
+                transition: "opacity 0.7s",
               }}
             />
           </Container>
         </VStack>
       </Container>
+
       <ScrollToTop />
       {IsMobileView !== "true" && <Footer />}
     </>

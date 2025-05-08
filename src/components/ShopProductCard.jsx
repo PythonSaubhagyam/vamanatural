@@ -41,6 +41,11 @@ export default function ShopProductCard({
       border="1px"
       borderColor="gray.300"
       cursor={"pointer"}
+      transition="all 0.3s ease"
+      _hover={{
+        transform: "translateY(-4px) scale(1.01)",
+        boxShadow: "lg",
+      }}
     >
       <Link
         to={`/products/${productDetails.id}/${productDetails.name.replace(/\s+/g, "-")}`}
@@ -100,37 +105,13 @@ export default function ShopProductCard({
             ))}
         </CardHeader>
         <CardBody align="center" h={{ md: 300 }} py={1} flex={"none"}>
-
-          {/* <Flex position="relative">
-          <Flex position={"absolute"} >
-            {productDetails.product_tag_list.map((tag, index) => (
-              <Badge
-                key={index} // Add a unique key for each Badge
-                bgColor="brand.500"
-                color={"#fff"}
-                borderRadius={"8px"}
-                paddingX={"8px"}
-                py={1}
-                fontSize={11}
-                textTransform={"none"}
-                //position="absolute"
-                opacity={0.7}
-                m={0}
-                // Adjust left position for each Badge
-              >
-                {tag}
-              </Badge>
-            ))}
-          </Flex>
-          <Image
-            src={productDetails.image1}
-            alt={productDetails.name}
-            objectFit="contain"
-            boxSize={"175px"}
-          />
-        </Flex> */}
-          <Flex marginTop={6} justifyContent={"center"}>
+          <Flex marginTop={6} justifyContent={"center"}
+          >
             <Image
+              _hover={{
+                transform: "scale(1.02)",
+                boxShadow: "lg",
+              }}
               src={productDetails.image1}
               alt={productDetails.name}
               //objectFit="contain"
@@ -199,6 +180,11 @@ export default function ShopProductCard({
             size="sm"
             isDisabled={productDetails.available_stock_quantity ? false : true}
             onClick={() => AddToCart(productDetails.id)}
+            transition="all 0.3s ease"
+            _hover={{
+              transform: "scale(1.05)",
+              boxShadow: "lg",
+            }}
           />
           <IconButton
             colorScheme={isInWishlist ? "red" : "brand"}
@@ -206,6 +192,11 @@ export default function ShopProductCard({
             size="sm"
             display={displayWishlistButton ? "inline-flex" : "none"}
             onClick={onClick}
+            transition="all 0.3s ease"
+            _hover={{
+              transform: "scale(1.05)",
+              boxShadow: "lg",
+            }}
           />
         </ButtonGroup>
       </CardFooter>

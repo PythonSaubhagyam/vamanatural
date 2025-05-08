@@ -21,13 +21,11 @@ import ScrollToTop from "../components/ScrollToTop";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import client from "../setup/axiosClient";
-// import checkLogin from "../utils/checkLogin";
 import { AiFillGift } from "react-icons/ai";
 import checkLogin from "../utils/checkLogin";
-import Loader from "../components/Loader";
 import { useLocation } from "react-router-dom";
 import MetaTags from "../context/MetaTagsContext";
-import Captcha from "../components/Captcha";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function GiftVoucher() {
   let { search } = useLocation();
@@ -35,6 +33,8 @@ export default function GiftVoucher() {
   const IsMobileView = searchParams.get("mobile") ?? "false";
   const [verified, setVerified] = useState(false);
   const txnId = useRef(new Date().getTime().toString());
+  const recaptchaRef = useRef(null);
+
   const defaultValue = {
     amount: null,
     sender_name: null,
@@ -94,13 +94,11 @@ export default function GiftVoucher() {
         "The voucher is non-transferable and cannot be exchanged or resold.",
     },
   ];
-
-  // const loginInfo = checkLogin();
+  const pageUrl = "/gift-voucher";
   const navigate = useNavigate();
   const toast = useToast();
   const [amount, setAmount] = useState();
   const [formData, setFormData] = useState(defaultValue);
-  // const [paymentInProgress, setPaymentInProgress] = useState(false);
   const loginInfo = checkLogin();
   const priceHandler = (price) => {
     setAmount(parseInt(price));
@@ -112,7 +110,6 @@ export default function GiftVoucher() {
       setWidth(window.innerWidth);
     };
     window.addEventListener("resize", handleResize);
-    // Cleanup the event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -127,24 +124,6 @@ export default function GiftVoucher() {
         window.open(response.data.data);
         navigate("/");
       }
-      // if (response.data.status) {
-      //   toast({
-      //     title: response.data.message,
-      //     position: "top-right",
-      //     status: "success",
-      //     duration: 4000,
-      //     isClosable: true,
-      //   });
-      //   navigate("/");
-      // } else {
-      //   toast({
-      //     title: `Validation Error`,
-      //     position: "top-right",
-      //     status: "error",
-      //     duration: 5000,
-      //     isClosable: true,
-      //   });
-      // }
     } catch (error) {
       toast({
         title: `Something went wrong`,
@@ -164,8 +143,6 @@ export default function GiftVoucher() {
     // setFormData();
     setLoading(false);
   };
-  const pageUrl = "/gift-voucher";
-
   return (
     <>
       <MetaTags pageUrl={pageUrl} />
@@ -187,20 +164,14 @@ export default function GiftVoucher() {
             >
               <Box as="form" onSubmit={handleSubmit}>
                 <Grid
-                  // {Width < 400 ? 'block' : 'flex'}
-                  // {Width < 400 ? 'start' : 'center'}
                   width={{ base: "100%", md: "0%" }}
                   mb={3}
                 >
-                  {/*  // width="50%"
-                width={{ base: "50%", md: "50%" }}
-                mt={3}  */}
                   <img
                     src={
                       "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/giftbanner.jpg"
                     }
                     alt=""
-                  // style={{ width: "100%", height: "auto" }}
                   />
                 </Grid>
                 <Flex
@@ -211,7 +182,6 @@ export default function GiftVoucher() {
                   <Text fontSize={{ md: "3xl", base: "xl" }} as="b">
                     SOSE Gift Voucher
                   </Text>
-                  {/* {width > 600 ? ( */}
                   <FormControl pt={5}>
                     <FormLabel fontSize="sm">Choose an amount</FormLabel>
                     <SimpleGrid columns={{ base: 2, md: 2, lg: 4 }} spacing={3}>
@@ -221,7 +191,6 @@ export default function GiftVoucher() {
                         onClick={() => priceHandler(100)}
                         fontSize={{ base: "14px", md: "18px" }}
                         leftIcon={<AiFillGift fontSize={24} />}
-                      //w={{ base: 125, md: 120 }}
                       >
                         ₹100
                       </Button>
@@ -231,12 +200,7 @@ export default function GiftVoucher() {
                         onClick={() => priceHandler(500)}
                         fontSize={{ base: "14px", md: "18px" }}
                         leftIcon={<AiFillGift fontSize={24} />}
-                      //w={{ base: 125, md: 120 }}
                       >
-                        {/* <AiFillGift
-                            fontSize={35}
-                            style={{ marginRight: "6px" }}
-                          />{" "} */}
                         ₹500
                       </Button>
                       <Button
@@ -245,12 +209,7 @@ export default function GiftVoucher() {
                         onClick={() => priceHandler(1000)}
                         fontSize={{ base: "14px", md: "18px" }}
                         leftIcon={<AiFillGift fontSize={24} />}
-                      //w={{ base: 125, md: 120 }}
                       >
-                        {/* <AiFillGift
-                            fontSize={35}
-                            style={{ marginRight: "6px" }}
-                          />{" "} */}
                         ₹1000
                       </Button>
                       <Button
@@ -259,13 +218,8 @@ export default function GiftVoucher() {
                         onClick={() => priceHandler(2000)}
                         fontSize={{ base: "14px", md: "18px" }}
                         leftIcon={<AiFillGift fontSize={24} />}
-                      //w={{ base: 125, md: 120 }}
 
                       >
-                        {/* <AiFillGift
-                            fontSize={35}
-                            style={{ marginRight: "6px" }}
-                          />{" "} */}
                         ₹2000
                       </Button>
                     </SimpleGrid>
@@ -371,7 +325,14 @@ export default function GiftVoucher() {
                         }
                       />
                     </FormControl>
-                    <Captcha onVerify={setVerified} />
+                    <Box align="center" mt={4}>
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                        onChange={() => setVerified(true)}
+                        onExpired={() => setVerified(false)}
+                      />
+                    </Box>
                   </FormControl>
                 </Flex>
                 <Text as="sup">
@@ -389,17 +350,10 @@ export default function GiftVoucher() {
                   </Button>
                 </Flex>
               </Box>
-
               <Grid
                 display={{ base: "none", md: "block" }}
-                // {Width < 400 ? 'start' : 'center'}
-                // width={{ base: "0%", md: "100%" }}
-                // style={{ height:"100%"}}
                 mt={3}
               >
-                {/*  // width="50%"
-                width={{ base: "50%", md: "50%" }}
-                mt={3}  */}
                 <img
                   src={
                     "https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/giftbanner.jpg"
@@ -413,28 +367,7 @@ export default function GiftVoucher() {
               <Text fontSize={16} as="b" mb={2}>
                 SOSE Gift Card Terms and Conditions
               </Text>
-              <Text fontSize={14} as={"i"}>
-                {/* <p>
-                  Gift card funds do not expire and can only be redeemed on
-                  <a className="underline" href="https://www.sose.in/">
-                    www.sose.in
-                  </a>
-                  or using the SOSE mobile apps.
-                </p>
-                <p>No fees for purchase or activation of the Card.</p>
-                <p>SOSE Gift Cards cannot be redeemed at the hotel.</p>
-                <p>
-                  The Card is non-reloadable and, except where required by law,
-                  cannot be redeemed for cash, refunded, or returned.{" "}
-                </p>
-                <p>
-                  Treat this Card as cash. SOSE is not responsible for lost,
-                  damaged or stolen cards, or for unauthorized use.
-                </p>
-                <p>
-                  For Card and balance info, call +91-6354-8000-89 or visit
-                  Terms apply and are subject to change without notice.
-                </p> */}
+              <Text fontSize={14} >
                 <ol>
                   {giftCardTerms.map((term) => (
                     <li style={{ marginBottom: 2 }} key={term.id}>
