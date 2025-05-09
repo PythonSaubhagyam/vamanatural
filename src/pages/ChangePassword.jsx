@@ -94,7 +94,7 @@ export default function ChangePassword() {
     <>
       <MetaTags pageUrl={pageUrl} />
       <Navbar />
-      <Container maxW="lg" my={12}  py={8} px={6} boxShadow="2xl" borderRadius="xl" >
+      <Container maxW="lg" my={12} py={8} px={6} boxShadow="2xl" borderRadius="xl" >
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <VStack spacing={6} as="form" onSubmit={handleSubmit}>
             <Heading size="lg" color="#5b5b5b">Change Password</Heading>
@@ -133,7 +133,7 @@ export default function ChangePassword() {
             <Box align="center" mt={4}>
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                sitekey={process.env.REACT_reCAPTCHA_KEY}
                 onChange={() => setVerified(true)}
                 onExpired={() => setVerified(false)}
               />

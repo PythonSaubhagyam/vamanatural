@@ -304,7 +304,7 @@ export default function ContactUs() {
               <Box align="center">
                 <ReCAPTCHA
                   ref={recaptchaRef}
-                  sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                  sitekey={process.env.REACT_reCAPTCHA_KEY}
                   onChange={() => setVerified(true)}
                   onExpired={() => setVerified(false)}
                 />

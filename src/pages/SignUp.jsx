@@ -266,7 +266,7 @@ export default function SignUp() {
               <Box pt={2}>
                 <ReCAPTCHA
                   ref={recaptchaRef}
-                  sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // test key
+                  sitekey={process.env.REACT_reCAPTCHA_KEY}
                   onChange={() => setVerified(true)}
                   onExpired={() => setVerified(false)}
                 />

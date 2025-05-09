@@ -5,17 +5,33 @@ import {
     Box,
     IconButton,
 } from "@chakra-ui/react";
-import React,{ useState } from 'react'
+import React, { useRef } from "react";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
+import { motion } from "framer-motion";
+
+const MotionGridItem = motion(GridItem);
+
+const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (i) => ({
+        opacity: 1,
+        y: 0,
+        transition: {
+            delay: i * 0.1,
+            duration: 0.5,
+            ease: "easeOut",
+        },
+    }),
+};
 
 const CategorySlider = ({ ourProductSection }) => {
-    const navigate = useNavigate()
-    const [slider, setSlider] = useState(Slider | null)
+    const navigate = useNavigate();
+    const sliderRef = useRef(null);
 
-    var settings = {
+    const settings = {
         dots: false,
         infinite: true,
         arrows: false,
@@ -24,33 +40,12 @@ const CategorySlider = ({ ourProductSection }) => {
         slidesToScroll: 1,
         initialSlide: 0,
         responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                    infinite: true,
-                    // dots: true
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    initialSlide: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    // centerMode: true,
-                }
-            }
-        ]
+            { breakpoint: 1024, settings: { slidesToShow: 3 } },
+            { breakpoint: 600, settings: { slidesToShow: 2, initialSlide: 2 } },
+            { breakpoint: 480, settings: { slidesToShow: 1 } },
+        ],
     };
+
     return (
         <>
             {ourProductSection?.length > 0 &&
@@ -60,93 +55,105 @@ const CategorySlider = ({ ourProductSection }) => {
                             bgColor={"bg.500"}
                             px={{ base: 2, md: 8 }}
                             py={4}
-                            //my={7}
                             textAlign={{ base: "center", md: "start" }}
                         >
                             <Text
-                            as={"h1"}
+                                as="h1"
                                 fontSize={{ base: "xl", sm: "2xl", xl: "3xl" }}
                                 fontWeight={500}
                             >
                                 {ourProductSection[0]?.label}
                             </Text>
                         </Box>
+
+                        {/* Arrows */}
                         <IconButton
-                            _hover={{ opacity: 0.5 }}
+                            icon={<RiArrowLeftSLine size={25} />}
+                            aria-label="left-arrow"
                             position="absolute"
                             top="55%"
-                            left={"20px"}
-                            translate="-50% -55%"
-                            zIndex="100"
+                            left="20px"
+                            zIndex={100}
+                            size="sm"
                             borderRadius="50%"
-                            boxShadow="rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;"
                             colorScheme="brand"
-                            size={"sm"}
-                            onClick={() => slider?.slickPrev()}
-                            //icon={<FaArrowUp size={24}/>}
-                            icon={<RiArrowLeftSLine size={25} />}
+                            boxShadow="base"
+                            transition="all 0.3s"
+                            _hover={{ opacity: 0.7, transform: "scale(1.1)" }}
+                            onClick={() => sliderRef.current?.slickPrev()}
                         />
                         <IconButton
+                            icon={<RiArrowRightSLine size={25} />}
                             aria-label="right-arrow"
-                            icon={<RiArrowRightSLine style={{ fontSize: 24 }} />}
-                            _hover={{ opacity: 0.5 }}
-                            colorScheme="brand"
-                            size="sm"
                             position="absolute"
-                            right={"20px"}
-                            top={"55%"}
-                            translate={"-50%, -55%"}
-                            zIndex={10}
-                            boxShadow="rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;"
-                            onClick={() => slider?.slickNext()}
-                            borderRadius={"50%"}
+                            top="55%"
+                            right="20px"
+                            zIndex={100}
+                            size="sm"
+                            borderRadius="50%"
+                            colorScheme="brand"
+                            boxShadow="base"
+                            transition="all 0.3s"
+                            _hover={{ opacity: 0.7, transform: "scale(1.1)" }}
+                            onClick={() => sliderRef.current?.slickNext()}
                         />
-                        <Container maxWidth={"container.xl"} px={10} mt={5}>
-                            <div className="slider-container" >
-                                <Slider {...settings} ref={(slider) => setSlider(slider)}>
-                                    {ourProductSection[0]?.images?.length > 0 &&
-                                        ourProductSection[0]?.images?.map((data) => (
-                                            <GridItem cursor={"pointer"} px={5} key={data.id}>
-                                                <LazyLoadImage
-                                                    cursor={"pointer"}
-                                                    transition="all 1s ease"
-                                                    _hover={{
-                                                        transform: "scale(1.25)",
-                                                    }}
-                                                    src={data.image}
-                                                    alt={data.category_name}
-                                                    onClick={() => {
-                                                        if (data?.category !== null) {
-                                                            navigate(
-                                                                `/shop?page=1&category=${data?.category}&category_name=${data?.category_name}`
-                                                            );
-                                                        }
-                                                    }}
-                                                    style={{
-                                                        opacity: 1,
-                                                        transition: "opacity 0.7s",
-                                                        borderRadius: 10,
-                                                    }}
-                                                />
-                                                <Text
-                                                    textAlign={"center"}
-                                                    color="text.500"
-                                                    fontSize={{ md: 18, base: 16 }}
-                                                    pt={2}
-                                                    fontWeight={600}
-                                                >
-                                                    {data.category_name}
-                                                </Text>
-                                            </GridItem>
-                                        ))}
-                                </Slider>
-                            </div>
+
+                        {/* Slider */}
+                        <Container maxW="container.xl" px={10} mt={5}>
+                            <Slider {...settings} ref={sliderRef}>
+                                {ourProductSection[0]?.images?.map((data, index) => (
+                                    <MotionGridItem
+                                        my={5}
+                                        key={data.id}
+                                        px={5}
+                                        custom={index}
+                                        variants={fadeInUp}
+                                        initial="hidden"
+                                        animate="visible"
+                                        cursor="pointer"
+                                    >
+                                        <Box
+
+                                            borderRadius="lg"
+                                            overflow="hidden"
+                                            _hover={{ transform: "scale(1.03)", transition: "0.3s" }}
+                                            onClick={() => {
+                                                if (data?.category) {
+                                                    navigate(
+                                                        `/shop?page=1&category=${data?.category}&category_name=${data?.category_name}`
+                                                    );
+                                                }
+                                            }}
+                                        >
+                                            <LazyLoadImage
+                                                src={data.image}
+                                                alt={data.category_name}
+                                                effect="opacity"
+                                                style={{
+                                                    borderRadius: "12px",
+                                                    width: "100%",
+                                                    height: "auto",
+                                                    transition: "transform 0.4s ease",
+                                                }}
+                                            />
+                                        </Box>
+                                        <Text
+                                            textAlign="center"
+                                            color="text.500"
+                                            fontSize={{ md: 18, base: 16 }}
+                                            pt={2}
+                                            fontWeight={600}
+                                        >
+                                            {data.category_name}
+                                        </Text>
+                                    </MotionGridItem>
+                                ))}
+                            </Slider>
                         </Container>
                     </Container>
-
                 )}
         </>
-    )
-}
+    );
+};
 
-export default CategorySlider
+export default CategorySlider;

@@ -12,65 +12,73 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
+
   return (
-    <GridItem px={5} mb={2}>
+    <GridItem px={5} mb={4}>
       <Card
-        // w={{ base: "80vw", sm: "3xs", lg: "2xs" }}
+        my={5}
         border="1px"
         borderColor="brand.100"
-        borderRadius={"lg"}
-        onClick={() => {
-          navigate(`/products/${product?.id}/${product?.name.replace(/\s+/g, "-")}`);
+        borderRadius="lg"
+        cursor="pointer"
+        transition="all 0.3s"
+        _hover={{
+          transform: "scale(1.02)",
+          boxShadow: "lg",
         }}
-        cursor={"pointer"}
+        onClick={() =>
+          navigate(`/products/${product?.id}/${product?.name?.replace(/\s+/g, "-")}`)
+        }
       >
-        <CardBody backgroundColor={"white"} borderRadius="lg">
+        <CardBody bg="white" borderRadius="lg" display="flex" justifyContent="center" alignItems="center" h="220px">
           <Image
-            src={
-              product?.home_image
-                ? product?.home_image
-                : product?.image1
-            }
+            src={product?.home_image || product?.image1}
             alt={product?.name}
-            borderRadius="lg"
+            borderRadius="md"
+            transition="transform 0.4s"
+            _hover={{ transform: "scale(1.05)" }}
             boxSize="200px"
-            objectFit={"contain"}
+            objectFit="contain"
             mx="auto"
           />
         </CardBody>
+
         <CardFooter
-          align={"center"}
-          py={3}
           flexDirection="column"
-          backgroundColor={"bg.500"}
+          align="center"
+          py={3}
+          bg="bg.500"
           borderBottomRadius="lg"
         >
           <Box
             h="80px"
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"center"}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
           >
             <Heading
               size="sm"
               mb={3}
               noOfLines={3}
               fontWeight="500"
-              title={name}
+              title={product?.name}
             >
               {product?.name}
             </Heading>
           </Box>
+
           <Button
             as={Link}
-            to={`/products/${product?.id}/${product?.name.replace(/\s+/g, "-")}`}
+            to={`/products/${product?.id}/${product?.name?.replace(/\s+/g, "-")}`}
             fontSize="sm"
             w={{ base: "100%", lg: "80%" }}
             mx="auto"
-            backgroundColor={"brand.500"}
-            borderColor={"brand.100"}
+            bg="brand.500"
+            borderColor="brand.100"
             color="white"
-            _hover={{ backgroundColor: "brand.900" }}
+            transition="all 0.3s"
+            _hover={{ bg: "brand.900", transform: "scale(1.05)" }}
+            onClick={(e) => e.stopPropagation()} // prevents navigation from wrapping card
           >
             View Product
           </Button>
