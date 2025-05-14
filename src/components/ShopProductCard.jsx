@@ -22,7 +22,7 @@ import React from "react";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 
-const BestSellerImg = require("../assets/best seller1.png");
+const BestSellerImg = "https://s3organicbucket.s3.amazonaws.com/master/Products/images/best_seller1.png";
 
 export default function ShopProductCard({
   productDetails,

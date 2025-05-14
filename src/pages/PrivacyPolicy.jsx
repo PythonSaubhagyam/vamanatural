@@ -22,7 +22,7 @@ const PrivacyPolicy = () => {
         />{" "}
       </Container>
       <Container maxW={"container.xl"} mb={4} px={0} centerContent>
-        <Image src={require("../assets/Privacy-policy/Privacy_Policy.jpg")} />
+        <Image src="https://s3organicbucket.s3.amazonaws.com/master/Products/images/Privacy_Policy.jpg" />
         <VStack maxW={"6xl"} my={8} px={6}>
           <Box color={"text.300"} textAlign={"justify"}>
             We at Suryan Organic are committed to protecting and safe guarding
@@ -301,36 +301,7 @@ const PrivacyPolicy = () => {
           <br />
         </VStack>
       </Container>
-      <Box
-        w="100%"
-        backgroundSize="100%"
-        backgroundPosition="50% 100%"
-        backgroundRepeat={"no-repeat"}
-      >
-        <Heading
-          color="brand.500"
-          size="lg"
-          mx="auto"
-          align={"center"}
-          my={"5"}
-          pb={"10px"}
-        >
-          AVAILABLE AT
-        </Heading>
-      </Box>
-      <Container maxW={"container.xl"} mb={5} px={20} centerContent>
-        <Image
-          src={
-            require("../assets/001.jpg")
-          }
-          w="100%"
-          alt=""
-          style={{
-            opacity: 1,
-            transition: "opacity 0.7s", // Note the corrected syntax here
-          }}
-        />
-      </Container>
+
       <ScrollToTop />
       <Footer />
     </>

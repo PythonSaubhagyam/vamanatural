@@ -85,7 +85,7 @@ function Blog() {
 
           <Flex direction="column" gap={10} w={{ base: "100%", md: "25%" }}>
             <Box borderLeft="2px" borderColor="brand.900" p={3} textAlign="center">
-              <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/dsose/suryan organic inline.png" />
+              <Image src="https://forntend-bucket.s3.ap-south-1.amazonaws.com/sose/images/suryan organic inline.png" />
               <Text fontSize="xs" color="gray.500" mt={2}>
                 {blogData?.published_at && formatDate(blogData.published_at)}
               </Text>

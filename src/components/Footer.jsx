@@ -10,6 +10,7 @@ import {
   Divider,
   Flex,
   useBreakpointValue,
+  Heading,
 } from "@chakra-ui/react";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
@@ -58,12 +59,13 @@ export default function Footer() {
 
   return (
     <>
-      <Box bg="white" borderTop="1px solid #e2e8f0">
-        <Box className="scrolling-text-container" bg="#7c7a73">
+      <Box bg="white" my={2} borderTop="1px solid #e2e8f0">
+        <hr />
+        <Box my={2} className="scrolling-text-container" bg="#7c7a73">
           <Text
             align="center"
             color="white"
-            py={3}
+            py={1}
             fontSize={{ base: "sm", lg: "md" }}
             className="scrolling-text"
           >
@@ -78,7 +80,17 @@ export default function Footer() {
             </Link>
           </Text>
         </Box>
-
+        <Box w="100%" >
+          <Heading color="brand.500" size="lg" align="center" my={5} pb="10px">
+            AVAILABLE AT
+          </Heading>
+        </Box>
+        <Image
+          src="https://s3organicbucket.s3.amazonaws.com/website/SectionImages/visit_our_stores.jpg"
+          w="full"
+          alt="Available at"
+          transition="opacity 0.7s"
+        />
         <Container maxW="6xl" py={10}>
           <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
             {/* Quick Links */}

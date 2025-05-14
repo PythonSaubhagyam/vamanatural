@@ -445,35 +445,6 @@ export default function Home() {
             </Box>
           </Container>
         )}
-      {availableSection?.length > 0 &&
-        availableSection[0]?.is_visible_on_website === true && (
-          <Container maxW={"container.xl"} mb={5} px={0} centerContent>
-            <Heading
-              as={"h1"}
-              color="brand.500"
-              fontSize={{ md: 33, base: 22 }}
-              mx="auto"
-              align={"center"}
-              my={"5"}
-              pb={"10px"}
-            >
-              {availableSection?.length > 0 && availableSection[0].label}
-            </Heading>
-
-            <Image
-              src={
-                availableSection?.length > 0 &&
-                availableSection[0]?.images[0].image
-              }
-              w={"container.xl"}
-              alt=""
-              style={{
-                opacity: 1,
-                transition: "opacity 0.7s", 
-              }}
-            />
-          </Container>
-        )}
       {!checkLogin().isLoggedIn && (
         <LoginModal
           isOpen={isLoginModalOpen}

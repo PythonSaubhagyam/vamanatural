@@ -275,25 +275,6 @@ export default function ConsultOurVaidya() {
         </Flex>
       </Container>
 
-      {/* Available At */}
-      <Box w="100%">
-        <Heading color="brand.500" size="lg" align="center" my={5} pb="10px">
-          AVAILABLE AT
-        </Heading>
-      </Box>
-
-      <Container maxW="container.xl" mb={5} px={0} centerContent>
-        <Image
-          src={require("../assets/001.jpg")}
-          w="container.xl"
-          alt="Available at"
-          style={{
-            opacity: 1,
-            transition: "opacity 0.7s",
-          }}
-        />
-      </Container>
-
       {!isUserLoggedIn && (
         <LoginModal
           isOpen={isLoginModalOpen}

@@ -75,22 +75,7 @@ const AboutUs = () => {
             While doing so, we help people empower farmers who are the cornerstone of Bharatiya Gau Sanskriti.
           </Box>
 
-          {/* Available At */}
-          <Image src={SECTION_ICON} alt="Available Icon" />
-          <Heading color="brand.500" size="lg" textAlign="center" my={5}>
-            AVAILABLE AT
-          </Heading>
-          <Container maxW="container.xl" px={0} centerContent>
-            <Image
-              src={require("../assets/001.jpg")}
-              w="100%"
-              alt="Available Locations"
-              style={{
-                opacity: 1,
-                transition: "opacity 0.7s",
-              }}
-            />
-          </Container>
+          
         </VStack>
       </Container>
 
